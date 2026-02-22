@@ -24,7 +24,7 @@ export default function SettingsPage() {
   const [displayName, setDisplayName] = useState("");
   const [email, setEmail] = useState("");
   const [saving, setSaving] = useState(false);
-  const [saved, setSaved] = useState(false);
+  const [, setSaved] = useState(false);
   const [usage, setUsage] = useState<{
     hourlyRequests: number;
     dailyTokens: number;
