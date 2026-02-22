@@ -1,27 +1,71 @@
+@font-face {
+  font-family: "Asgard Fat";
+  src: url("/fonts/AsgardTrial-Fat.ttf") format("truetype");
+  font-display: swap;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  * {
+    border-color: theme("colors.border");
   }
-}
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  body {
+    @apply bg-background text-text-primary font-sans antialiased;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-border rounded-full;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-text-secondary;
+  }
+
+  /* Selection */
+  ::selection {
+    @apply bg-accent/20 text-text-primary;
+  }
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+
+  .brand-loader {
+    width: 60px;
+    aspect-ratio: 1;
+    --g: conic-gradient(from -90deg at 10px 10px, #bfff00 90deg, #0000 0);
+    background: var(--g), var(--g), var(--g);
+    background-size: 50% 50%;
+    animation: brand-loader 1s infinite;
+  }
+
+  @keyframes brand-loader {
+    0%   { background-position: 0 0, 10px 10px, 20px 20px }
+    33%  { background-position: -30px 0, 10px 10px, 20px 20px }
+    66%  { background-position: -30px 0, 10px 40px, 20px 20px }
+    100% { background-position: -30px 0, 10px 40px, 50px 20px }
+  }
+
+  .dot-pattern {
+    --dot-space: 8px;
+    --dot-size: 1px;
+    --dot-color: rgba(255, 255, 255, 0.04);
+    background-image: radial-gradient(circle, var(--dot-color) var(--dot-size), transparent var(--dot-size));
+    background-size: var(--dot-space) var(--dot-space);
+    mask-image: linear-gradient(to bottom, white 0%, white 60%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, white 0%, white 60%, transparent 100%);
   }
 }
