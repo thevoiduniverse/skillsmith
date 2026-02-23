@@ -2,7 +2,8 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
-import { FloppyDisk, Play, ShareNetwork, DownloadSimple, CaretDown } from "@phosphor-icons/react";
+import { IconDeviceFloppy, IconPlayerPlayFilled, IconShare, IconDownload, IconChevronDown } from "@tabler/icons-react";
+import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { useEditorSync } from "@/lib/hooks/use-editor-sync";
 import { Button } from "@/components/ui/button";
@@ -44,11 +45,14 @@ export function EditorShell({ skillId, initialContent, initialTitle }: EditorShe
     setSaving(true);
     try {
       const md = content || getCurrentMarkdown();
-      await fetch(`/api/skills/${skillId}`, {
+      const res = await fetch(`/api/skills/${skillId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ title, content: md }),
       });
+      if (!res.ok) throw new Error("Save failed");
+    } catch {
+      toast.error("Failed to save. Please try again.");
     } finally {
       setSaving(false);
     }
@@ -77,6 +81,7 @@ export function EditorShell({ skillId, initialContent, initialTitle }: EditorShe
           description: structure.description || structure.name,
         }),
       });
+      if (!res.ok) throw new Error();
       const data = await res.json();
       if (data.content) {
         updateMarkdown(data.content);
@@ -84,6 +89,8 @@ export function EditorShell({ skillId, initialContent, initialTitle }: EditorShe
           setTitle(data.parsed.name);
         }
       }
+    } catch {
+      toast.error("AI draft generation failed. Please try again.");
     } finally {
       setAiLoading(null);
     }
@@ -100,6 +107,7 @@ export function EditorShell({ skillId, initialContent, initialTitle }: EditorShe
           section,
         }),
       });
+      if (!res.ok) throw new Error();
       const data = await res.json();
       if (data.suggestion) {
         updateStructure((prev) => ({
@@ -107,6 +115,8 @@ export function EditorShell({ skillId, initialContent, initialTitle }: EditorShe
           [section]: data.suggestion,
         }));
       }
+    } catch {
+      toast.error("AI suggestion failed. Please try again.");
     } finally {
       setAiLoading(null);
     }
@@ -124,6 +134,7 @@ export function EditorShell({ skillId, initialContent, initialTitle }: EditorShe
           context: "Improve the overall quality and clarity of all sections.",
         }),
       });
+      if (!res.ok) throw new Error();
       const data = await res.json();
       if (data.suggestion) {
         updateStructure((prev) => ({
@@ -131,6 +142,8 @@ export function EditorShell({ skillId, initialContent, initialTitle }: EditorShe
           instructions: data.suggestion,
         }));
       }
+    } catch {
+      toast.error("AI improvement failed. Please try again.");
     } finally {
       setAiLoading(null);
     }
@@ -162,17 +175,20 @@ export function EditorShell({ skillId, initialContent, initialTitle }: EditorShe
           <Button
             variant="secondary"
             size="sm"
-            onClick={() => saveSkill()}
+            onClick={async () => {
+              await saveSkill();
+              router.push("/dashboard");
+            }}
             disabled={saving}
           >
-            <FloppyDisk weight="fill" className="w-3.5 h-3.5" />
+            <IconDeviceFloppy size={14} />
             {saving ? "Saving..." : isDirty ? "Save*" : "Save"}
           </Button>
           <Button
             size="sm"
             onClick={() => router.push(`/skills/${skillId}/test`)}
           >
-            <Play weight="fill" className="w-3.5 h-3.5" />
+            <IconPlayerPlayFilled size={14} />
             Test
           </Button>
           <div className="relative">
@@ -181,8 +197,8 @@ export function EditorShell({ skillId, initialContent, initialTitle }: EditorShe
               size="sm"
               onClick={() => setShowExport(!showExport)}
             >
-              <ShareNetwork weight="fill" className="w-3.5 h-3.5" />
-              <CaretDown weight="fill" className="w-3 h-3" />
+              <IconShare size={14} />
+              <IconChevronDown size={12} />
             </Button>
             {showExport && (
               <div className="absolute right-0 top-full mt-1 bg-surface border border-border rounded-2xl shadow-xl z-20 py-1 min-w-[160px]">
@@ -190,7 +206,7 @@ export function EditorShell({ skillId, initialContent, initialTitle }: EditorShe
                   className="w-full text-left px-3 py-2 text-sm text-text-primary hover:bg-surface-alt transition-colors flex items-center gap-2"
                   onClick={handleExportMarkdown}
                 >
-                  <DownloadSimple weight="fill" className="w-3.5 h-3.5" />
+                  <IconDownload size={14} />
                   Export .md
                 </button>
               </div>
