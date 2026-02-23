@@ -70,6 +70,17 @@ export function EditorShell({ skillId, initialContent, initialTitle }: EditorShe
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [saveSkill]);
 
+  // Warn before leaving with unsaved changes
+  useEffect(() => {
+    function handleBeforeUnload(e: BeforeUnloadEvent) {
+      if (isDirty) {
+        e.preventDefault();
+      }
+    }
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+  }, [isDirty]);
+
   async function handleAiDraft() {
     if (!structure.description && !structure.name) return;
     setAiLoading("draft");

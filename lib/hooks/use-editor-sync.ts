@@ -32,7 +32,7 @@ export function useEditorSync(options: UseEditorSyncOptions = {}) {
       autoSaveTimer.current = setTimeout(() => {
         options.onAutoSave?.(md);
         setIsDirty(false);
-      }, 30000);
+      }, 10000);
     },
     [options]
   );
