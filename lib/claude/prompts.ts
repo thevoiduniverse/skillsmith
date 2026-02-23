@@ -19,15 +19,15 @@ description: <when this skill should activate - one sentence trigger description
 
 ### Example 1
 **User:** <realistic example input>
-**Assistant:** <ideal example output>
+**Claude:** <ideal example output>
 
 ### Example 2
 **User:** <different example input>
-**Assistant:** <ideal example output>
+**Claude:** <ideal example output>
 
 ### Example 3
 **User:** <edge case example input>
-**Assistant:** <ideal example output handling the edge case>
+**Claude:** <ideal example output handling the edge case>
 \`\`\`
 
 Guidelines:
