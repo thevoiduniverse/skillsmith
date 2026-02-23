@@ -125,17 +125,7 @@ export default function NewSkillPage() {
     setLoading(true);
 
     try {
-      const createRes = await fetch("/api/skills", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          title: skillName.trim() || description.slice(0, 60),
-          description,
-          category,
-        }),
-      });
-      const skill = await createRes.json();
-
+      // Generate draft FIRST — no DB record yet
       const draftRes = await fetch("/api/claude/draft", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -145,18 +135,22 @@ export default function NewSkillPage() {
           category: category || undefined,
         }),
       });
+      if (!draftRes.ok) throw new Error("Draft generation failed");
       const draft = await draftRes.json();
 
-      if (draft.content) {
-        await fetch(`/api/skills/${skill.id}`, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            content: draft.content,
-            title: draft.parsed?.name || skillName.trim() || description.slice(0, 60),
-          }),
-        });
-      }
+      // Now create the skill WITH the content in a single request
+      const createRes = await fetch("/api/skills", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title: draft.parsed?.name || skillName.trim() || description.slice(0, 60),
+          description,
+          category,
+          content: draft.content || "",
+        }),
+      });
+      if (!createRes.ok) throw new Error("Skill creation failed");
+      const skill = await createRes.json();
 
       router.push(`/skills/${skill.id}/edit`);
     } catch {
