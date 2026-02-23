@@ -1,11 +1,12 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { IconDeviceFloppy, IconPlayerPlayFilled, IconShare, IconDownload, IconChevronDown } from "@tabler/icons-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { useEditorSync } from "@/lib/hooks/use-editor-sync";
+import type { SkillStructure } from "@/lib/skill-parser/schema";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { GuidedEditor } from "./guided-mode/guided-editor";
@@ -25,6 +26,7 @@ export function EditorShell({ skillId, initialContent, initialTitle }: EditorShe
   const [aiLoading, setAiLoading] = useState<string | null>(null);
   const [showExport, setShowExport] = useState(false);
   const [guidedStep, setGuidedStep] = useState(0);
+  const structureSnapshot = useRef<SkillStructure | null>(null);
 
   const {
     structure,
@@ -85,6 +87,7 @@ export function EditorShell({ skillId, initialContent, initialTitle }: EditorShe
   async function handleAiDraft() {
     if (!structure.description && !structure.name) return;
     setAiLoading("draft");
+    structureSnapshot.current = { ...structure, examples: [...structure.examples] };
     try {
       const res = await fetch("/api/claude/draft", {
         method: "POST",
@@ -100,6 +103,17 @@ export function EditorShell({ skillId, initialContent, initialTitle }: EditorShe
         if (data.parsed?.name && !title) {
           setTitle(data.parsed.name);
         }
+        toast("AI draft applied", {
+          action: {
+            label: "Undo",
+            onClick: () => {
+              if (structureSnapshot.current) {
+                updateStructure(() => structureSnapshot.current!);
+              }
+            },
+          },
+          duration: 10000,
+        });
       }
     } catch {
       toast.error("AI draft generation failed. Please try again.");
@@ -110,6 +124,7 @@ export function EditorShell({ skillId, initialContent, initialTitle }: EditorShe
 
   async function handleAiSuggest(section: string) {
     setAiLoading(section);
+    structureSnapshot.current = { ...structure, examples: [...structure.examples] };
     try {
       const res = await fetch("/api/claude/suggest", {
         method: "POST",
@@ -126,6 +141,17 @@ export function EditorShell({ skillId, initialContent, initialTitle }: EditorShe
           ...prev,
           [section]: data.suggestion,
         }));
+        toast("AI suggestion applied", {
+          action: {
+            label: "Undo",
+            onClick: () => {
+              if (structureSnapshot.current) {
+                updateStructure(() => structureSnapshot.current!);
+              }
+            },
+          },
+          duration: 10000,
+        });
       }
     } catch {
       toast.error("AI suggestion failed. Please try again.");
@@ -136,6 +162,7 @@ export function EditorShell({ skillId, initialContent, initialTitle }: EditorShe
 
   async function handleAiImprove() {
     setAiLoading("improve");
+    structureSnapshot.current = { ...structure, examples: [...structure.examples] };
     try {
       const res = await fetch("/api/claude/suggest", {
         method: "POST",
@@ -153,6 +180,17 @@ export function EditorShell({ skillId, initialContent, initialTitle }: EditorShe
           ...prev,
           instructions: data.suggestion,
         }));
+        toast("AI improvement applied", {
+          action: {
+            label: "Undo",
+            onClick: () => {
+              if (structureSnapshot.current) {
+                updateStructure(() => structureSnapshot.current!);
+              }
+            },
+          },
+          duration: 10000,
+        });
       }
     } catch {
       toast.error("AI improvement failed. Please try again.");
