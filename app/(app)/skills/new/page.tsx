@@ -9,6 +9,7 @@ import {
   IconChevronLeft,
   IconChevronRight,
 } from "@tabler/icons-react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
@@ -130,6 +131,7 @@ export default function NewSkillPage() {
 
       router.push(`/skills/${skill.id}/edit`);
     } catch {
+      toast.error("Failed to generate skill. Please try again.");
       setMode("idle");
       setLoading(false);
     }
@@ -148,6 +150,7 @@ export default function NewSkillPage() {
       const skill = await res.json();
       router.push(`/skills/${skill.id}/edit`);
     } catch {
+      toast.error("Failed to create skill. Please try again.");
       setMode("idle");
       setLoading(false);
     }
