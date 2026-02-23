@@ -2,6 +2,7 @@ import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { Sidebar } from "@/components/layout/sidebar";
 import { MobileNav } from "@/components/layout/mobile-nav";
+import { ToastProvider } from "@/components/ui/toast-provider";
 
 export default async function AppLayout({
   children,
@@ -35,6 +36,7 @@ export default async function AppLayout({
         </div>
         <main className="flex-1 px-6 pt-12 pb-6">{children}</main>
       </div>
+      <ToastProvider />
     </div>
   );
 }
