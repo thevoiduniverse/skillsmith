@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Plus } from "@phosphor-icons/react";
+import { IconPlus } from "@tabler/icons-react";
 import { Button } from "@/components/ui/button";
 
 export function DashboardHeader({ skillCount }: { skillCount: number }) {
@@ -19,7 +19,7 @@ export function DashboardHeader({ skillCount }: { skillCount: number }) {
       </div>
       <Link href="/skills/new">
         <Button>
-          <Plus weight="bold" className="w-4 h-4" />
+          <IconPlus size={16} />
           New Skill
         </Button>
       </Link>

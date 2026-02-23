@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { GlobeSimple, GitFork, Trash } from "@phosphor-icons/react";
+import { IconWorld, IconGitFork, IconTrashFilled } from "@tabler/icons-react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { formatRelativeTime } from "@/lib/utils";
@@ -75,10 +75,10 @@ export function SkillCard({
         </div>
         <div className="flex items-center gap-1.5 shrink-0">
           {skill.fork_of && (
-            <GitFork weight="fill" className="w-3.5 h-3.5 text-[rgba(255,255,255,0.6)]" />
+            <IconGitFork size={14} className="text-[rgba(255,255,255,0.6)]" />
           )}
           {skill.visibility === "public" && (
-            <GlobeSimple weight="fill" className="w-3.5 h-3.5 text-[rgba(255,255,255,0.6)]" />
+            <IconWorld size={14} className="text-[rgba(255,255,255,0.6)]" />
           )}
           <button
             onClick={(e) => {
@@ -87,7 +87,7 @@ export function SkillCard({
             }}
             className="w-6 h-6 flex items-center justify-center rounded-md text-[rgba(255,255,255,0.3)] hover:text-red-400 hover:bg-[rgba(255,0,0,0.08)] transition-colors opacity-0 group-hover:opacity-100"
           >
-            <Trash weight="fill" className="w-3.5 h-3.5" />
+            <IconTrashFilled size={14} />
           </button>
         </div>
       </div>

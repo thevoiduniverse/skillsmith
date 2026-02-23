@@ -1,6 +1,6 @@
 "use client";
 
-import { Sparkle, MagicWand, Warning } from "@phosphor-icons/react";
+import { IconSparkles, IconWand, IconAlertTriangleFilled } from "@tabler/icons-react";
 import { Button } from "@/components/ui/button";
 
 interface AiToolbarProps {
@@ -26,7 +26,7 @@ export function AiToolbar({
         onClick={onDraft}
         disabled={disabled || loading === "draft"}
       >
-        <Sparkle weight="fill" className="w-3.5 h-3.5" />
+        <IconSparkles size={14} />
         {loading === "draft" ? "Drafting..." : "Draft with AI"}
       </Button>
       <Button
@@ -35,7 +35,7 @@ export function AiToolbar({
         onClick={onImprove}
         disabled={disabled || loading === "improve"}
       >
-        <MagicWand weight="fill" className="w-3.5 h-3.5" />
+        <IconWand size={14} />
         {loading === "improve" ? "Improving..." : "Improve"}
       </Button>
       <Button
@@ -44,7 +44,7 @@ export function AiToolbar({
         onClick={onAddEdgeCases}
         disabled={disabled || loading === "edgeCases"}
       >
-        <Warning weight="fill" className="w-3.5 h-3.5" />
+        <IconAlertTriangleFilled size={14} />
         {loading === "edgeCases" ? "Thinking..." : "Add Edge Cases"}
       </Button>
     </div>

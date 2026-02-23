@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { UserCircle, ChartBar, SignOut } from "@phosphor-icons/react";
+import { IconUserFilled, IconChartBar, IconLogout } from "@tabler/icons-react";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -102,7 +102,7 @@ export default function SettingsPage() {
       <Card>
         <CardHeader>
           <div className="flex items-center gap-2">
-            <UserCircle weight="fill" className="w-4 h-4 text-[rgba(255,255,255,0.6)]" />
+            <IconUserFilled size={16} className="text-[rgba(255,255,255,0.6)]" />
             <h2 className="text-sm font-semibold text-white">Profile</h2>
           </div>
         </CardHeader>
@@ -141,7 +141,7 @@ export default function SettingsPage() {
       <Card>
         <CardHeader>
           <div className="flex items-center gap-2">
-            <ChartBar weight="fill" className="w-4 h-4 text-[rgba(255,255,255,0.6)]" />
+            <IconChartBar size={16} className="text-[rgba(255,255,255,0.6)]" />
             <h2 className="text-sm font-semibold text-white">API Usage</h2>
           </div>
         </CardHeader>
@@ -197,7 +197,7 @@ export default function SettingsPage() {
 
       {/* Sign Out */}
       <Button variant="danger" onClick={handleSignOut}>
-        <SignOut weight="fill" className="w-4 h-4" />
+        <IconLogout size={16} />
         Sign Out
       </Button>
     </div>

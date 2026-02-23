@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Play, Trash, CaretDown, CaretRight } from "@phosphor-icons/react";
+import { IconPlayerPlayFilled, IconTrashFilled, IconChevronDown, IconChevronRight } from "@tabler/icons-react";
 import { Button } from "@/components/ui/button";
 import { ScoreBadge } from "./score-badge";
 import { cn } from "@/lib/utils";
@@ -33,9 +33,9 @@ export function TestCaseRow({ testCase, onRun, onDelete, running }: TestCaseRowP
       >
         <button className="text-text-secondary">
           {expanded ? (
-            <CaretDown weight="fill" className="w-4 h-4" />
+            <IconChevronDown size={16} />
           ) : (
-            <CaretRight weight="fill" className="w-4 h-4" />
+            <IconChevronRight size={16} />
           )}
         </button>
 
@@ -55,7 +55,7 @@ export function TestCaseRow({ testCase, onRun, onDelete, running }: TestCaseRowP
             onClick={() => onRun(testCase.id)}
             disabled={running}
           >
-            <Play weight="fill" className={cn("w-3.5 h-3.5", running && "animate-pulse")} />
+            <IconPlayerPlayFilled size={14} className={cn(running && "animate-pulse")} />
           </Button>
           <Button
             variant="ghost"
@@ -63,7 +63,7 @@ export function TestCaseRow({ testCase, onRun, onDelete, running }: TestCaseRowP
             onClick={() => onDelete(testCase.id)}
             className="text-text-secondary hover:text-error"
           >
-            <Trash weight="fill" className="w-3.5 h-3.5" />
+            <IconTrashFilled size={14} />
           </Button>
         </div>
       </div>

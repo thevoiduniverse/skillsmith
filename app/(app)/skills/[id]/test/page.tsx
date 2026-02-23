@@ -1,7 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect, notFound } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft } from "@phosphor-icons/react/dist/ssr";
+import { IconArrowLeft } from "@tabler/icons-react";
 import { Button } from "@/components/ui/button";
 import { SplitComparison } from "@/components/playground/split-comparison";
 import { TestSuitePanel } from "@/components/playground/test-suite-panel";
@@ -29,7 +29,7 @@ export default async function SkillTestPage({
       <div className="flex items-center gap-4">
         <Link href={`/skills/${skill.id}/edit`}>
           <Button variant="ghost" size="sm">
-            <ArrowLeft weight="bold" className="w-4 h-4" />
+            <IconArrowLeft size={16} />
             Back to Editor
           </Button>
         </Link>

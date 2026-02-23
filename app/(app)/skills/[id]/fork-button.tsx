@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { GitFork } from "@phosphor-icons/react";
+import { IconGitFork } from "@tabler/icons-react";
 import { Button } from "@/components/ui/button";
 
 export function ForkButton({ skillId }: { skillId: string }) {
@@ -24,7 +24,7 @@ export function ForkButton({ skillId }: { skillId: string }) {
 
   return (
     <Button variant="secondary" onClick={handleFork} disabled={loading}>
-      <GitFork weight="fill" className="w-4 h-4" />
+      <IconGitFork size={16} />
       {loading ? "Forking..." : "Fork"}
     </Button>
   );

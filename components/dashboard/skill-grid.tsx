@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Plus, Trash, CheckSquare, X } from "@phosphor-icons/react";
+import { IconPlus, IconTrashFilled, IconSquareCheckFilled, IconX } from "@tabler/icons-react";
 import { Button } from "@/components/ui/button";
 import { SkillCard, type SkillCardSkill } from "./skill-card";
 
@@ -11,8 +11,9 @@ interface SkillGridProps {
   skills: SkillCardSkill[];
 }
 
-export function SkillGrid({ skills }: SkillGridProps) {
+export function SkillGrid({ skills: initialSkills }: SkillGridProps) {
   const router = useRouter();
+  const [skills, setSkills] = useState(initialSkills);
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [selectMode, setSelectMode] = useState(false);
   const [deleting, setDeleting] = useState(false);
@@ -33,11 +34,14 @@ export function SkillGrid({ skills }: SkillGridProps) {
 
   async function handleDeleteSingle(id: string) {
     if (!confirm("Delete this skill?")) return;
+    // Optimistic: remove from UI immediately
+    setSkills((prev) => prev.filter((s) => s.id !== id));
     try {
       await fetch(`/api/skills/${id}`, { method: "DELETE" });
       router.refresh();
     } catch {
-      // silently fail
+      // Revert on failure
+      setSkills(initialSkills);
     }
   }
 
@@ -45,17 +49,21 @@ export function SkillGrid({ skills }: SkillGridProps) {
     if (selected.size === 0) return;
     if (!confirm(`Delete ${selected.size} skill${selected.size > 1 ? "s" : ""}?`)) return;
     setDeleting(true);
+    const idsToDelete = Array.from(selected);
+    // Optimistic: remove from UI immediately
+    setSkills((prev) => prev.filter((s) => !selected.has(s.id)));
+    setSelected(new Set());
+    setSelectMode(false);
     try {
       await Promise.all(
-        Array.from(selected).map((id) =>
+        idsToDelete.map((id) =>
           fetch(`/api/skills/${id}`, { method: "DELETE" })
         )
       );
-      setSelected(new Set());
-      setSelectMode(false);
       router.refresh();
     } catch {
-      // silently fail
+      // Revert on failure
+      setSkills(initialSkills);
     } finally {
       setDeleting(false);
     }
@@ -84,13 +92,13 @@ export function SkillGrid({ skills }: SkillGridProps) {
                 onClick={handleDeleteSelected}
                 disabled={selected.size === 0 || deleting}
               >
-                <Trash weight="fill" className="w-3.5 h-3.5" />
+                <IconTrashFilled size={14} />
                 {deleting
                   ? "Deleting..."
                   : `Delete${selected.size > 0 ? ` (${selected.size})` : ""}`}
               </Button>
               <Button variant="secondary" size="sm" onClick={exitSelectMode}>
-                <X weight="bold" className="w-3.5 h-3.5" />
+                <IconX size={14} />
                 Cancel
               </Button>
             </>
@@ -101,13 +109,13 @@ export function SkillGrid({ skills }: SkillGridProps) {
                   variant="secondary"
                   onClick={() => setSelectMode(true)}
                 >
-                  <CheckSquare weight="fill" className="w-4 h-4" />
+                  <IconSquareCheckFilled size={16} />
                   Select
                 </Button>
               )}
               <Link href="/skills/new">
                 <Button>
-                  <Plus weight="bold" className="w-4 h-4" />
+                  <IconPlus size={16} />
                   New Skill
                 </Button>
               </Link>

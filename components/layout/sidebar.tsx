@@ -3,21 +3,21 @@
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import {
-  SquaresFour,
-  Plus,
-  BookBookmark,
-  GearSix,
-  UserCircle,
-  SignOut,
-} from "@phosphor-icons/react";
+  IconLayoutGrid,
+  IconPlus,
+  IconBookmarkFilled,
+  IconSettingsFilled,
+  IconUserFilled,
+  IconLogout,
+} from "@tabler/icons-react";
 import { createClient } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
 
 const navItems = [
-  { href: "/dashboard", label: "Dashboard", icon: SquaresFour },
-  { href: "/skills/new", label: "New Skill", icon: Plus },
-  { href: "/templates", label: "Templates", icon: BookBookmark },
-  { href: "/settings", label: "Settings", icon: GearSix },
+  { href: "/dashboard", label: "Dashboard", icon: IconLayoutGrid },
+  { href: "/skills/new", label: "New Skill", icon: IconPlus },
+  { href: "/templates", label: "Templates", icon: IconBookmarkFilled },
+  { href: "/settings", label: "Settings", icon: IconSettingsFilled },
 ];
 
 export function Sidebar() {
@@ -77,7 +77,7 @@ export function Sidebar() {
                     : "text-[rgba(255,255,255,0.6)] hover:text-[rgba(255,255,255,0.8)]"
                 )}
               >
-                <Icon weight="fill" className="w-4 h-4 shrink-0" />
+                <Icon size={16} className="shrink-0" />
                 <span>{item.label}</span>
               </Link>
             );
@@ -93,13 +93,13 @@ export function Sidebar() {
             onClick={() => router.push("/settings")}
             className="p-2 rounded-[40px] text-[rgba(255,255,255,0.5)] hover:text-[rgba(255,255,255,0.8)] transition-colors"
           >
-            <UserCircle weight="fill" className="w-3.5 h-3.5" />
+            <IconUserFilled size={14} />
           </button>
           <button
             onClick={handleSignOut}
             className="p-2 rounded-[40px] text-[rgba(255,255,255,0.5)] hover:text-[rgba(255,255,255,0.8)] transition-colors"
           >
-            <SignOut weight="fill" className="w-3.5 h-3.5" />
+            <IconLogout size={14} />
           </button>
         </div>
       </div>

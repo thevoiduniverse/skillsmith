@@ -1,6 +1,6 @@
 "use client";
 
-import { Trash } from "@phosphor-icons/react";
+import { IconTrashFilled } from "@tabler/icons-react";
 import { Card } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
@@ -30,7 +30,7 @@ export function ExamplePair({
           Example {index + 1}
         </span>
         <Button variant="ghost" size="sm" onClick={onRemove} className="text-text-secondary hover:text-error">
-          <Trash weight="fill" className="w-3.5 h-3.5" />
+          <IconTrashFilled size={14} />
         </Button>
       </div>
       <div className="space-y-3">

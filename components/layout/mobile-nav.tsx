@@ -4,21 +4,21 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
-  SquaresFour,
-  Plus,
-  BookBookmark,
-  GearSix,
-  List,
-  X,
-  Sparkle,
-} from "@phosphor-icons/react";
+  IconLayoutGrid,
+  IconPlus,
+  IconBookmarkFilled,
+  IconSettingsFilled,
+  IconMenu2,
+  IconX,
+  IconSparkles,
+} from "@tabler/icons-react";
 import { cn } from "@/lib/utils";
 
 const navItems = [
-  { href: "/dashboard", label: "Dashboard", icon: SquaresFour },
-  { href: "/skills/new", label: "New Skill", icon: Plus },
-  { href: "/templates", label: "Templates", icon: BookBookmark },
-  { href: "/settings", label: "Settings", icon: GearSix },
+  { href: "/dashboard", label: "Dashboard", icon: IconLayoutGrid },
+  { href: "/skills/new", label: "New Skill", icon: IconPlus },
+  { href: "/templates", label: "Templates", icon: IconBookmarkFilled },
+  { href: "/settings", label: "Settings", icon: IconSettingsFilled },
 ];
 
 export function MobileNav() {
@@ -31,7 +31,7 @@ export function MobileNav() {
         onClick={() => setOpen(true)}
         className="p-2 text-text-secondary hover:text-text-primary"
       >
-        <List weight="bold" className="w-5 h-5" />
+        <IconMenu2 size={20} />
       </button>
 
       {open && (
@@ -43,7 +43,7 @@ export function MobileNav() {
           <div className="fixed inset-y-0 left-0 w-64 bg-background border-r border-border z-50 flex flex-col">
             <div className="h-14 flex items-center justify-between px-4 border-b border-border">
               <div className="flex items-center gap-2">
-                <Sparkle weight="fill" className="w-5 h-5 text-accent" />
+                <IconSparkles size={20} className="text-accent" />
                 <span className="text-lg font-bold text-text-primary tracking-tight">
                   <span className="font-asgardFat text-accent">SKILL</span>SMITH
                 </span>
@@ -52,7 +52,7 @@ export function MobileNav() {
                 onClick={() => setOpen(false)}
                 className="p-1 text-text-secondary hover:text-text-primary"
               >
-                <X weight="bold" className="w-5 h-5" />
+                <IconX size={20} />
               </button>
             </div>
             <nav className="flex-1 py-4 px-2 space-y-1">
@@ -72,7 +72,7 @@ export function MobileNav() {
                         : "text-text-secondary hover:text-text-primary hover:bg-surface-alt"
                     )}
                   >
-                    <Icon weight="fill" className="w-4 h-4 shrink-0" />
+                    <Icon size={16} className="shrink-0" />
                     <span>{item.label}</span>
                   </Link>
                 );

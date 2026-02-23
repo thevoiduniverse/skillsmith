@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { PaperPlaneTilt } from "@phosphor-icons/react";
+import { IconSend2 } from "@tabler/icons-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { ChatPane } from "./chat-pane";
@@ -83,7 +83,7 @@ export function SplitComparison({ skillContent }: SplitComparisonProps) {
           disabled={!prompt.trim() || loading}
           className="self-end"
         >
-          <PaperPlaneTilt weight="fill" className="w-4 h-4" />
+          <IconSend2 size={16} />
         </Button>
       </div>
     </div>

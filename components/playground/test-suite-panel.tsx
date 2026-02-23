@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Play, Plus } from "@phosphor-icons/react";
+import { IconPlayerPlayFilled, IconPlus } from "@tabler/icons-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -109,7 +109,7 @@ export function TestSuitePanel({ skillId, skillContent }: TestSuitePanelProps) {
             size="sm"
             onClick={() => setShowForm(!showForm)}
           >
-            <Plus weight="bold" className="w-3.5 h-3.5" />
+            <IconPlus size={14} />
             Add Test
           </Button>
           {testCases.length > 0 && (
@@ -118,7 +118,7 @@ export function TestSuitePanel({ skillId, skillContent }: TestSuitePanelProps) {
               onClick={runAllTests}
               disabled={runningAll || !!runningId}
             >
-              <Play weight="fill" className="w-3.5 h-3.5" />
+              <IconPlayerPlayFilled size={14} />
               {runningAll ? "Running..." : "Run All"}
             </Button>
           )}

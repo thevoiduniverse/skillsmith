@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { GlobeSimple, LockSimple, GitFork } from "@phosphor-icons/react";
+import { IconWorld, IconLockFilled, IconGitFork } from "@tabler/icons-react";
 import { Badge } from "@/components/ui/badge";
 import { formatRelativeTime } from "@/lib/utils";
 
@@ -29,7 +29,7 @@ export function SkillListItem({ skill }: SkillListItemProps) {
             {skill.title}
           </h3>
           {skill.fork_of && (
-            <GitFork weight="fill" className="w-3 h-3 text-text-secondary shrink-0" />
+            <IconGitFork size={12} className="text-text-secondary shrink-0" />
           )}
         </div>
         {skill.description && (
@@ -52,9 +52,9 @@ export function SkillListItem({ skill }: SkillListItemProps) {
           {formatRelativeTime(skill.updated_at)}
         </span>
         {skill.visibility === "public" ? (
-          <GlobeSimple weight="fill" className="w-3.5 h-3.5 text-text-secondary" />
+          <IconWorld size={14} className="text-text-secondary" />
         ) : (
-          <LockSimple weight="fill" className="w-3.5 h-3.5 text-text-secondary" />
+          <IconLockFilled size={14} className="text-text-secondary" />
         )}
       </div>
     </Link>
