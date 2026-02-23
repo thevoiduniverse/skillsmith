@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -8,6 +8,8 @@ import {
   IconArrowRight,
   IconChevronLeft,
   IconChevronRight,
+  IconBookmarkFilled,
+  IconPlus,
 } from "@tabler/icons-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -16,6 +18,14 @@ import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { SKILL_CATEGORIES } from "@/lib/constants";
+
+/* ─── Types ───────────────────────────────────── */
+
+interface Template {
+  id: string;
+  title: string;
+  description: string;
+}
 
 /* ─── Constants ────────────────────────────────── */
 
@@ -67,11 +77,30 @@ export default function NewSkillPage() {
   const [skillName, setSkillName] = useState("");
   const [category, setCategory] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [creationPath, setCreationPath] = useState<"ai" | "template" | "blank">("ai");
+  const [templates, setTemplates] = useState<Template[]>([]);
+  const [templateSearch, setTemplateSearch] = useState("");
+  const [templateLoading, setTemplateLoading] = useState(false);
+
+  /* ─── Fetch templates when template path selected ─── */
+
+  useEffect(() => {
+    if (creationPath !== "template") return;
+    setTemplateLoading(true);
+    fetch("/api/templates")
+      .then((r) => r.json())
+      .then(setTemplates)
+      .catch(() => toast.error("Failed to load templates"))
+      .finally(() => setTemplateLoading(false));
+  }, [creationPath]);
 
   /* ─── Navigation ───────────────────────────── */
 
   function canProceed(step: number) {
-    if (step === 0) return description.trim().length > 0;
+    if (step === 0) {
+      if (creationPath === "ai") return description.trim().length > 0;
+      return true; // blank path always can proceed
+    }
     return true;
   }
 
@@ -145,7 +174,10 @@ export default function NewSkillPage() {
       const res = await fetch("/api/skills", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ title: skillName.trim() || "Untitled Skill" }),
+        body: JSON.stringify({
+          title: skillName.trim() || "Untitled Skill",
+          category: category || undefined,
+        }),
       });
       const skill = await res.json();
       router.push(`/skills/${skill.id}/edit`);
@@ -156,41 +188,121 @@ export default function NewSkillPage() {
     }
   }
 
+  async function handleForkTemplate(templateId: string) {
+    setLoading(true);
+    setMode("creating");
+    setActiveStep(2);
+    try {
+      const res = await fetch(`/api/skills/${templateId}/fork`, { method: "POST" });
+      if (!res.ok) throw new Error();
+      const fork = await res.json();
+      router.push(`/skills/${fork.id}/edit`);
+    } catch {
+      toast.error("Failed to use template. Please try again.");
+      setMode("idle");
+      setLoading(false);
+      setActiveStep(0);
+    }
+  }
+
   /* ─── Step content renderers ───────────────── */
 
   function renderStep0() {
     return (
       <div className="flex flex-col h-full">
-        <div className="flex-1 space-y-4">
-          <label className="block text-sm font-medium text-[rgba(255,255,255,0.6)]">
-            What should this skill do?
-          </label>
-          <Textarea
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            placeholder="e.g., Review code and provide feedback focusing on security vulnerabilities, performance issues, and best practices. Use a constructive tone and provide specific suggestions."
-            rows={4}
-            className="text-base"
-          />
+        {/* Path selector tabs */}
+        <div className="flex gap-2 mb-4">
+          {([
+            { key: "ai" as const, label: "Describe with AI", icon: IconSparkles },
+            { key: "template" as const, label: "From Template", icon: IconBookmarkFilled },
+            { key: "blank" as const, label: "Start Blank", icon: IconPlus },
+          ]).map(({ key, label, icon: Icon }) => (
+            <button
+              key={key}
+              onClick={() => setCreationPath(key)}
+              className={cn(
+                "flex-1 flex items-center justify-center gap-1.5 py-2 text-xs font-medium rounded-xl transition-colors",
+                creationPath === key
+                  ? "bg-[rgba(191,255,0,0.12)] text-[#bfff00] border border-[rgba(191,255,0,0.25)]"
+                  : "bg-[rgba(255,255,255,0.05)] text-[rgba(255,255,255,0.5)] hover:text-white border border-transparent"
+              )}
+            >
+              <Icon size={14} />
+              {label}
+            </button>
+          ))}
         </div>
 
-        <div className="flex items-center justify-between mt-auto pt-6">
-          <button
-            onClick={handleCreateBlank}
-            disabled={loading}
-            className="text-sm text-[rgba(255,255,255,0.6)] hover:text-white transition-colors"
-          >
-            Start from scratch &rarr;
-          </button>
-          <Button
-            onClick={goNext}
-            disabled={!canProceed(0)}
-            size="md"
-          >
-            Next
-            <IconChevronRight size={16} />
-          </Button>
+        {/* Dynamic content based on path */}
+        <div className="flex-1">
+          {creationPath === "ai" && (
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-[rgba(255,255,255,0.6)]">
+                What should this skill do?
+              </label>
+              <Textarea
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                placeholder="e.g., Review code and provide feedback focusing on security vulnerabilities, performance issues, and best practices."
+                rows={4}
+                className="text-base"
+              />
+            </div>
+          )}
+
+          {creationPath === "template" && (
+            <div className="space-y-3">
+              <Input
+                value={templateSearch}
+                onChange={(e) => setTemplateSearch(e.target.value)}
+                placeholder="Search templates..."
+                className="text-sm"
+              />
+              <div className="space-y-2 max-h-[200px] overflow-y-auto pr-1">
+                {templateLoading ? (
+                  <p className="text-sm text-[rgba(255,255,255,0.4)] text-center py-4">Loading templates...</p>
+                ) : templates
+                    .filter((t) =>
+                      t.title.toLowerCase().includes(templateSearch.toLowerCase())
+                    )
+                    .map((t) => (
+                      <button
+                        key={t.id}
+                        onClick={() => handleForkTemplate(t.id)}
+                        disabled={loading}
+                        className="w-full text-left p-3 rounded-xl bg-[rgba(255,255,255,0.03)] hover:bg-[rgba(255,255,255,0.07)] border border-[rgba(255,255,255,0.06)] transition-colors"
+                      >
+                        <div className="font-medium text-sm text-white">{t.title}</div>
+                        <div className="text-xs text-[rgba(255,255,255,0.5)] line-clamp-1 mt-0.5">
+                          {t.description}
+                        </div>
+                      </button>
+                    ))}
+                {!templateLoading && templates.length === 0 && (
+                  <p className="text-sm text-[rgba(255,255,255,0.4)] text-center py-4">No templates available</p>
+                )}
+              </div>
+            </div>
+          )}
+
+          {creationPath === "blank" && (
+            <div className="flex items-center justify-center h-full">
+              <p className="text-sm text-[rgba(255,255,255,0.5)]">
+                You&apos;ll set up the name and category next, then start with a blank editor.
+              </p>
+            </div>
+          )}
         </div>
+
+        {/* Footer — only show Next for AI and Blank paths */}
+        {creationPath !== "template" && (
+          <div className="flex items-center justify-end mt-auto pt-4">
+            <Button onClick={goNext} disabled={!canProceed(0)} size="md">
+              Next
+              <IconChevronRight size={16} />
+            </Button>
+          </div>
+        )}
       </div>
     );
   }
@@ -266,11 +378,13 @@ export default function NewSkillPage() {
                 {/* Summary block */}
                 <div className="bg-[rgba(255,255,255,0.05)] rounded-2xl p-4 space-y-2">
                   <p className="text-sm text-[rgba(255,255,255,0.6)] leading-relaxed line-clamp-3">
-                    {description}
+                    {creationPath === "blank"
+                      ? "Blank skill — you\u2019ll fill in the details in the editor"
+                      : description}
                   </p>
                   <div className="flex items-center gap-2 pt-1">
                     <span className="text-xs text-[rgba(255,255,255,0.4)]">
-                      {skillName.trim() || "AI will name this"}
+                      {skillName.trim() || (creationPath === "blank" ? "Untitled Skill" : "AI will name this")}
                     </span>
                     {category && (
                       <span className="bg-[#bfff00] text-[#0a0a0a] text-[10px] font-bold px-2 py-0.5 rounded-full">
@@ -281,36 +395,29 @@ export default function NewSkillPage() {
                 </div>
 
                 {/* Primary action */}
-                <Button
-                  onClick={handleCreateWithAI}
-                  disabled={loading}
-                  size="lg"
-                  className="w-full"
-                >
-                  <IconSparkles size={16} />
-                  Generate with AI
-                  <IconArrowRight size={16} />
-                </Button>
-
-                {/* Divider */}
-                <div className="relative">
-                  <div className="absolute inset-0 flex items-center">
-                    <div className="w-full border-t border-[rgba(255,255,255,0.08)]" />
-                  </div>
-                  <div className="relative flex justify-center text-sm">
-                    <span className="bg-[rgba(17,17,17,0.45)] px-3 text-[rgba(255,255,255,0.6)]">
-                      or
-                    </span>
-                  </div>
-                </div>
-
-                <button
-                  onClick={handleCreateBlank}
-                  disabled={loading}
-                  className="w-full text-center text-sm text-[rgba(255,255,255,0.6)] hover:text-white transition-colors py-1"
-                >
-                  Start from scratch &rarr;
-                </button>
+                {creationPath === "blank" ? (
+                  <Button
+                    onClick={handleCreateBlank}
+                    disabled={loading}
+                    size="lg"
+                    className="w-full"
+                  >
+                    <IconPlus size={16} />
+                    Create Skill
+                    <IconArrowRight size={16} />
+                  </Button>
+                ) : (
+                  <Button
+                    onClick={handleCreateWithAI}
+                    disabled={loading}
+                    size="lg"
+                    className="w-full"
+                  >
+                    <IconSparkles size={16} />
+                    Generate with AI
+                    <IconArrowRight size={16} />
+                  </Button>
+                )}
               </div>
 
               <div className="mt-auto pt-4">
