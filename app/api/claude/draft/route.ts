@@ -25,16 +25,31 @@ export async function POST(request: Request) {
 
   try {
     const ai = getAIClient();
+
+    const decompositionPrompt = `The user wants a skill for: ${description}
+
+Before writing the SKILL.md, think through:
+1. What specific behaviors should this skill enforce? (List 5-8 concrete rules)
+2. What are the trickiest edge cases? (List 4-6 non-obvious scenarios)
+3. What 3 examples would best demonstrate the skill's range?
+
+Then write the complete SKILL.md incorporating your analysis.`;
+
     const response = await ai.chat.completions.create({
       model: AI_MODEL,
-      max_tokens: 2000,
+      max_tokens: 3000,
       messages: [
         { role: "system", content: DRAFT_SYSTEM_PROMPT },
-        { role: "user", content: `Create a SKILL.md for the following:\n\n${description}` },
+        { role: "user", content: decompositionPrompt },
       ],
     });
 
-    const content = response.choices[0]?.message?.content || "";
+    const rawContent = response.choices[0]?.message?.content || "";
+
+    // Strip the thinking/analysis portion before the first frontmatter delimiter
+    const frontmatterStart = rawContent.indexOf("---");
+    const content = frontmatterStart !== -1 ? rawContent.slice(frontmatterStart) : rawContent;
+
     const parsed = parseSkillMarkdown(content);
 
     await recordUsage(

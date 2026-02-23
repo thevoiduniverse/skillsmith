@@ -17,17 +17,29 @@ export async function POST(request: Request) {
     );
   }
 
-  const { skillContent, section, context } = await request.json();
+  const { skillContent, section, context, testFailures } = await request.json();
   if (!skillContent || !section) {
     return NextResponse.json({ error: "skillContent and section are required" }, { status: 400 });
   }
 
   try {
     const ai = getAIClient();
+    let testFailureContext = "";
+    if (testFailures && Array.isArray(testFailures) && testFailures.length > 0) {
+      const formatted = testFailures
+        .map(
+          (f: { prompt: string; response: string; expectedBehavior: string; score: number; reasoning: string }, i: number) =>
+            `Failure ${i + 1}:\n  Prompt: ${f.prompt}\n  Response: ${f.response}\n  Expected: ${f.expectedBehavior}\n  Score: ${f.score}\n  Reasoning: ${f.reasoning}`
+        )
+        .join("\n\n");
+      testFailureContext = `\n\nRecent test failures that should inform your improvement:\n${formatted}\n\nFocus your suggestions on fixing these specific failures while maintaining the skill's strengths.`;
+    }
+
     const userMessage = [
       `Here is the current SKILL.md:\n\n${skillContent}`,
       `\nPlease improve the "${section}" section.`,
       context ? `\nFocus: ${context}` : "",
+      testFailureContext,
     ].join("\n");
 
     const response = await ai.chat.completions.create({
