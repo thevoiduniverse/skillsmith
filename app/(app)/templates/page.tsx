@@ -9,6 +9,7 @@ interface Template {
   id: string;
   title: string;
   description: string | null;
+  content: string;
   category: string | null;
   tags: string[];
   usage_count: number;
