@@ -1,8 +1,9 @@
 "use client";
 
-import { MagnifyingGlass } from "@phosphor-icons/react";
+import { IconSearch } from "@tabler/icons-react";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
+import { SKILL_CATEGORIES } from "@/lib/constants";
 
 interface TemplateFiltersProps {
   search: string;
@@ -13,14 +14,7 @@ interface TemplateFiltersProps {
   onSortChange: (value: string) => void;
 }
 
-const categories = [
-  "All",
-  "Writing",
-  "Code",
-  "Business",
-  "Education",
-  "Productivity",
-];
+const categories = ["All", ...SKILL_CATEGORIES];
 
 const sortOptions = [
   { value: "featured", label: "Featured" },
@@ -39,7 +33,7 @@ export function TemplateFilters({
   return (
     <div className="space-y-4">
       <div className="relative">
-        <MagnifyingGlass weight="bold" className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[rgba(255,255,255,0.6)]" />
+        <IconSearch size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-[rgba(255,255,255,0.6)]" />
         <Input
           value={search}
           onChange={(e) => onSearchChange(e.target.value)}

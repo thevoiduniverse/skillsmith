@@ -4,16 +4,17 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  Sparkle,
-  ArrowRight,
-  CaretLeft,
-  CaretRight,
-} from "@phosphor-icons/react";
+  IconSparkles,
+  IconArrowRight,
+  IconChevronLeft,
+  IconChevronRight,
+} from "@tabler/icons-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
+import { SKILL_CATEGORIES } from "@/lib/constants";
 
 /* ─── Constants ────────────────────────────────── */
 
@@ -25,8 +26,6 @@ const springTransition = {
   stiffness: 170,
   damping: 22,
 };
-
-const categories = ["Writing", "Code", "Business", "Education", "Productivity"];
 
 /* ─── Stack positioning ────────────────────────── */
 
@@ -186,7 +185,7 @@ export default function NewSkillPage() {
             size="md"
           >
             Next
-            <CaretRight weight="fill" className="w-4 h-4" />
+            <IconChevronRight size={16} />
           </Button>
         </div>
       </div>
@@ -213,7 +212,7 @@ export default function NewSkillPage() {
               Category
             </label>
             <div className="flex items-center gap-1.5 flex-wrap">
-              {categories.map((cat) => (
+              {SKILL_CATEGORIES.map((cat) => (
                 <button
                   key={cat}
                   onClick={() =>
@@ -235,12 +234,12 @@ export default function NewSkillPage() {
 
         <div className="flex items-center justify-between mt-auto pt-6">
           <Button variant="secondary" onClick={goBack} size="md">
-            <CaretLeft weight="fill" className="w-4 h-4" />
+            <IconChevronLeft size={16} />
             Back
           </Button>
           <Button onClick={goNext} size="md">
             Next
-            <CaretRight weight="fill" className="w-4 h-4" />
+            <IconChevronRight size={16} />
           </Button>
         </div>
       </div>
@@ -285,9 +284,9 @@ export default function NewSkillPage() {
                   size="lg"
                   className="w-full"
                 >
-                  <Sparkle weight="fill" className="w-4 h-4" />
+                  <IconSparkles size={16} />
                   Generate with AI
-                  <ArrowRight weight="bold" className="w-4 h-4" />
+                  <IconArrowRight size={16} />
                 </Button>
 
                 {/* Divider */}
@@ -313,7 +312,7 @@ export default function NewSkillPage() {
 
               <div className="mt-auto pt-4">
                 <Button variant="secondary" onClick={goBack} size="md">
-                  <CaretLeft weight="fill" className="w-4 h-4" />
+                  <IconChevronLeft size={16} />
                   Back
                 </Button>
               </div>
