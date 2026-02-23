@@ -25,11 +25,28 @@ export async function POST(
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
+  // Generate unique fork title
+  const baseTitle = `${source.title} (Fork)`;
+  const { data: existingForks } = await supabase
+    .from("skills")
+    .select("title")
+    .eq("author_id", user.id)
+    .like("title", `${source.title} (Fork%`);
+
+  let forkTitle = baseTitle;
+  if (existingForks && existingForks.some((f) => f.title === baseTitle)) {
+    let counter = 2;
+    while (existingForks.some((f) => f.title === `${source.title} (Fork ${counter})`)) {
+      counter++;
+    }
+    forkTitle = `${source.title} (Fork ${counter})`;
+  }
+
   // Create fork
   const { data: fork, error: insertError } = await supabase
     .from("skills")
     .insert({
-      title: `${source.title} (Fork)`,
+      title: forkTitle,
       description: source.description,
       content: source.content,
       author_id: user.id,
