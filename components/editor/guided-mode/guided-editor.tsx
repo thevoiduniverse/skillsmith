@@ -1,8 +1,7 @@
 "use client";
 
-import { useState } from "react";
 import { motion } from "framer-motion";
-import { Plus, CaretLeft, CaretRight, Sparkle, CheckCircle } from "@phosphor-icons/react";
+import { IconPlus, IconChevronLeft, IconChevronRight, IconSparkles, IconCircleCheckFilled, IconPlayerPlayFilled } from "@tabler/icons-react";
 import { type SkillStructure } from "@/lib/skill-parser/schema";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -14,7 +13,7 @@ import { ExamplePair } from "./example-pair";
 /* ─── Constants ────────────────────────────────── */
 
 const CARD_HEIGHT = 480;
-const TOTAL_STEPS = 4;
+const TOTAL_STEPS = 5;
 
 const springTransition = {
   type: "spring" as const,
@@ -48,7 +47,7 @@ const cardTransition = {
   zIndex: { duration: 0 },
 };
 
-const stepLabels = ["Identity", "Instructions", "Edge Cases", "Examples"];
+const stepLabels = ["Identity", "Instructions", "Edge Cases", "Examples", "Done"];
 
 /* ─── Component ────────────────────────────────── */
 
@@ -57,7 +56,11 @@ interface GuidedEditorProps {
   onUpdate: (updater: (prev: SkillStructure) => SkillStructure) => void;
   onAiSuggest?: (section: string) => void;
   aiLoadingSection?: string | null;
-  onDone?: () => void;
+  activeStep: number;
+  onStepChange: (step: number) => void;
+  onTest?: () => void;
+  onEditMarkdown?: () => void;
+  onDashboard?: () => void;
 }
 
 export function GuidedEditor({
@@ -65,16 +68,18 @@ export function GuidedEditor({
   onUpdate,
   onAiSuggest,
   aiLoadingSection,
-  onDone,
+  activeStep,
+  onStepChange,
+  onTest,
+  onEditMarkdown,
+  onDashboard,
 }: GuidedEditorProps) {
-  const [activeStep, setActiveStep] = useState(0);
-
   function goNext() {
-    if (activeStep < TOTAL_STEPS - 1) setActiveStep((s) => s + 1);
+    if (activeStep < TOTAL_STEPS - 1) onStepChange(activeStep + 1);
   }
 
   function goBack() {
-    if (activeStep > 0) setActiveStep((s) => s - 1);
+    if (activeStep > 0) onStepChange(activeStep - 1);
   }
 
   /* ─── Step renderers ───────────────────────── */
@@ -116,7 +121,7 @@ export function GuidedEditor({
         <div className="flex items-center justify-end mt-auto pt-6">
           <Button onClick={goNext} size="md">
             Next
-            <CaretRight weight="fill" className="w-4 h-4" />
+            <IconChevronRight size={16} />
           </Button>
         </div>
       </div>
@@ -142,7 +147,7 @@ export function GuidedEditor({
                 disabled={aiLoadingSection === "instructions"}
                 className="shrink-0 text-[#bfff00]"
               >
-                <Sparkle weight="fill" className="w-3.5 h-3.5" />
+                <IconSparkles size={14} />
                 {aiLoadingSection === "instructions" ? "Thinking..." : "AI Suggest"}
               </Button>
             )}
@@ -159,12 +164,12 @@ export function GuidedEditor({
         </div>
         <div className="flex items-center justify-between mt-auto pt-6">
           <Button variant="secondary" onClick={goBack} size="md">
-            <CaretLeft weight="fill" className="w-4 h-4" />
+            <IconChevronLeft size={16} />
             Back
           </Button>
           <Button onClick={goNext} size="md">
             Next
-            <CaretRight weight="fill" className="w-4 h-4" />
+            <IconChevronRight size={16} />
           </Button>
         </div>
       </div>
@@ -190,7 +195,7 @@ export function GuidedEditor({
                 disabled={aiLoadingSection === "edgeCases"}
                 className="shrink-0 text-[#bfff00]"
               >
-                <Sparkle weight="fill" className="w-3.5 h-3.5" />
+                <IconSparkles size={14} />
                 {aiLoadingSection === "edgeCases" ? "Thinking..." : "AI Suggest"}
               </Button>
             )}
@@ -207,12 +212,12 @@ export function GuidedEditor({
         </div>
         <div className="flex items-center justify-between mt-auto pt-6">
           <Button variant="secondary" onClick={goBack} size="md">
-            <CaretLeft weight="fill" className="w-4 h-4" />
+            <IconChevronLeft size={16} />
             Back
           </Button>
           <Button onClick={goNext} size="md">
             Next
-            <CaretRight weight="fill" className="w-4 h-4" />
+            <IconChevronRight size={16} />
           </Button>
         </div>
       </div>
@@ -240,7 +245,7 @@ export function GuidedEditor({
                 }))
               }
             >
-              <Plus weight="bold" className="w-3.5 h-3.5" />
+              <IconPlus size={14} />
               Add
             </Button>
           </div>
@@ -284,13 +289,67 @@ export function GuidedEditor({
         </div>
         <div className="flex items-center justify-between mt-auto pt-6">
           <Button variant="secondary" onClick={goBack} size="md">
-            <CaretLeft weight="fill" className="w-4 h-4" />
+            <IconChevronLeft size={16} />
             Back
           </Button>
-          {onDone && (
-            <Button onClick={onDone} size="md">
-              <CheckCircle weight="fill" className="w-4 h-4" />
-              Done
+          <Button onClick={goNext} size="md">
+            Next
+            <IconChevronRight size={16} />
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
+  function renderStep4() {
+    const exampleCount = structure.examples.filter(
+      (ex) => ex.input.trim() || ex.output.trim()
+    ).length;
+    const hasInstructions = structure.instructions.trim().length > 0;
+    const hasEdgeCases = structure.edgeCases.trim().length > 0;
+
+    return (
+      <div className="flex flex-col h-full items-center justify-center text-center">
+        <div className="flex-1 flex flex-col items-center justify-center gap-4">
+          <div className="w-14 h-14 rounded-full bg-[rgba(191,255,0,0.12)] flex items-center justify-center">
+            <IconCircleCheckFilled size={32} className="text-[#bfff00]" />
+          </div>
+          <h2 className="text-xl font-bold text-text-primary">
+            Your skill is ready!
+          </h2>
+          <p className="text-sm text-text-secondary max-w-sm">
+            <span className="font-medium text-text-primary">{structure.name || "Untitled"}</span>
+            {" — "}
+            {exampleCount} example{exampleCount !== 1 ? "s" : ""}
+            {hasInstructions ? ", instructions" : ""}
+            {hasEdgeCases ? ", edge cases" : ""}
+          </p>
+        </div>
+        <div className="flex flex-col gap-2 w-full max-w-xs mt-auto pt-6">
+          {onTest && (
+            <Button onClick={onTest} size="md" className="w-full">
+              <IconPlayerPlayFilled size={16} />
+              Test it
+            </Button>
+          )}
+          {onEditMarkdown && (
+            <Button
+              variant="secondary"
+              onClick={onEditMarkdown}
+              size="md"
+              className="w-full"
+            >
+              Edit Markdown
+            </Button>
+          )}
+          {onDashboard && (
+            <Button
+              variant="secondary"
+              onClick={onDashboard}
+              size="md"
+              className="w-full"
+            >
+              Go to Dashboard
             </Button>
           )}
         </div>
@@ -298,7 +357,7 @@ export function GuidedEditor({
     );
   }
 
-  const stepRenderers = [renderStep0, renderStep1, renderStep2, renderStep3];
+  const stepRenderers = [renderStep0, renderStep1, renderStep2, renderStep3, renderStep4];
 
   /* ─── Render ───────────────────────────────── */
 

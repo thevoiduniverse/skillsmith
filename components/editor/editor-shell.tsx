@@ -24,6 +24,7 @@ export function EditorShell({ skillId, initialContent, initialTitle }: EditorShe
   const [saving, setSaving] = useState(false);
   const [aiLoading, setAiLoading] = useState<string | null>(null);
   const [showExport, setShowExport] = useState(false);
+  const [guidedStep, setGuidedStep] = useState(0);
 
   const {
     structure,
@@ -260,9 +261,19 @@ export function EditorShell({ skillId, initialContent, initialTitle }: EditorShe
             onUpdate={updateStructure}
             onAiSuggest={handleAiSuggest}
             aiLoadingSection={aiLoading}
-            onDone={() => {
+            activeStep={guidedStep}
+            onStepChange={setGuidedStep}
+            onTest={() => {
+              saveSkill();
+              router.push(`/skills/${skillId}/test`);
+            }}
+            onEditMarkdown={() => {
               saveSkill();
               switchMode("markdown");
+            }}
+            onDashboard={async () => {
+              await saveSkill();
+              router.push("/dashboard");
             }}
           />
         </div>
