@@ -14,15 +14,9 @@ const asgardFat = localFont({
   display: "swap",
 });
 
-const rebond = localFont({
-  src: [
-    { path: "./fonts/ESRebondGrotesqueTrial-Regular.otf", weight: "400", style: "normal" },
-    { path: "./fonts/ESRebondGrotesqueTrial-Medium.otf", weight: "500", style: "normal" },
-    { path: "./fonts/ESRebondGrotesqueTrial-Semibold.otf", weight: "600", style: "normal" },
-    { path: "./fonts/ESRebondGrotesqueTrial-Bold.otf", weight: "700", style: "normal" },
-    { path: "./fonts/ESRebondGrotesqueTrial-Extrabold.otf", weight: "800", style: "normal" },
-  ],
-  variable: "--font-rebond",
+const brockmann = localFont({
+  src: "./fonts/brockmann-medium-webfont.woff2",
+  variable: "--font-brockmann",
   display: "swap",
 });
 
@@ -40,7 +34,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body
-        className={`${rebond.className} ${rebond.variable} ${jetbrains.variable} ${asgardFat.variable}`}
+        className={`${brockmann.className} ${brockmann.variable} ${jetbrains.variable} ${asgardFat.variable}`}
       >
         {children}
       </body>

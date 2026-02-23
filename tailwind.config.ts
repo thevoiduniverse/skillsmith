@@ -23,7 +23,7 @@ const config: Config = {
       fontFamily: {
         asgardFat: ["Asgard Fat", "var(--font-asgard-fat)", "sans-serif"],
         sans: [
-          "var(--font-rebond)",
+          "var(--font-brockmann)",
           "system-ui",
           "sans-serif",
         ],
