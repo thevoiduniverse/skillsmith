@@ -1,6 +1,7 @@
 "use client";
 
-import { GitFork, Star, UsersThree } from "@phosphor-icons/react";
+import { IconGitFork, IconStarFilled, IconUsers } from "@tabler/icons-react";
+import { toast } from "sonner";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -30,10 +31,11 @@ export function TemplateCard({ template }: TemplateCardProps) {
       const res = await fetch(`/api/skills/${template.id}/fork`, {
         method: "POST",
       });
-      if (res.ok) {
-        const fork = await res.json();
-        router.push(`/skills/${fork.id}/edit`);
-      }
+      if (!res.ok) throw new Error();
+      const fork = await res.json();
+      router.push(`/skills/${fork.id}/edit`);
+    } catch {
+      toast.error("Failed to fork template. Please try again.");
     } finally {
       setForking(false);
     }
@@ -46,7 +48,7 @@ export function TemplateCard({ template }: TemplateCardProps) {
           {template.title}
         </h3>
         {template.featured && (
-          <Star weight="fill" className="w-4 h-4 text-accent shrink-0" />
+          <IconStarFilled size={16} className="text-accent shrink-0" />
         )}
       </div>
 
@@ -72,13 +74,13 @@ export function TemplateCard({ template }: TemplateCardProps) {
           )}
           {template.usage_count > 0 && (
             <span className="flex items-center gap-1">
-              <UsersThree weight="fill" className="w-3 h-3" />
+              <IconUsers size={12} />
               {template.usage_count}
             </span>
           )}
         </div>
         <Button size="sm" onClick={handleFork} disabled={forking}>
-          <GitFork weight="fill" className="w-3.5 h-3.5" />
+          <IconGitFork size={14} />
           {forking ? "Forking..." : "Use Template"}
         </Button>
       </div>
