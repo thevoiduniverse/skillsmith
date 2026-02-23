@@ -1,0 +1,84 @@
+"use client";
+
+import { useState, useEffect } from "react";
+import { TemplateCard } from "@/components/templates/template-card";
+import { TemplateFilters } from "@/components/templates/template-filters";
+import { Skeleton } from "@/components/ui/skeleton";
+
+interface Template {
+  id: string;
+  title: string;
+  description: string | null;
+  content: string;
+  category: string | null;
+  tags: string[];
+  usage_count: number;
+  featured: boolean;
+  profiles?: { display_name: string } | null;
+}
+
+export function ExploreTemplates() {
+  const [templates, setTemplates] = useState<Template[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState("");
+  const [category, setCategory] = useState<string | null>(null);
+  const [sort, setSort] = useState("featured");
+
+  useEffect(() => {
+    async function fetchTemplates() {
+      setLoading(true);
+      const params = new URLSearchParams();
+      if (search) params.set("search", search);
+      if (category) params.set("category", category);
+      params.set("sort", sort);
+
+      try {
+        const res = await fetch(`/api/templates?${params}`);
+        const data = await res.json();
+        setTemplates(Array.isArray(data) ? data : []);
+      } catch {
+        setTemplates([]);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    const debounce = setTimeout(fetchTemplates, 300);
+    return () => clearTimeout(debounce);
+  }, [search, category, sort]);
+
+  return (
+    <>
+      <TemplateFilters
+        search={search}
+        onSearchChange={setSearch}
+        category={category}
+        onCategoryChange={setCategory}
+        sort={sort}
+        onSortChange={setSort}
+      />
+
+      <div className="mt-6">
+        {loading ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <Skeleton key={i} className="h-48 rounded-xl" />
+            ))}
+          </div>
+        ) : templates.length === 0 ? (
+          <div className="text-center py-16 text-[rgba(255,255,255,0.6)]">
+            {search || category
+              ? "No templates match your filters."
+              : "No templates available yet."}
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {templates.map((template) => (
+              <TemplateCard key={template.id} template={template} publicMode />
+            ))}
+          </div>
+        )}
+      </div>
+    </>
+  );
+}

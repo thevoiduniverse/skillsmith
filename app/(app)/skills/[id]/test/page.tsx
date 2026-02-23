@@ -26,21 +26,19 @@ export default async function SkillTestPage({
 
   return (
     <div className="max-w-7xl mx-auto space-y-8">
-      <div className="flex items-center gap-4">
+      <div>
         <Link href={`/skills/${skill.id}/edit`}>
-          <Button variant="ghost" size="sm">
+          <Button variant="ghost" size="sm" className="mb-3">
             <IconArrowLeft size={16} />
             Back to Editor
           </Button>
         </Link>
-        <div>
-          <h1 className="text-2xl font-bold text-text-primary tracking-tight">
-            Test: {skill.title}
-          </h1>
-          <p className="text-text-secondary text-sm mt-0.5">
-            Compare Claude&apos;s responses with and without your skill
-          </p>
-        </div>
+        <h1 className="text-2xl font-bold text-text-primary tracking-tight">
+          Test: {skill.title}
+        </h1>
+        <p className="text-text-secondary text-sm mt-0.5">
+          Compare Claude&apos;s responses with and without your skill
+        </p>
       </div>
 
       <SplitComparison skillContent={skill.content} />

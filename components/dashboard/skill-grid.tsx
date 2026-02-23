@@ -32,6 +32,21 @@ export function SkillGrid({ skills: initialSkills }: SkillGridProps) {
     setSelected(new Set());
   }
 
+  async function handleUpdateTags(id: string, tags: string[]) {
+    const prev = skills;
+    setSkills((s) => s.map((sk) => (sk.id === id ? { ...sk, tags } : sk)));
+    try {
+      await fetch(`/api/skills/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ tags }),
+      });
+      router.refresh();
+    } catch {
+      setSkills(prev);
+    }
+  }
+
   async function handleDeleteSingle(id: string) {
     if (!confirm("Delete this skill?")) return;
     // Optimistic: remove from UI immediately
@@ -134,6 +149,7 @@ export function SkillGrid({ skills: initialSkills }: SkillGridProps) {
             selected={selected.has(skill.id)}
             onSelect={toggleSelect}
             onDelete={handleDeleteSingle}
+            onUpdateTags={handleUpdateTags}
           />
         ))}
       </div>

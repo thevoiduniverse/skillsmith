@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { IconGitFork } from "@tabler/icons-react";
 import { Button } from "@/components/ui/button";
+import { TransitionText } from "@/components/ui/transition-text";
 
 export function ForkButton({ skillId }: { skillId: string }) {
   const [loading, setLoading] = useState(false);
@@ -25,7 +26,7 @@ export function ForkButton({ skillId }: { skillId: string }) {
   return (
     <Button variant="secondary" onClick={handleFork} disabled={loading}>
       <IconGitFork size={16} />
-      {loading ? "Forking..." : "Fork"}
+      <TransitionText active={loading} idle="Fork" activeText="Forking..." />
     </Button>
   );
 }

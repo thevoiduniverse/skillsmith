@@ -4,18 +4,28 @@ import { useRef, useCallback, useEffect } from "react";
 
 // --- Physics constants ---
 const DOT_SPACE = 8;
-const VORTEX_RADIUS = 60;
-const VORTEX_STRENGTH = 0.6;
+const TRAIL_RADIUS = 35;
+const TRAIL_STRENGTH = 0.6;
 const SPRING = 0.05;
 const DAMPING = 0.88;
-const IDLE_THRESHOLD = 2000;
 const WAVE_SPEED = 0.6;
 const WAVE_DECEL = 0.00012;
 const WAVE_FORCE = 5;
 const WAVE_SUCK = 0.35;
 const WAVE_MAX_RADIUS = 1500;
 
+// --- Plinko constants ---
+const PLINKO_GRAVITY = 0.045;
+const PLINKO_BALL_RADIUS = 3;
+const PLINKO_PEG_SPACING = 28;
+const PLINKO_PEG_ROW_HEIGHT = 24;
+const PLINKO_COLLISION_RADIUS = 5.5;
+const PLINKO_BOUNCE = 0.55;
+const PLINKO_SPAWN_INTERVAL = 5000;
+const PLINKO_MAX_BALLS = 1;
+
 type DotState = { ox: number; oy: number; vx: number; vy: number };
+type PlinkoBall = { x: number; y: number; vx: number; vy: number };
 
 function hexToRgb(hex: string): [number, number, number] {
   return [
@@ -48,7 +58,6 @@ export function DotCanvas({
     x: -9999,
     y: -9999,
   });
-  const lastMoveTimeRef = useRef<number>(0);
   const burstsRef = useRef<
     Array<{ x: number; y: number; time: number; prevRadius: number }>
   >([]);
@@ -56,6 +65,8 @@ export function DotCanvas({
   const rafRef = useRef<number>(0);
   const accentRgbRef = useRef<[number, number, number]>(hexToRgb(accentColor));
   const targetRgbRef = useRef<[number, number, number]>(hexToRgb(accentColor));
+  const plinkoBallsRef = useRef<PlinkoBall[]>([]);
+  const lastBallSpawnRef = useRef<number>(0);
 
   // Reactive accent — update target when prop changes
   useEffect(() => {
@@ -97,13 +108,13 @@ export function DotCanvas({
 
     const dots = dotsRef.current;
 
-    // Vortex force along cursor path
+    // Radial push along cursor path (trail effect)
     const pathDx = cx - px;
     const pathDy = cy - py;
     const pathLenSq = pathDx * pathDx + pathDy * pathDy;
-    const vrSq = VORTEX_RADIUS * VORTEX_RADIUS;
+    const vrSq = TRAIL_RADIUS * TRAIL_RADIUS;
 
-    const pad = VORTEX_RADIUS + 8;
+    const pad = TRAIL_RADIUS + 8;
     const minCol = Math.max(0, Math.floor((Math.min(px, cx) - pad) / DOT_SPACE));
     const maxCol = Math.ceil((Math.max(px, cx) + pad) / DOT_SPACE);
     const minRow = Math.max(0, Math.floor((Math.min(py, cy) - pad) / DOT_SPACE));
@@ -144,67 +155,19 @@ export function DotCanvas({
           dots.set(key, dot);
         }
 
-        const inf = 1 - dist / VORTEX_RADIUS;
+        const inf = 1 - dist / TRAIL_RADIUS;
         const influence = inf * inf;
 
         const radX = dx / dist;
         const radY = dy / dist;
-        const tanX = -radY;
-        const tanY = radX;
-
         const forceMag =
-          Math.min(cursorSpeed, 40) * VORTEX_STRENGTH * influence;
-        dot.vx += tanX * forceMag;
-        dot.vy += tanY * forceMag;
+          Math.min(cursorSpeed, 40) * TRAIL_STRENGTH * influence;
+        dot.vx += radX * forceMag;
+        dot.vy += radY * forceMag;
       }
     }
 
-    // Idle ambient drift
     const now = Date.now();
-    const idleElapsed = now - lastMoveTimeRef.current;
-    if (idleElapsed > IDLE_THRESHOLD) {
-      const idleFade = Math.min(1, (idleElapsed - IDLE_THRESHOLD) / 1000);
-      const focalX = w * 0.5;
-      const focalY = h * 0.3;
-      const time = now * 0.001;
-
-      const driftRadius = 80;
-      const driftMinCol = Math.max(
-        0,
-        Math.floor((focalX - driftRadius) / DOT_SPACE),
-      );
-      const driftMaxCol = Math.ceil((focalX + driftRadius) / DOT_SPACE);
-      const driftMinRow = Math.max(
-        0,
-        Math.floor((focalY - driftRadius) / DOT_SPACE),
-      );
-      const driftMaxRow = Math.ceil((focalY + driftRadius) / DOT_SPACE);
-
-      for (let row = driftMinRow; row <= driftMaxRow; row++) {
-        for (let col = driftMinCol; col <= driftMaxCol; col++) {
-          const gx = col * DOT_SPACE;
-          const gy = row * DOT_SPACE;
-          const fdx = gx - focalX;
-          const fdy = gy - focalY;
-          const fDist = Math.sqrt(fdx * fdx + fdy * fdy);
-          if (fDist > driftRadius) continue;
-
-          const key = `${col},${row}`;
-          let dot = dots.get(key);
-          if (!dot) {
-            dot = { ox: 0, oy: 0, vx: 0, vy: 0 };
-            dots.set(key, dot);
-          }
-
-          const phase = (col + row) * 0.5;
-          const wave = Math.sin(time * 1.2 + phase) * 1.5 * idleFade;
-          const proximity = 1 - fDist / driftRadius;
-          dot.vx += wave * proximity * 0.15;
-          dot.vy +=
-            Math.cos(time * 0.9 + phase) * 0.8 * idleFade * proximity * 0.15;
-        }
-      }
-    }
 
     // Shockwave forces
     const waves = burstsRef.current;
@@ -286,6 +249,142 @@ export function DotCanvas({
       }
     }
 
+    // --- Plinko ball spawning ---
+    const balls = plinkoBallsRef.current;
+    if (
+      now - lastBallSpawnRef.current > PLINKO_SPAWN_INTERVAL &&
+      balls.length < PLINKO_MAX_BALLS
+    ) {
+      lastBallSpawnRef.current = now;
+      const margin = w * 0.2;
+      balls.push({
+        x: margin + Math.random() * (w - 2 * margin),
+        y: -10,
+        vx: 0,
+        vy: 0.5,
+      });
+    }
+
+    // --- Plinko ball physics ---
+    for (let bi = balls.length - 1; bi >= 0; bi--) {
+      const ball = balls[bi];
+
+      // Gravity
+      ball.vy += PLINKO_GRAVITY;
+
+      // Cursor vortex → ball
+      {
+        let nearX: number, nearY: number;
+        if (pathLenSq < 0.01) {
+          nearX = cx;
+          nearY = cy;
+        } else {
+          const proj = Math.max(
+            0,
+            Math.min(
+              1,
+              ((ball.x - px) * pathDx + (ball.y - py) * pathDy) / pathLenSq,
+            ),
+          );
+          nearX = px + proj * pathDx;
+          nearY = py + proj * pathDy;
+        }
+        const dx = ball.x - nearX;
+        const dy = ball.y - nearY;
+        const distSq = dx * dx + dy * dy;
+        if (distSq < vrSq && distSq > 0.01) {
+          const dist = Math.sqrt(distSq);
+          const inf = 1 - dist / TRAIL_RADIUS;
+          const influence = inf * inf;
+          const radX = dx / dist;
+          const radY = dy / dist;
+          const forceMag =
+            Math.min(cursorSpeed, 40) * TRAIL_STRENGTH * influence * 0.5;
+          ball.vx += radX * forceMag;
+          ball.vy += radY * forceMag;
+        }
+      }
+
+      // Shockwave → ball
+      for (const wave of waves) {
+        const age = now - wave.time;
+        const waveRadius = WAVE_SPEED * age - 0.5 * WAVE_DECEL * age * age;
+        if (waveRadius <= 0 || waveRadius > WAVE_MAX_RADIUS) continue;
+
+        const wdx = ball.x - wave.x;
+        const wdy = ball.y - wave.y;
+        const wDist = Math.sqrt(wdx * wdx + wdy * wdy);
+        if (wDist < 0.1) continue;
+
+        // Ball is hit by the wave front (within a band around the radius)
+        const band = 30;
+        if (wDist > waveRadius - band && wDist < waveRadius + band) {
+          const rt = waveRadius / WAVE_MAX_RADIUS;
+          const decay = (1 - rt) * (1 - rt);
+          const force = WAVE_FORCE * decay * 0.8;
+          ball.vx += (wdx / wDist) * force;
+          ball.vy += (wdy / wDist) * force;
+        }
+      }
+
+      // Peg collision — staggered grid
+      const nearRow = Math.round(ball.y / PLINKO_PEG_ROW_HEIGHT);
+      for (let pr = nearRow - 1; pr <= nearRow + 1; pr++) {
+        if (pr < 0) continue;
+        const pegY = pr * PLINKO_PEG_ROW_HEIGHT;
+        const isOddRow = pr % 2 === 1;
+        const offset = isOddRow ? PLINKO_PEG_SPACING * 0.5 : 0;
+
+        // Find nearest peg columns to check
+        const nearCol = Math.round((ball.x - offset) / PLINKO_PEG_SPACING);
+        for (let pc = nearCol - 1; pc <= nearCol + 1; pc++) {
+          const pegX = pc * PLINKO_PEG_SPACING + offset;
+          if (pegX < 0 || pegX > w) continue;
+
+          const pdx = ball.x - pegX;
+          const pdy = ball.y - pegY;
+          const pDist = Math.sqrt(pdx * pdx + pdy * pdy);
+
+          if (pDist < PLINKO_COLLISION_RADIUS && pDist > 0.01) {
+            // Resolve overlap — push ball out along collision normal
+            const nx = pdx / pDist;
+            const ny = pdy / pDist;
+            ball.x = pegX + nx * PLINKO_COLLISION_RADIUS;
+            ball.y = pegY + ny * PLINKO_COLLISION_RADIUS;
+
+            // Reflect velocity off normal
+            const dot = ball.vx * nx + ball.vy * ny;
+            if (dot < 0) {
+              ball.vx -= 2 * dot * nx;
+              ball.vy -= 2 * dot * ny;
+              // Damping + random horizontal perturbation
+              ball.vx *= PLINKO_BOUNCE;
+              ball.vy *= PLINKO_BOUNCE;
+              ball.vx += (Math.random() - 0.5) * 0.4;
+            }
+          }
+        }
+      }
+
+      // Wall bounce
+      if (ball.x < PLINKO_BALL_RADIUS) {
+        ball.x = PLINKO_BALL_RADIUS;
+        ball.vx = Math.abs(ball.vx) * PLINKO_BOUNCE;
+      } else if (ball.x > w - PLINKO_BALL_RADIUS) {
+        ball.x = w - PLINKO_BALL_RADIUS;
+        ball.vx = -Math.abs(ball.vx) * PLINKO_BOUNCE;
+      }
+
+      // Apply position
+      ball.x += ball.vx;
+      ball.y += ball.vy;
+
+      // Remove if off-screen
+      if (ball.y > h + 20) {
+        balls.splice(bi, 1);
+      }
+    }
+
     // Physics step: spring back + damping
     const deadKeys: string[] = [];
     dots.forEach((dot, key) => {
@@ -359,6 +458,15 @@ export function DotCanvas({
       }
     }
 
+    // --- Plinko ball rendering ---
+    for (const ball of balls) {
+      // Solid core — matches accent color
+      ctx.fillStyle = `rgb(${Math.round(acc[0])},${Math.round(acc[1])},${Math.round(acc[2])})`;
+      ctx.beginPath();
+      ctx.arc(ball.x, ball.y, PLINKO_BALL_RADIUS, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
     rafRef.current = requestAnimationFrame(draw);
   }, []);
 
@@ -366,7 +474,6 @@ export function DotCanvas({
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       cursorRef.current = { x: e.clientX, y: e.clientY + window.scrollY };
-      lastMoveTimeRef.current = Date.now();
     };
 
     const handleMouseDown = (e: MouseEvent) => {

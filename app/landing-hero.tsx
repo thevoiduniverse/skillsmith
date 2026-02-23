@@ -3,8 +3,68 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { IconChevronRight } from "@tabler/icons-react";
+import { Button } from "@/components/ui/button";
 
 import { DotCanvas } from "@/components/ui/dot-canvas";
+
+/* ─── How it Works steps ──────────────────────── */
+
+const HOW_STEPS = [
+  {
+    number: "01",
+    title: "Create a Skill",
+    description:
+      "Describe what you want Claude to do in plain English. AI generates a complete, structured skill file — instructions, edge cases, and examples.",
+  },
+  {
+    number: "02",
+    title: "Edit & Refine",
+    description:
+      "Shape your skill with a guided editor or drop into raw markdown. AI suggestions help you strengthen every section until it's production-ready.",
+  },
+  {
+    number: "03",
+    title: "Test & Validate",
+    description:
+      "Run prompts side-by-side — with and without your skill. Build test suites and let AI score how well the skill performs against expectations.",
+  },
+  {
+    number: "04",
+    title: "Share & Fork",
+    description:
+      "Publish to the template library for others to discover and fork. Build on the community's best work and make it your own.",
+  },
+];
+
+const HOW_CARD_HEIGHT = 280;
+
+function getHowStackStyles(cardIndex: number, activeStep: number) {
+  const offset = cardIndex - activeStep;
+  // Keep opacity at 1 for visible cards so backdrop-filter works correctly
+  if (offset === 0) {
+    return { scale: 1, y: 0, opacity: 1, filter: "blur(0px)", zIndex: 30 };
+  }
+  if (offset === 1) {
+    return { scale: 0.95, y: 36, opacity: 1, filter: "blur(0px)", zIndex: 20 };
+  }
+  if (offset === 2) {
+    return { scale: 0.9, y: 64, opacity: 1, filter: "blur(0px)", zIndex: 10 };
+  }
+  if (offset === 3) {
+    return { scale: 0.85, y: 84, opacity: 1, filter: "blur(0px)", zIndex: 5 };
+  }
+  return { scale: 0.98, y: 12, opacity: 0, filter: "blur(12px)", zIndex: 40 };
+}
+
+const howCardTransition = {
+  type: "spring" as const,
+  stiffness: 170,
+  damping: 22,
+  opacity: { duration: 0.3, ease: "easeOut" as const },
+  filter: { duration: 0.35, ease: "easeOut" as const },
+  zIndex: { duration: 0 },
+};
 
 const cards = [
   {
@@ -79,6 +139,7 @@ export function LandingHero() {
   const [displayText, setDisplayText] = useState("");
   const [textColor, setTextColor] = useState(rotatingWords[0].color);
   const [showCursor, setShowCursor] = useState(true);
+  const [howStep, setHowStep] = useState(0);
 
   useEffect(() => {
     let idx = 0;
@@ -156,13 +217,13 @@ export function LandingHero() {
           <div className="flex items-center gap-5">
             <Link
               href="/login"
-              className="text-white text-sm font-sans hover:text-white/80 transition-colors"
+              className="text-white text-sm font-sans font-medium hover:text-white/80 transition-colors"
             >
               Sign in
             </Link>
             <Link
               href="/signup"
-              className="bg-[#bfff00] text-[#0a0a0a] font-sans font-bold text-sm rounded-[40px] p-3 flex items-center justify-center hover:brightness-110 transition-all"
+              className="bg-[#bfff00] text-[#0a0a0a] font-sans font-bold text-sm rounded-[40px] px-7 py-3 flex items-center justify-center hover:brightness-110 transition-all"
             >
               GET STARTED
             </Link>
@@ -190,7 +251,7 @@ export function LandingHero() {
         </p>
         <div className="mt-10 flex items-center justify-center gap-5">
           <Link
-            href="/templates"
+            href="/explore"
             className="relative bg-[rgba(17,17,17,0.9)] backdrop-blur-2xl text-white font-sans font-bold text-sm rounded-[40px] px-10 py-5 hover:bg-[rgba(30,30,30,0.9)] transition-colors"
           >
             <div
@@ -227,7 +288,7 @@ export function LandingHero() {
       </section>
 
       {/* Cards section */}
-      <section className="relative z-10 pb-32">
+      <section className="relative z-10 pb-52">
         <div
           className="relative flex items-center justify-center"
           style={{ height: 440 }}
@@ -277,6 +338,82 @@ export function LandingHero() {
               </motion.div>
             );
           })}
+        </div>
+      </section>
+
+      {/* How it Works */}
+      <section className="relative z-10 max-w-xl mx-auto px-6 pb-32">
+        <div className="text-center mb-10">
+          <h2 className="text-[40px] font-sans font-normal text-white leading-[1.15]">
+            How it{" "}
+            <span className="font-asgardFat text-[#bfff00]">WORKS</span>
+          </h2>
+          <p className="mt-4 text-[rgba(255,255,255,0.6)] text-base font-sans">
+            From idea to production-ready skill in four steps.
+          </p>
+        </div>
+
+        {/* Step indicator dots */}
+        <div className="flex items-center justify-center gap-1.5 mb-8">
+          {HOW_STEPS.map((_, i) => (
+            <motion.button
+              key={i}
+              onClick={() => setHowStep(i)}
+              className="h-1 rounded-full cursor-pointer"
+              animate={{
+                width: i === howStep ? 20 : 6,
+                backgroundColor:
+                  i === howStep ? "#bfff00" : "rgba(255,255,255,0.15)",
+              }}
+              transition={springTransition}
+            />
+          ))}
+        </div>
+
+        {/* Stacked cards */}
+        <div className="relative" style={{ height: HOW_CARD_HEIGHT + 90 }}>
+          {HOW_STEPS.map((step, i) => (
+            <motion.div
+              key={step.number}
+              className="absolute inset-x-0 top-0 origin-top rounded-[20px]"
+              animate={getHowStackStyles(i, howStep)}
+              transition={howCardTransition}
+              style={{
+                height: HOW_CARD_HEIGHT,
+                pointerEvents: i === howStep ? "auto" : "none",
+                backdropFilter: "blur(80px)",
+                WebkitBackdropFilter: "blur(80px)",
+              }}
+            >
+              <div
+                className="h-full rounded-[20px] bg-[rgba(17,17,17,0.65)] backdrop-blur-[4px] border border-[rgba(255,255,255,0.08)] px-8 py-8 flex flex-col overflow-hidden"
+              >
+                <div className="flex items-center gap-3 mb-5">
+                  <span className="text-xs font-mono font-bold text-[#bfff00] opacity-60">
+                    {step.number}
+                  </span>
+                  <h3 className="text-2xl font-bold text-white">
+                    {step.title}
+                  </h3>
+                </div>
+                <p className="text-[rgba(255,255,255,0.6)] text-base leading-[1.7] font-sans flex-1">
+                  {step.description}
+                </p>
+                <div className="flex items-center justify-between mt-auto pt-4">
+                  <span className="text-xs text-[rgba(255,255,255,0.3)]">
+                    Step {i + 1} of {HOW_STEPS.length}
+                  </span>
+                  <Button
+                    onClick={() => setHowStep((s) => (s + 1) % HOW_STEPS.length)}
+                    size="md"
+                  >
+                    {i < HOW_STEPS.length - 1 ? "Next" : "Back to Start"}
+                    <IconChevronRight size={16} />
+                  </Button>
+                </div>
+              </div>
+            </motion.div>
+          ))}
         </div>
       </section>
 

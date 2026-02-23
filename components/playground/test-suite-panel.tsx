@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { IconPlayerPlayFilled, IconPlus } from "@tabler/icons-react";
 import { Button } from "@/components/ui/button";
+import { TransitionText } from "@/components/ui/transition-text";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
@@ -119,7 +120,7 @@ export function TestSuitePanel({ skillId, skillContent }: TestSuitePanelProps) {
               disabled={runningAll || !!runningId}
             >
               <IconPlayerPlayFilled size={14} />
-              {runningAll ? "Running..." : "Run All"}
+              <TransitionText active={runningAll} idle="Run All" activeText="Running..." />
             </Button>
           )}
         </div>

@@ -3,8 +3,10 @@
 import { useEffect } from "react";
 import { IconX } from "@tabler/icons-react";
 import { Button } from "@/components/ui/button";
+import { TransitionText } from "@/components/ui/transition-text";
 import { Badge } from "@/components/ui/badge";
 import { parseSkillMarkdown } from "@/lib/skill-parser/parse";
+import Link from "next/link";
 
 interface TemplatePreviewProps {
   template: {
@@ -15,8 +17,9 @@ interface TemplatePreviewProps {
     tags: string[];
   };
   onClose: () => void;
-  onUseTemplate: () => void;
+  onUseTemplate?: () => void;
   forking: boolean;
+  publicMode?: boolean;
 }
 
 export function TemplatePreview({
@@ -24,6 +27,7 @@ export function TemplatePreview({
   onClose,
   onUseTemplate,
   forking,
+  publicMode,
 }: TemplatePreviewProps) {
   const parsed = parseSkillMarkdown(template.content || "");
 
@@ -101,9 +105,18 @@ export function TemplatePreview({
               <Badge key={tag} variant="outline">{tag}</Badge>
             ))}
           </div>
-          <Button onClick={onUseTemplate} disabled={forking} size="md">
-            {forking ? "Forking..." : "Use Template"}
-          </Button>
+          {publicMode ? (
+            <Link
+              href="/signup"
+              className="inline-flex items-center justify-center font-bold rounded-[40px] text-sm px-5 py-2.5 bg-[#bfff00] text-[#0a0a0a] hover:brightness-110 transition-all"
+            >
+              Sign up to use this skill
+            </Link>
+          ) : (
+            <Button onClick={onUseTemplate} disabled={forking} size="md">
+              <TransitionText active={forking} idle="Use Template" activeText="Forking..." />
+            </Button>
+          )}
         </div>
       </div>
     </div>

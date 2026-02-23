@@ -1,20 +1,17 @@
 "use client";
 
-import { IconSparkles, IconWand, IconAlertTriangleFilled } from "@tabler/icons-react";
+import { IconSparkles } from "@tabler/icons-react";
 import { Button } from "@/components/ui/button";
+import { TransitionText } from "@/components/ui/transition-text";
 
 interface AiToolbarProps {
   onDraft: () => void;
-  onImprove: () => void;
-  onAddEdgeCases: () => void;
   loading?: string | null;
   disabled?: boolean;
 }
 
 export function AiToolbar({
   onDraft,
-  onImprove,
-  onAddEdgeCases,
   loading,
   disabled,
 }: AiToolbarProps) {
@@ -27,25 +24,7 @@ export function AiToolbar({
         disabled={disabled || loading === "draft"}
       >
         <IconSparkles size={14} />
-        {loading === "draft" ? "Drafting..." : "Draft with AI"}
-      </Button>
-      <Button
-        variant="secondary"
-        size="sm"
-        onClick={onImprove}
-        disabled={disabled || loading === "improve"}
-      >
-        <IconWand size={14} />
-        {loading === "improve" ? "Improving..." : "Improve"}
-      </Button>
-      <Button
-        variant="secondary"
-        size="sm"
-        onClick={onAddEdgeCases}
-        disabled={disabled || loading === "edgeCases"}
-      >
-        <IconAlertTriangleFilled size={14} />
-        {loading === "edgeCases" ? "Thinking..." : "Add Edge Cases"}
+        <TransitionText active={loading === "draft"} idle="Draft with AI" activeText="Drafting..." />
       </Button>
     </div>
   );

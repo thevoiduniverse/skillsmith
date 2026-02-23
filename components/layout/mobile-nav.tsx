@@ -8,6 +8,7 @@ import {
   IconPlus,
   IconBookmarkFilled,
   IconSettingsFilled,
+  IconInfoCircleFilled,
   IconMenu2,
   IconX,
   IconSparkles,
@@ -19,6 +20,7 @@ const navItems = [
   { href: "/skills/new", label: "New Skill", icon: IconPlus },
   { href: "/templates", label: "Templates", icon: IconBookmarkFilled },
   { href: "/settings", label: "Settings", icon: IconSettingsFilled },
+  { href: "/how-it-works", label: "How it Works", icon: IconInfoCircleFilled },
 ];
 
 export function MobileNav() {

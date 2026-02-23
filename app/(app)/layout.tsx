@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { Sidebar } from "@/components/layout/sidebar";
 import { MobileNav } from "@/components/layout/mobile-nav";
 import { ToastProvider } from "@/components/ui/toast-provider";
+import { DotCanvas } from "@/components/ui/dot-canvas";
 
 export default async function AppLayout({
   children,
@@ -18,8 +19,8 @@ export default async function AppLayout({
 
   return (
     <div className="relative flex min-h-screen bg-[#0a0a0a]">
-      {/* Full-page static dot background with gradient mask */}
-      <div className="dot-pattern pointer-events-none fixed inset-0 z-0" />
+      {/* Animated dot background with Plinko ball */}
+      <DotCanvas accentColor="#BFFF00" className="fixed inset-0 z-0" showGlow={false} />
 
       {/* Desktop sidebar */}
       <div className="relative z-10 hidden md:block">

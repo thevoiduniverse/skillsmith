@@ -1,12 +1,13 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { IconPlus, IconChevronLeft, IconChevronRight, IconSparkles, IconCircleCheckFilled, IconPlayerPlayFilled } from "@tabler/icons-react";
+import { IconPlus, IconChevronLeft, IconChevronRight, IconSparkles, IconCircleCheckFilled, IconPlayerPlayFilled, IconDice3 } from "@tabler/icons-react";
 import { type SkillStructure } from "@/lib/skill-parser/schema";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+import { TransitionText } from "@/components/ui/transition-text";
 import { Card } from "@/components/ui/card";
 import { ExamplePair } from "./example-pair";
 
@@ -90,13 +91,26 @@ export function GuidedEditor({
         <div className="flex-1 space-y-5">
           <div className="space-y-2">
             <Label>Skill Name</Label>
-            <Input
-              value={structure.name}
-              onChange={(e) =>
-                onUpdate((prev) => ({ ...prev, name: e.target.value }))
-              }
-              placeholder="e.g., Code Reviewer, Email Writer..."
-            />
+            <div className="relative">
+              <Input
+                value={structure.name}
+                onChange={(e) =>
+                  onUpdate((prev) => ({ ...prev, name: e.target.value }))
+                }
+                placeholder="e.g., Code Reviewer, Email Writer..."
+                className="pr-32"
+              />
+              {onAiSuggest && (
+                <button
+                  onClick={() => onAiSuggest("name")}
+                  disabled={aiLoadingSection === "name" || !structure.description.trim()}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1 text-xs font-medium text-[#bfff00] hover:text-[#d4ff4d] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                >
+                  <IconDice3 size={14} />
+                  <TransitionText active={aiLoadingSection === "name"} idle="Randomise" activeText="Generating..." />
+                </button>
+              )}
+            </div>
           </div>
           <div className="space-y-2">
             <div className="flex items-start justify-between">
@@ -148,7 +162,7 @@ export function GuidedEditor({
                 className="shrink-0 text-[#bfff00]"
               >
                 <IconSparkles size={14} />
-                {aiLoadingSection === "instructions" ? "Thinking..." : "AI Suggest"}
+                <TransitionText active={aiLoadingSection === "instructions"} idle="AI Suggest" activeText="Thinking..." />
               </Button>
             )}
           </div>
@@ -196,7 +210,7 @@ export function GuidedEditor({
                 className="shrink-0 text-[#bfff00]"
               >
                 <IconSparkles size={14} />
-                {aiLoadingSection === "edgeCases" ? "Thinking..." : "AI Suggest"}
+                <TransitionText active={aiLoadingSection === "edgeCases"} idle="AI Suggest" activeText="Thinking..." />
               </Button>
             )}
           </div>

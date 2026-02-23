@@ -44,19 +44,25 @@
   }
 
   .brand-loader {
-    width: 60px;
+    --_size: 60px;
+    width: var(--_size);
     aspect-ratio: 1;
-    --g: conic-gradient(from -90deg at 10px 10px, #bfff00 90deg, #0000 0);
+    --_dot: calc(var(--_size) / 6);
+    --g: conic-gradient(from -90deg at var(--_dot) var(--_dot), #bfff00 90deg, #0000 0);
     background: var(--g), var(--g), var(--g);
     background-size: 50% 50%;
     animation: brand-loader 1s infinite;
   }
 
+  .brand-loader-sm {
+    --_size: 30px;
+  }
+
   @keyframes brand-loader {
-    0%   { background-position: 0 0, 10px 10px, 20px 20px }
-    33%  { background-position: -30px 0, 10px 10px, 20px 20px }
-    66%  { background-position: -30px 0, 10px 40px, 20px 20px }
-    100% { background-position: -30px 0, 10px 40px, 50px 20px }
+    0%   { background-position: 0 0, calc(var(--_size) / 6) calc(var(--_size) / 6), calc(var(--_size) / 3) calc(var(--_size) / 3) }
+    33%  { background-position: calc(var(--_size) / -2) 0, calc(var(--_size) / 6) calc(var(--_size) / 6), calc(var(--_size) / 3) calc(var(--_size) / 3) }
+    66%  { background-position: calc(var(--_size) / -2) 0, calc(var(--_size) / 6) calc(var(--_size) * 2 / 3), calc(var(--_size) / 3) calc(var(--_size) / 3) }
+    100% { background-position: calc(var(--_size) / -2) 0, calc(var(--_size) / 6) calc(var(--_size) * 2 / 3), calc(var(--_size) * 5 / 6) calc(var(--_size) / 3) }
   }
 
   .dot-pattern {

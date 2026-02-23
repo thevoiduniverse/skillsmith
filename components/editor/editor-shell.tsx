@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { IconDeviceFloppy, IconPlayerPlayFilled, IconShare, IconDownload, IconChevronDown } from "@tabler/icons-react";
+import { IconDeviceFloppy, IconPlayerPlayFilled, IconShare, IconDownload, IconChevronDown, IconTrash } from "@tabler/icons-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { useEditorSync } from "@/lib/hooks/use-editor-sync";
@@ -25,6 +25,7 @@ export function EditorShell({ skillId, initialContent, initialTitle }: EditorShe
   const [saving, setSaving] = useState(false);
   const [aiLoading, setAiLoading] = useState<string | null>(null);
   const [showExport, setShowExport] = useState(false);
+  const [showDiscardConfirm, setShowDiscardConfirm] = useState(false);
   const [guidedStep, setGuidedStep] = useState(0);
   const structureSnapshot = useRef<SkillStructure | null>(null);
 
@@ -160,45 +161,6 @@ export function EditorShell({ skillId, initialContent, initialTitle }: EditorShe
     }
   }
 
-  async function handleAiImprove() {
-    setAiLoading("improve");
-    structureSnapshot.current = { ...structure, examples: [...structure.examples] };
-    try {
-      const res = await fetch("/api/claude/suggest", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          skillContent: getCurrentMarkdown(),
-          section: "instructions",
-          context: "Improve the overall quality and clarity of all sections.",
-        }),
-      });
-      if (!res.ok) throw new Error();
-      const data = await res.json();
-      if (data.suggestion) {
-        updateStructure((prev) => ({
-          ...prev,
-          instructions: data.suggestion,
-        }));
-        toast("AI improvement applied", {
-          action: {
-            label: "Undo",
-            onClick: () => {
-              if (structureSnapshot.current) {
-                updateStructure(() => structureSnapshot.current!);
-              }
-            },
-          },
-          duration: 10000,
-        });
-      }
-    } catch {
-      toast.error("AI improvement failed. Please try again.");
-    } finally {
-      setAiLoading(null);
-    }
-  }
-
   function handleExportMarkdown() {
     const md = getCurrentMarkdown();
     const blob = new Blob([md], { type: "text/markdown" });
@@ -209,6 +171,26 @@ export function EditorShell({ skillId, initialContent, initialTitle }: EditorShe
     a.click();
     URL.revokeObjectURL(url);
     setShowExport(false);
+  }
+
+  function hasAnyContent() {
+    return !!(
+      title.trim() ||
+      structure.name.trim() ||
+      structure.description.trim() ||
+      structure.instructions.trim() ||
+      structure.edgeCases.trim() ||
+      structure.examples.some((e) => e.input.trim() || e.output.trim())
+    );
+  }
+
+  async function handleDiscard() {
+    try {
+      await fetch(`/api/skills/${skillId}`, { method: "DELETE" });
+    } catch {
+      // Best-effort delete
+    }
+    router.push("/dashboard");
   }
 
   return (
@@ -222,6 +204,21 @@ export function EditorShell({ skillId, initialContent, initialTitle }: EditorShe
           className="text-lg font-bold bg-transparent border-none focus:ring-0 px-0 max-w-md"
         />
         <div className="flex items-center gap-2">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => {
+              if (hasAnyContent()) {
+                setShowDiscardConfirm(true);
+              } else {
+                handleDiscard();
+              }
+            }}
+            className="text-text-secondary hover:text-error"
+          >
+            <IconTrash size={14} />
+            Discard
+          </Button>
           <Button
             variant="secondary"
             size="sm"
@@ -286,8 +283,6 @@ export function EditorShell({ skillId, initialContent, initialTitle }: EditorShe
       {/* AI Toolbar */}
       <AiToolbar
         onDraft={handleAiDraft}
-        onImprove={handleAiImprove}
-        onAddEdgeCases={() => handleAiSuggest("edgeCases")}
         loading={aiLoading}
       />
 
@@ -318,6 +313,40 @@ export function EditorShell({ skillId, initialContent, initialTitle }: EditorShe
       ) : (
         <div>
           <MonacoMarkdownEditor value={markdown} onChange={updateMarkdown} />
+        </div>
+      )}
+
+      {/* Discard confirmation modal */}
+      {showDiscardConfirm && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm"
+          onClick={() => setShowDiscardConfirm(false)}
+        >
+          <div
+            className="bg-surface border border-border rounded-2xl p-6 max-w-sm w-full mx-4 shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h3 className="text-lg font-bold text-text-primary mb-2">Discard this skill?</h3>
+            <p className="text-sm text-text-secondary mb-6">
+              You have unsaved content that will be permanently lost. This action cannot be undone.
+            </p>
+            <div className="flex items-center justify-end gap-2">
+              <Button
+                variant="secondary"
+                size="sm"
+                onClick={() => setShowDiscardConfirm(false)}
+              >
+                Cancel
+              </Button>
+              <Button
+                size="sm"
+                onClick={handleDiscard}
+                className="bg-error hover:bg-error/80 text-white"
+              >
+                Discard
+              </Button>
+            </div>
+          </div>
         </div>
       )}
     </div>

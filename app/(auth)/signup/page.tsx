@@ -1,5 +1,7 @@
 "use client";
 
+import { TransitionText } from "@/components/ui/transition-text";
+
 import { useState } from "react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
@@ -126,7 +128,7 @@ export default function SignupPage() {
             disabled={loading}
             className="w-full mt-4 bg-[#bfff00] text-[#0a0a0a] font-sans font-bold rounded-[40px] px-4 py-3 hover:brightness-110 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {loading ? "Creating account..." : "Create Account"}
+            <TransitionText active={loading} idle="Create Account" activeText="Creating account..." />
           </button>
         </form>
 

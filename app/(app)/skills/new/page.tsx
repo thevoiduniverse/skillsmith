@@ -10,6 +10,7 @@ import {
   IconChevronRight,
   IconBookmarkFilled,
   IconPlus,
+  IconDice3,
 } from "@tabler/icons-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -17,6 +18,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
+import { TransitionText } from "@/components/ui/transition-text";
 import { SKILL_CATEGORIES } from "@/lib/constants";
 
 /* ─── Types ───────────────────────────────────── */
@@ -81,6 +83,7 @@ export default function NewSkillPage() {
   const [templates, setTemplates] = useState<Template[]>([]);
   const [templateSearch, setTemplateSearch] = useState("");
   const [templateLoading, setTemplateLoading] = useState(false);
+  const [randomising, setRandomising] = useState(false);
 
   /* ─── Fetch templates when template path selected ─── */
 
@@ -200,13 +203,34 @@ export default function NewSkillPage() {
     }
   }
 
+  async function handleRandomiseName() {
+    if (!description.trim()) return;
+    setRandomising(true);
+    try {
+      const res = await fetch("/api/claude/suggest-name", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ description }),
+      });
+      if (!res.ok) throw new Error();
+      const data = await res.json();
+      if (data.name) {
+        setSkillName(data.name.trim());
+      }
+    } catch {
+      toast.error("Failed to generate name. Please try again.");
+    } finally {
+      setRandomising(false);
+    }
+  }
+
   /* ─── Step content renderers ───────────────── */
 
   function renderStep0() {
     return (
       <div className="flex flex-col h-full">
         {/* Path selector tabs */}
-        <div className="flex gap-2 mb-4">
+        <div className="flex gap-2 mb-6">
           {([
             { key: "ai" as const, label: "Describe with AI", icon: IconSparkles },
             { key: "template" as const, label: "From Template", icon: IconBookmarkFilled },
@@ -216,7 +240,7 @@ export default function NewSkillPage() {
               key={key}
               onClick={() => setCreationPath(key)}
               className={cn(
-                "flex-1 flex items-center justify-center gap-1.5 py-2 text-xs font-medium rounded-xl transition-colors",
+                "flex-1 flex items-center justify-center gap-1.5 py-2.5 text-sm font-medium rounded-full transition-colors",
                 creationPath === key
                   ? "bg-[rgba(191,255,0,0.12)] text-[#bfff00] border border-[rgba(191,255,0,0.25)]"
                   : "bg-[rgba(255,255,255,0.05)] text-[rgba(255,255,255,0.5)] hover:text-white border border-transparent"
@@ -310,11 +334,22 @@ export default function NewSkillPage() {
             <label className="block text-sm font-medium text-[rgba(255,255,255,0.6)]">
               Skill name
             </label>
-            <Input
-              value={skillName}
-              onChange={(e) => setSkillName(e.target.value)}
-              placeholder="Leave blank to let AI name it"
-            />
+            <div className="relative">
+              <Input
+                value={skillName}
+                onChange={(e) => setSkillName(e.target.value)}
+                placeholder="Leave blank to let AI name it"
+                className="pr-32"
+              />
+              <button
+                onClick={handleRandomiseName}
+                disabled={randomising || !description.trim()}
+                className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1 text-xs font-medium text-[#bfff00] hover:text-[#d4ff4d] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+              >
+                <IconDice3 size={14} />
+                <TransitionText active={randomising} idle="Randomise" activeText="Generating..." />
+              </button>
+            </div>
           </div>
 
           <div className="space-y-2">

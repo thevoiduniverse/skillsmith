@@ -33,7 +33,7 @@ export function ChatPane({ title, variant, prompt, response, loading }: ChatPane
         {loading && (
           <div className="flex justify-start">
             <div className="px-4 py-3">
-              <div className="brand-loader" style={{ width: 32 }} />
+              <div className="brand-loader brand-loader-sm" />
             </div>
           </div>
         )}

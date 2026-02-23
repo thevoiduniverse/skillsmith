@@ -7,7 +7,7 @@ import {
   IconPlus,
   IconBookmarkFilled,
   IconSettingsFilled,
-  IconUserFilled,
+  IconInfoCircleFilled,
   IconLogout,
 } from "@tabler/icons-react";
 import { createClient } from "@/lib/supabase/client";
@@ -18,6 +18,7 @@ const navItems = [
   { href: "/skills/new", label: "New Skill", icon: IconPlus },
   { href: "/templates", label: "Templates", icon: IconBookmarkFilled },
   { href: "/settings", label: "Settings", icon: IconSettingsFilled },
+  { href: "/how-it-works", label: "How it Works", icon: IconInfoCircleFilled },
 ];
 
 export function Sidebar() {
@@ -77,7 +78,7 @@ export function Sidebar() {
                     : "text-[rgba(255,255,255,0.6)] hover:text-[rgba(255,255,255,0.8)]"
                 )}
               >
-                <Icon size={16} className="shrink-0" />
+                <Icon size={18} className="shrink-0" />
                 <span>{item.label}</span>
               </Link>
             );
@@ -90,16 +91,10 @@ export function Sidebar() {
         {/* User actions — icon-only */}
         <div className="flex items-center gap-1 px-1">
           <button
-            onClick={() => router.push("/settings")}
-            className="p-2 rounded-[40px] text-[rgba(255,255,255,0.5)] hover:text-[rgba(255,255,255,0.8)] transition-colors"
-          >
-            <IconUserFilled size={14} />
-          </button>
-          <button
             onClick={handleSignOut}
             className="p-2 rounded-[40px] text-[rgba(255,255,255,0.5)] hover:text-[rgba(255,255,255,0.8)] transition-colors"
           >
-            <IconLogout size={14} />
+            <IconLogout size={16} />
           </button>
         </div>
       </div>

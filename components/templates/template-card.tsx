@@ -1,13 +1,15 @@
 "use client";
 
-import { IconGitFork, IconStarFilled, IconUsers } from "@tabler/icons-react";
+import { IconGitFork } from "@tabler/icons-react";
 import { toast } from "sonner";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { TransitionText } from "@/components/ui/transition-text";
 import { TemplatePreview } from "./template-preview";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import Link from "next/link";
 
 interface TemplateCardProps {
   template: {
@@ -21,9 +23,10 @@ interface TemplateCardProps {
     featured: boolean;
     profiles?: { display_name: string } | null;
   };
+  publicMode?: boolean;
 }
 
-export function TemplateCard({ template }: TemplateCardProps) {
+export function TemplateCard({ template, publicMode }: TemplateCardProps) {
   const router = useRouter();
   const [forking, setForking] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
@@ -51,14 +54,9 @@ export function TemplateCard({ template }: TemplateCardProps) {
           className="cursor-pointer"
           onClick={() => setShowPreview(true)}
         >
-          <div className="flex items-start justify-between gap-2 mb-2">
-            <h3 className="font-bold text-base text-white line-clamp-1">
-              {template.title}
-            </h3>
-            {template.featured && (
-              <IconStarFilled size={16} className="text-accent shrink-0" />
-            )}
-          </div>
+          <h3 className="font-bold text-base text-white line-clamp-1 mb-2">
+            {template.title}
+          </h3>
 
           {template.description && (
             <p className="text-[rgba(255,255,255,0.6)] text-sm leading-relaxed line-clamp-3 mb-4 flex-1">
@@ -76,22 +74,20 @@ export function TemplateCard({ template }: TemplateCardProps) {
           ))}
         </div>
 
-        <div className="flex items-center justify-between pt-3 border-t border-[rgba(255,255,255,0.08)] mt-auto">
-          <div className="flex items-center gap-3 text-xs text-[rgba(255,255,255,0.6)]">
-            {template.profiles?.display_name && (
-              <span>{template.profiles.display_name}</span>
-            )}
-            {template.usage_count > 0 && (
-              <span className="flex items-center gap-1">
-                <IconUsers size={12} />
-                {template.usage_count}
-              </span>
-            )}
-          </div>
-          <Button size="sm" onClick={handleFork} disabled={forking}>
-            <IconGitFork size={14} />
-            {forking ? "Forking..." : "Use Template"}
-          </Button>
+        <div className="flex items-center justify-end pt-3 border-t border-[rgba(255,255,255,0.08)] mt-auto">
+          {publicMode ? (
+            <Link
+              href="/signup"
+              className="inline-flex items-center justify-center font-bold rounded-[40px] text-xs px-3 py-1.5 bg-[#bfff00] text-[#0a0a0a] hover:brightness-110 transition-all"
+            >
+              Login to use
+            </Link>
+          ) : (
+            <Button size="sm" onClick={handleFork} disabled={forking}>
+              <IconGitFork size={14} />
+              <TransitionText active={forking} idle="Use Template" activeText="Forking..." />
+            </Button>
+          )}
         </div>
       </Card>
 
@@ -99,8 +95,9 @@ export function TemplateCard({ template }: TemplateCardProps) {
         <TemplatePreview
           template={template}
           onClose={() => setShowPreview(false)}
-          onUseTemplate={handleFork}
+          onUseTemplate={publicMode ? undefined : handleFork}
           forking={forking}
+          publicMode={publicMode}
         />
       )}
     </>

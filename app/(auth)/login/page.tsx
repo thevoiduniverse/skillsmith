@@ -1,5 +1,7 @@
 "use client";
 
+import { TransitionText } from "@/components/ui/transition-text";
+
 import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
@@ -96,7 +98,7 @@ export default function LoginPage() {
             disabled={loading}
             className="w-full mt-4 bg-[#bfff00] text-[#0a0a0a] font-sans font-bold rounded-[40px] px-4 py-3 hover:brightness-110 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {loading ? "Signing in..." : "Sign In"}
+            <TransitionText active={loading} idle="Sign In" activeText="Signing in..." />
           </button>
         </form>
 
