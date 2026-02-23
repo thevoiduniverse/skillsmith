@@ -173,6 +173,7 @@ export default function NewSkillPage() {
           category: category || undefined,
         }),
       });
+      if (!res.ok) throw new Error();
       const skill = await res.json();
       router.push(`/skills/${skill.id}/edit`);
     } catch {
