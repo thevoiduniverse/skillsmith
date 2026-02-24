@@ -296,12 +296,12 @@ export function LandingHero() {
       {/* Cards section */}
       <section className="relative z-10 pb-20 md:pb-52">
         {isMobile ? (
-          /* Mobile: vertical stack, always show description */
-          <div className="flex flex-col items-center gap-6 px-4">
-            {cards.map((card) => (
+          /* Mobile: vertical stack, always show description — AI-Assisted Editor first */
+          <div className="flex flex-col items-center gap-6 px-5">
+            {[cards[1], cards[0], cards[2]].map((card) => (
               <div
                 key={card.title}
-                className="w-full max-w-[340px] rounded-[40px] px-6 py-8 flex flex-col overflow-hidden"
+                className="w-full rounded-[40px] px-6 py-8 flex flex-col overflow-hidden"
                 style={{
                   background: card.gradient,
                   backdropFilter: "blur(20px)",
