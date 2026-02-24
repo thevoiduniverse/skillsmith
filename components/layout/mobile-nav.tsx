@@ -11,7 +11,6 @@ import {
   IconInfoCircleFilled,
   IconMenu2,
   IconX,
-  IconSparkles,
 } from "@tabler/icons-react";
 import { cn } from "@/lib/utils";
 
@@ -45,10 +44,8 @@ export function MobileNav() {
           <div className="fixed inset-y-0 left-0 w-64 bg-background border-r border-border z-50 flex flex-col">
             <div className="h-14 flex items-center justify-between px-4 border-b border-border">
               <div className="flex items-center gap-2">
-                <IconSparkles size={20} className="text-accent" />
-                <span className="text-lg font-bold text-text-primary tracking-tight">
-                  <span className="font-asgardFat text-accent">SKILL</span>SMITH
-                </span>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/skill-logo.svg" alt="SkillSmith" className="h-[14px] w-auto" />
               </div>
               <button
                 onClick={() => setOpen(false)}

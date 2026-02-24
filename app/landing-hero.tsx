@@ -213,12 +213,16 @@ export function LandingHero() {
               maskComposite: "exclude",
             }}
           />
-          <Link href="/" className="flex items-baseline">
-            <span className="font-asgardFat text-[#bfff00] text-[17px] md:text-[21px] leading-[1.2]">
-              SKILL
-            </span>
-            <span className="font-asgardFat text-white text-[17px] md:text-[21px] leading-[1.2]">
-              SMITH
+          <Link href="/" className="flex items-center gap-2">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/skill-logo.svg" alt="" className="h-[14px] md:h-[16px] w-auto" />
+            <span className="flex items-baseline">
+              <span className="font-asgardFat text-[#bfff00] text-[17px] md:text-[21px] leading-[1.2]">
+                SKILL
+              </span>
+              <span className="font-asgardFat text-white text-[17px] md:text-[21px] leading-[1.2]">
+                SMITH
+              </span>
             </span>
           </Link>
           <div className="flex items-center gap-3 md:gap-5">

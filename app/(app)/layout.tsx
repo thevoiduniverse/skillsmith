@@ -31,9 +31,8 @@ export default async function AppLayout({
       <div className="relative z-10 flex-1 flex flex-col min-w-0">
         <div className="flex items-center md:hidden px-4 h-14 border-b border-border pt-[env(safe-area-inset-top,0px)]">
           <MobileNav />
-          <span className="ml-2 text-lg font-bold text-text-primary tracking-tight">
-            <span className="font-asgardFat text-accent">SKILL</span>SMITH
-          </span>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/skill-logo.svg" alt="SkillSmith" className="ml-2 h-[14px] w-auto" />
         </div>
         <main className="flex-1 px-4 pt-8 pb-4 md:px-6 md:pt-12 md:pb-6">{children}</main>
       </div>
