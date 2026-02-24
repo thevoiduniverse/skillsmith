@@ -98,7 +98,7 @@ export function TemplatePreview({
         </div>
 
         {/* Footer */}
-        <div className="flex items-center justify-between p-6 border-t border-border">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-6 border-t border-border">
           <div className="flex gap-1.5">
             {template.category && <Badge>{template.category}</Badge>}
             {template.tags?.slice(0, 2).map((tag) => (
@@ -108,7 +108,7 @@ export function TemplatePreview({
           {publicMode ? (
             <Link
               href="/signup"
-              className="inline-flex items-center justify-center font-bold rounded-[40px] text-sm px-5 py-2.5 bg-[#bfff00] text-[#0a0a0a] hover:brightness-110 transition-all"
+              className="inline-flex items-center justify-center font-bold rounded-[40px] text-sm px-5 py-2.5 bg-[#bfff00] text-[#0a0a0a] hover:brightness-110 transition-all whitespace-nowrap"
             >
               Sign up to use this skill
             </Link>
