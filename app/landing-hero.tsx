@@ -193,7 +193,7 @@ export function LandingHero() {
       <DotCanvas
         accentColor={textColor}
         height={isMobile ? 900 : 1320}
-        className="absolute inset-0"
+        className="fixed inset-0"
       />
 
       {/* Nav */}
