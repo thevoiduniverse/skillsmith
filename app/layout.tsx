@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { JetBrains_Mono } from "next/font/google";
 import localFont from "next/font/local";
+import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
 
 const jetbrains = JetBrains_Mono({
@@ -45,6 +46,7 @@ export default function RootLayout({
         className={`${brockmann.className} ${brockmann.variable} ${jetbrains.variable} ${asgardFat.variable} bg-[#0a0a0a]`}
       >
         {children}
+        <Analytics />
       </body>
     </html>
   );
