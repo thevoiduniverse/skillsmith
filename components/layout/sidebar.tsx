@@ -52,17 +52,9 @@ export function Sidebar() {
         />
 
         {/* Logo — centered, matching landing/auth pages */}
-        <Link href="/dashboard" className="flex items-center justify-center gap-2">
+        <Link href="/dashboard" className="flex items-center justify-center">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/skill-logo.svg" alt="" className="h-[16px] w-auto" />
-          <span className="flex items-baseline">
-            <span className="font-asgardFat text-[#bfff00] text-[17px] leading-[1.2]">
-              SKILL
-            </span>
-            <span className="font-asgardFat text-white text-[17px] leading-[1.2]">
-              SMITH
-            </span>
-          </span>
+          <img src="/logo.png" alt="SkillSmith" className="h-[24px] w-auto" />
         </Link>
 
         {/* Navigation */}

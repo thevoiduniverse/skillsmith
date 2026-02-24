@@ -19,13 +19,9 @@ export default function TryLayout({
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
             Back to home
           </Link>
-          <Link href="/" className="flex items-center gap-2">
+          <Link href="/">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/skill-logo.svg" alt="SkillSmith" className="h-[14px] md:h-[16px] w-auto" />
-            <span className="hidden md:flex items-baseline">
-              <span className="font-asgardFat text-accent text-base">SKILL</span>
-              <span className="font-asgardFat text-white text-base">SMITH</span>
-            </span>
+            <img src="/logo.png" alt="SkillSmith" className="h-[20px] md:h-[24px] w-auto" />
           </Link>
           <Link
             href="/signup"
