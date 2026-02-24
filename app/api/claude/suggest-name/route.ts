@@ -51,9 +51,6 @@ export async function POST(request: Request) {
   }
 
   const { description } = await request.json();
-  if (!description) {
-    return NextResponse.json({ error: "description is required" }, { status: 400 });
-  }
 
   try {
     const ai = getAIClient();
@@ -63,9 +60,11 @@ export async function POST(request: Request) {
       messages: [
         {
           role: "system",
-          content: "Generate a short, creative skill name (2-4 words) based on the description. Return ONLY the name, nothing else. No quotes, no punctuation, no explanation.",
+          content: description
+            ? "Generate a short, creative skill name (2-4 words) based on the description. Return ONLY the name, nothing else. No quotes, no punctuation, no explanation."
+            : "Generate a short, creative, unique skill name (2-4 words) for an AI assistant skill. Be creative and varied. Return ONLY the name, nothing else. No quotes, no punctuation, no explanation.",
         },
-        { role: "user", content: description },
+        { role: "user", content: description || "Generate a random skill name" },
       ],
     });
 

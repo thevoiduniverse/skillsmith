@@ -204,13 +204,12 @@ export default function NewSkillPage() {
   }
 
   async function handleRandomiseName() {
-    if (!description.trim()) return;
     setRandomising(true);
     try {
       const res = await fetch("/api/claude/suggest-name", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ description }),
+        body: JSON.stringify({ description: description.trim() || undefined }),
       });
       if (!res.ok) throw new Error();
       const data = await res.json();
@@ -343,7 +342,7 @@ export default function NewSkillPage() {
               />
               <button
                 onClick={handleRandomiseName}
-                disabled={randomising || !description.trim()}
+                disabled={randomising}
                 className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1 text-xs font-medium text-[#bfff00] hover:text-[#d4ff4d] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
               >
                 <IconDice3 size={14} />
