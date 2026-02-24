@@ -29,7 +29,7 @@ export default async function AppLayout({
 
       {/* Main content area */}
       <div className="relative z-10 flex-1 flex flex-col min-w-0">
-        <div className="flex items-center md:hidden px-4 h-14 border-b border-border">
+        <div className="flex items-center md:hidden px-4 h-14 border-b border-border pt-[env(safe-area-inset-top,0px)]">
           <MobileNav />
           <span className="ml-2 text-lg font-bold text-text-primary tracking-tight">
             <span className="font-asgardFat text-accent">SKILL</span>SMITH

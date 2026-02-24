@@ -11,7 +11,7 @@ export default function TryLayout({
       {/* Main content area — mirrors (app) layout structure */}
       <div className="relative z-10 flex-1 flex flex-col min-w-0">
         {/* Header */}
-        <div className="flex items-center justify-between px-4 md:px-6 h-14 border-b border-border">
+        <div className="flex items-center justify-between px-4 md:px-6 h-14 border-b border-border pt-[env(safe-area-inset-top,0px)]">
           <Link
             href="/"
             className="flex items-center gap-2 text-sm text-text-secondary hover:text-white transition-colors"
