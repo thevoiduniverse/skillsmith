@@ -69,25 +69,25 @@ const howCardTransition = {
 
 const cards = [
   {
-    title: "Share &\nFork",
+    title: "Community\nTemplates",
     description:
-      "Send the same prompt with and without your skill applied. Compare responses side by side and auto-score against expected behaviour.",
+      "Publish your skills to the template library for anyone to discover. Fork what others have built, remix it, and make it your own.",
     gradient:
       "linear-gradient(135.21deg, rgba(255,255,255,0.5) 0%, rgba(191,255,0,0) 51.08%), linear-gradient(90deg, rgba(191,255,0,0.6) 0%, rgba(191,255,0,0.6) 100%)",
     dark: false,
     image: "/card-share.png",
   },
   {
-    title: "AI-Assisted\nEditor",
+    title: "One-Line\nBuilder",
     description:
-      "Describe what you want in one sentence. Claude generates a complete, structured skill file - then refine it with guided editing or raw markdown.",
+      "Describe what you want in one sentence. Claude generates a complete, structured skill file — then refine it with guided editing or raw markdown.",
     gradient:
       "linear-gradient(135.21deg, rgba(191,255,0,0.2) 0%, rgba(0,0,0,0) 51.08%), linear-gradient(90deg, rgba(25,25,25,0.8) 0%, rgba(25,25,25,0.8) 100%)",
     dark: false,
     image: "/card-editor.png",
   },
   {
-    title: "Split-Pane\nTesting",
+    title: "Side-by-Side\nPlayground",
     description:
       "Send the same prompt with and without your skill applied. Compare responses side by side and auto-score against expected behaviour.",
     gradient:
