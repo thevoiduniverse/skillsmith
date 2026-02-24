@@ -74,6 +74,7 @@ const cards = [
     gradient:
       "linear-gradient(135.21deg, rgba(255,255,255,0.5) 0%, rgba(191,255,0,0) 51.08%), linear-gradient(90deg, rgba(191,255,0,0.6) 0%, rgba(191,255,0,0.6) 100%)",
     dark: false,
+    image: "/card-share.png",
   },
   {
     title: "AI-Assisted\nEditor",
@@ -82,6 +83,7 @@ const cards = [
     gradient:
       "linear-gradient(135.21deg, rgba(191,255,0,0.2) 0%, rgba(0,0,0,0) 51.08%), linear-gradient(90deg, rgba(25,25,25,0.8) 0%, rgba(25,25,25,0.8) 100%)",
     dark: false,
+    image: "/card-editor.png",
   },
   {
     title: "Split-Pane\nTesting",
@@ -90,6 +92,7 @@ const cards = [
     gradient:
       "linear-gradient(135.21deg, rgba(191,255,0,0.8) 0%, rgba(255,255,255,0) 51.08%), linear-gradient(90deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.9) 100%)",
     dark: true,
+    image: "/card-testing.png",
   },
 ];
 
@@ -219,7 +222,7 @@ export function LandingHero() {
               href="/try"
               className="text-white text-sm font-sans font-medium hover:text-white/80 transition-colors"
             >
-              Try now
+              Build now
             </Link>
             <Link
               href="/signup"
@@ -291,7 +294,7 @@ export function LandingHero() {
       <section className="relative z-10 pb-52">
         <div
           className="relative flex items-center justify-center"
-          style={{ height: 440 }}
+          style={{ height: 500 }}
           onMouseEnter={() => setIsSpread(true)}
           onMouseLeave={() => setIsSpread(false)}
         >
@@ -301,7 +304,7 @@ export function LandingHero() {
             return (
               <motion.div
                 key={card.title}
-                className="absolute w-[420px] h-[400px] rounded-[40px] px-8 py-10 flex flex-col gap-8"
+                className="absolute w-[420px] h-[460px] rounded-[40px] px-8 py-10 flex flex-col overflow-hidden"
                 style={{
                   background: card.gradient,
                   backdropFilter: "blur(20px)",
@@ -315,9 +318,9 @@ export function LandingHero() {
                 }}
                 transition={springTransition}
               >
-                {/* Placeholder icon */}
-                <div className="w-[94px] h-[94px] bg-white/10 shrink-0" />
-                <div className="flex flex-col gap-[11px]">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={card.image} alt="" className="w-[160px] h-[160px] object-contain shrink-0 pointer-events-none" />
+                <div className="flex flex-col gap-[11px] mt-auto pt-4">
                   <h3
                     className={`font-sans font-bold text-[28px] leading-[1.6] whitespace-pre-line ${
                       card.dark ? "text-[#0a0a0a]" : "text-white"

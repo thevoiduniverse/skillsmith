@@ -332,11 +332,23 @@ export function GuidedEditor({
             Your skill is ready!
           </h2>
           <p className="text-sm text-text-secondary max-w-sm">
-            <span className="font-medium text-text-primary">{structure.name || "Untitled"}</span>
-            {" — "}
-            {exampleCount} example{exampleCount !== 1 ? "s" : ""}
-            {hasInstructions ? ", instructions" : ""}
-            {hasEdgeCases ? ", edge cases" : ""}
+            {structure.name ? (
+              <>
+                <span className="font-medium text-text-primary">{structure.name}</span>
+                {" is ready to go. "}
+              </>
+            ) : (
+              "Your skill is ready to go. "
+            )}
+            {(() => {
+              const parts: string[] = [];
+              if (hasInstructions) parts.push("instructions");
+              if (hasEdgeCases) parts.push("edge cases");
+              if (exampleCount > 0) parts.push(`${exampleCount} example${exampleCount !== 1 ? "s" : ""}`);
+              return parts.length > 0
+                ? `Includes ${parts.join(", ")}.`
+                : "Add content in the editor to get started.";
+            })()}
           </p>
         </div>
         <div className="flex flex-col gap-2 w-full max-w-xs mt-auto pt-6">
