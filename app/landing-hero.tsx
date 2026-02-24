@@ -189,12 +189,14 @@ export function LandingHero() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] relative overflow-x-clip">
+    <>
+      {/* Canvas sits outside the clipping container so it extends behind the iOS notch */}
       <DotCanvas
         accentColor={textColor}
         height={isMobile ? 900 : 1320}
-        className="fixed inset-0"
+        className="fixed inset-0 z-0"
       />
+    <div className="min-h-screen bg-transparent relative overflow-x-clip z-[1]">
 
       {/* Nav */}
       <nav className="sticky top-0 z-50 flex justify-center pt-[calc(env(safe-area-inset-top,0px)+24px)] px-6">
@@ -472,5 +474,6 @@ export function LandingHero() {
         </p>
       </footer>
     </div>
+    </>
   );
 }
