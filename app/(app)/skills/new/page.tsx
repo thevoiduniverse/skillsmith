@@ -233,7 +233,7 @@ export default function NewSkillPage() {
     return (
       <div className="flex flex-col h-full">
         {/* Path selector tabs */}
-        <div className="flex gap-1.5 mb-4 md:gap-2 md:mb-6">
+        <div className="flex flex-wrap justify-center gap-1.5 mb-4 md:gap-2 md:mb-6">
           {([
             { key: "ai" as const, label: "Describe with AI", icon: IconSparkles },
             { key: "template" as const, label: "From Template", icon: IconBookmarkFilled },
@@ -243,7 +243,7 @@ export default function NewSkillPage() {
               key={key}
               onClick={() => setCreationPath(key)}
               className={cn(
-                "flex-1 flex items-center justify-center gap-1.5 py-2.5 text-sm font-medium rounded-full transition-colors",
+                "flex items-center justify-center gap-1.5 px-4 py-2.5 text-sm font-medium rounded-full transition-colors whitespace-nowrap md:flex-1",
                 creationPath === key
                   ? "bg-[rgba(191,255,0,0.12)] text-[#bfff00] border border-[rgba(191,255,0,0.25)]"
                   : "bg-[rgba(255,255,255,0.05)] text-[rgba(255,255,255,0.5)] hover:text-white border border-transparent"
