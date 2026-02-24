@@ -20,6 +20,7 @@ import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { TransitionText } from "@/components/ui/transition-text";
 import { SKILL_CATEGORIES } from "@/lib/constants";
+import { useIsMobile } from "@/lib/hooks/use-is-mobile";
 
 /* ─── Types ───────────────────────────────────── */
 
@@ -31,7 +32,8 @@ interface Template {
 
 /* ─── Constants ────────────────────────────────── */
 
-const CARD_HEIGHT = 420;
+const CARD_HEIGHT_DESKTOP = 420;
+const CARD_HEIGHT_MOBILE = 380;
 const TOTAL_STEPS = 3;
 
 const springTransition = {
@@ -72,6 +74,8 @@ const cardTransition = {
 
 export default function NewSkillPage() {
   const router = useRouter();
+  const isMobile = useIsMobile();
+  const CARD_HEIGHT = isMobile ? CARD_HEIGHT_MOBILE : CARD_HEIGHT_DESKTOP;
 
   const [activeStep, setActiveStep] = useState(0);
   const [mode, setMode] = useState<"idle" | "generating" | "creating">("idle");
@@ -229,7 +233,7 @@ export default function NewSkillPage() {
     return (
       <div className="flex flex-col h-full">
         {/* Path selector tabs */}
-        <div className="flex gap-2 mb-6">
+        <div className="flex gap-1.5 mb-4 md:gap-2 md:mb-6">
           {([
             { key: "ai" as const, label: "Describe with AI", icon: IconSparkles },
             { key: "template" as const, label: "From Template", icon: IconBookmarkFilled },
@@ -338,7 +342,7 @@ export default function NewSkillPage() {
                 value={skillName}
                 onChange={(e) => setSkillName(e.target.value)}
                 placeholder="Leave blank to let AI name it"
-                className="pr-32"
+                className="pr-24 md:pr-32"
               />
               <button
                 onClick={handleRandomiseName}
@@ -346,7 +350,7 @@ export default function NewSkillPage() {
                 className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1 text-xs font-medium text-[#bfff00] hover:text-[#d4ff4d] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
               >
                 <IconDice3 size={14} />
-                <TransitionText active={randomising} idle="Randomise" activeText="Generating..." />
+                <span className="hidden sm:inline"><TransitionText active={randomising} idle="Randomise" activeText="Generating..." /></span>
               </button>
             </div>
           </div>
@@ -516,10 +520,10 @@ export default function NewSkillPage() {
   /* ─── Render ───────────────────────────────── */
 
   return (
-    <div className="max-w-2xl mx-auto py-12">
+    <div className="max-w-2xl mx-auto px-4 py-8 md:px-0 md:py-12">
       {/* Header */}
-      <div className="text-center mb-10">
-        <h1 className="text-3xl font-bold text-white tracking-tight">
+      <div className="text-center mb-6 md:mb-10">
+        <h1 className="text-2xl md:text-3xl font-bold text-white tracking-tight">
           Create a New Skill
         </h1>
         <p className="text-[rgba(255,255,255,0.6)] mt-2">
@@ -564,7 +568,7 @@ export default function NewSkillPage() {
               WebkitBackdropFilter: i === activeStep ? "blur(80px)" : "none",
             }}
           >
-            <Card className="h-full p-8 flex flex-col overflow-hidden">
+            <Card className="h-full p-5 md:p-8 flex flex-col overflow-hidden">
               {stepRenderers[i]()}
             </Card>
           </motion.div>

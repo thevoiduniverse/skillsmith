@@ -11,7 +11,7 @@ export default function TryLayout({
       {/* Main content area — mirrors (app) layout structure */}
       <div className="relative z-10 flex-1 flex flex-col min-w-0">
         {/* Header */}
-        <div className="flex items-center justify-between px-6 h-14 border-b border-border">
+        <div className="flex items-center justify-between px-4 md:px-6 h-14 border-b border-border">
           <Link
             href="/"
             className="flex items-center gap-2 text-sm text-text-secondary hover:text-white transition-colors"
@@ -31,7 +31,7 @@ export default function TryLayout({
           </Link>
         </div>
 
-        <main className="flex-1 px-6 pt-12 pb-6">{children}</main>
+        <main className="flex-1 px-4 pt-8 pb-4 md:px-6 md:pt-12 md:pb-6">{children}</main>
       </div>
       <ToastProvider />
     </div>

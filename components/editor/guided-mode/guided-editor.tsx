@@ -10,10 +10,12 @@ import { Button } from "@/components/ui/button";
 import { TransitionText } from "@/components/ui/transition-text";
 import { Card } from "@/components/ui/card";
 import { ExamplePair } from "./example-pair";
+import { useIsMobile } from "@/lib/hooks/use-is-mobile";
 
 /* ─── Constants ────────────────────────────────── */
 
-const CARD_HEIGHT = 480;
+const CARD_HEIGHT_DESKTOP = 480;
+const CARD_HEIGHT_MOBILE = 420;
 const TOTAL_STEPS = 5;
 
 const springTransition = {
@@ -75,6 +77,9 @@ export function GuidedEditor({
   onEditMarkdown,
   onDashboard,
 }: GuidedEditorProps) {
+  const isMobile = useIsMobile();
+  const CARD_HEIGHT = isMobile ? CARD_HEIGHT_MOBILE : CARD_HEIGHT_DESKTOP;
+
   function goNext() {
     if (activeStep < TOTAL_STEPS - 1) onStepChange(activeStep + 1);
   }
@@ -98,7 +103,7 @@ export function GuidedEditor({
                   onUpdate((prev) => ({ ...prev, name: e.target.value }))
                 }
                 placeholder="e.g., Code Reviewer, Email Writer..."
-                className="pr-32"
+                className="pr-24 md:pr-32"
               />
               {onAiSuggest && (
                 <button
@@ -107,7 +112,7 @@ export function GuidedEditor({
                   className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1 text-xs font-medium text-[#bfff00] hover:text-[#d4ff4d] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
                 >
                   <IconDice3 size={14} />
-                  <TransitionText active={aiLoadingSection === "name"} idle="Randomise" activeText="Generating..." />
+                  <span className="hidden sm:inline"><TransitionText active={aiLoadingSection === "name"} idle="Randomise" activeText="Generating..." /></span>
                 </button>
               )}
             </div>
@@ -423,7 +428,7 @@ export function GuidedEditor({
               WebkitBackdropFilter: i === activeStep ? "blur(80px)" : "none",
             }}
           >
-            <Card className="h-full p-8 flex flex-col overflow-hidden">
+            <Card className="h-full p-5 md:p-8 flex flex-col overflow-hidden">
               {stepRenderers[i]()}
             </Card>
           </motion.div>

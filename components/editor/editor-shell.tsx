@@ -235,7 +235,7 @@ export function EditorShell({ skillId, initialContent, initialTitle, tryMode }: 
     <div className="max-w-7xl mx-auto">
       {/* Try mode banner */}
       {tryMode && (
-        <div className="mb-4 flex items-center justify-between gap-3 bg-[rgba(191,255,0,0.08)] border border-[rgba(191,255,0,0.2)] rounded-2xl px-5 py-3">
+        <div className="mb-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-[rgba(191,255,0,0.08)] border border-[rgba(191,255,0,0.2)] rounded-2xl px-5 py-3">
           <p className="text-sm text-[rgba(255,255,255,0.7)]">
             You&apos;re editing locally.{" "}
             <span className="text-[#bfff00] font-medium">Sign up to save your work permanently.</span>
@@ -250,14 +250,14 @@ export function EditorShell({ skillId, initialContent, initialTitle, tryMode }: 
       )}
 
       {/* Top bar */}
-      <div className="flex items-center justify-between mb-4 gap-4">
+      <div className="flex flex-col gap-3 mb-4 md:flex-row md:items-center md:justify-between md:gap-4">
         <Input
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           placeholder="Untitled Skill"
-          className="text-lg font-bold bg-transparent border-none focus:ring-0 px-0 max-w-md"
+          className="text-lg font-bold bg-transparent border-none focus:ring-0 px-0 max-w-full md:max-w-md"
         />
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-wrap">
           <Button
             variant="ghost"
             size="sm"
@@ -271,7 +271,7 @@ export function EditorShell({ skillId, initialContent, initialTitle, tryMode }: 
             className="text-text-secondary hover:text-error"
           >
             <IconTrash size={14} />
-            Discard
+            <span className="hidden sm:inline">Discard</span>
           </Button>
           <Button
             variant="secondary"
@@ -288,13 +288,13 @@ export function EditorShell({ skillId, initialContent, initialTitle, tryMode }: 
             disabled={saving}
           >
             <IconDeviceFloppy size={14} />
-            {tryMode
+            <span className="hidden sm:inline">{tryMode
               ? "Save Locally"
               : saving
                 ? "Saving..."
                 : isDirty
                   ? "Save*"
-                  : "Save"}
+                  : "Save"}</span>
           </Button>
           <Button
             size="sm"
@@ -308,7 +308,7 @@ export function EditorShell({ skillId, initialContent, initialTitle, tryMode }: 
             }}
           >
             <IconPlayerPlayFilled size={14} />
-            Test
+            <span className="hidden sm:inline">Test</span>
           </Button>
           <div className="relative">
             <Button

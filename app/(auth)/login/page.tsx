@@ -29,7 +29,7 @@ export default function LoginPage() {
 
   return (
     <div className="w-full max-w-md">
-      <GlassCard radius={32} className="p-8">
+      <GlassCard radius={32} className="p-6 md:p-8">
         <h1 className="text-2xl font-bold text-white mb-2 text-center">
           Welcome back
         </h1>

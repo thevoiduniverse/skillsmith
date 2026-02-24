@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { IconChevronRight } from "@tabler/icons-react";
 import { Button } from "@/components/ui/button";
+import { useIsMobile } from "@/lib/hooks/use-is-mobile";
 
 import { DotCanvas } from "@/components/ui/dot-canvas";
 
@@ -143,6 +144,8 @@ export function LandingHero() {
   const [textColor, setTextColor] = useState(rotatingWords[0].color);
   const [showCursor, setShowCursor] = useState(true);
   const [howStep, setHowStep] = useState(0);
+  const [expandedCard, setExpandedCard] = useState<number | null>(null);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     let idx = 0;
@@ -190,13 +193,13 @@ export function LandingHero() {
     <div className="min-h-screen bg-[#0a0a0a] relative overflow-x-clip">
       <DotCanvas
         accentColor={textColor}
-        height={1320}
+        height={isMobile ? 900 : 1320}
         className="absolute inset-0"
       />
 
       {/* Nav */}
       <nav className="sticky top-0 z-50 flex justify-center pt-6 px-6">
-        <div className="relative flex items-center justify-between w-full max-w-[1160px] bg-[rgba(17,17,17,0.45)] backdrop-blur-2xl rounded-[40px] pl-10 pr-5 py-5">
+        <div className="relative flex items-center justify-between w-full max-w-[1160px] bg-[rgba(17,17,17,0.45)] backdrop-blur-2xl rounded-[40px] pl-4 pr-3 py-3 md:pl-10 md:pr-5 md:py-5">
           {/* Gradient border overlay */}
           <div
             className="absolute inset-0 rounded-[40px] pointer-events-none"
@@ -210,52 +213,53 @@ export function LandingHero() {
             }}
           />
           <Link href="/" className="flex items-baseline">
-            <span className="font-asgardFat text-[#bfff00] text-[21px] leading-[1.2]">
+            <span className="font-asgardFat text-[#bfff00] text-[17px] md:text-[21px] leading-[1.2]">
               SKILL
             </span>
-            <span className="font-asgardFat text-white text-[21px] leading-[1.2]">
+            <span className="font-asgardFat text-white text-[17px] md:text-[21px] leading-[1.2]">
               SMITH
             </span>
           </Link>
-          <div className="flex items-center gap-5">
+          <div className="flex items-center gap-3 md:gap-5">
             <Link
               href="/try"
-              className="text-white text-sm font-sans font-medium hover:text-white/80 transition-colors"
+              className="hidden md:block text-white text-sm font-sans font-medium hover:text-white/80 transition-colors"
             >
               Build now
             </Link>
             <Link
               href="/signup"
-              className="bg-[#bfff00] text-[#0a0a0a] font-sans font-bold text-sm rounded-[40px] px-7 py-3 flex items-center justify-center hover:brightness-110 transition-all"
+              className="bg-[#bfff00] text-[#0a0a0a] font-sans font-bold text-sm rounded-[40px] px-4 py-2.5 md:px-7 md:py-3 flex items-center justify-center hover:brightness-110 transition-all"
             >
-              SIGN UP / SIGN IN
+              <span className="hidden md:inline">SIGN UP / SIGN IN</span>
+              <span className="md:hidden">SIGN UP</span>
             </Link>
           </div>
         </div>
       </nav>
 
       {/* Hero */}
-      <section className="relative z-10 max-w-4xl mx-auto px-6 pt-28 pb-20 text-center">
-        <h1 className="text-[60px] font-sans font-normal text-white leading-[1.15]">
+      <section className="relative z-10 max-w-4xl mx-auto px-6 pt-16 pb-12 md:pt-28 md:pb-20 text-center">
+        <h1 className="text-[32px] md:text-[60px] font-sans font-normal text-white leading-[1.15]">
           Build your{" "}
           <span className="font-asgardFat text-[#bfff00]">SKILLS</span> for
           <br />
           <span className="inline-block" style={{ color: textColor }}>
             {displayText}
             <span
-              className="inline-block w-[3px] h-[50px] align-middle ml-1 rounded-sm"
+              className="inline-block w-[3px] h-[28px] md:h-[50px] align-middle ml-1 rounded-sm"
               style={{ opacity: showCursor ? 1 : 0, backgroundColor: textColor }}
             />
           </span>
         </h1>
-        <p className="mt-6 text-[20px] text-[rgba(255,255,255,0.6)] leading-[1.6] max-w-2xl mx-auto font-sans">
+        <p className="mt-6 text-base md:text-[20px] text-[rgba(255,255,255,0.6)] leading-[1.6] max-w-2xl mx-auto font-sans">
           Create, test, and share custom SKILL.md files with an AI-assisted
           editor and split-pane testing playground.
         </p>
-        <div className="mt-10 flex items-center justify-center gap-5">
+        <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-3 md:gap-5">
           <Link
             href="/explore"
-            className="relative bg-[rgba(17,17,17,0.9)] backdrop-blur-2xl text-white font-sans font-bold text-sm rounded-[40px] px-10 py-5 hover:bg-[rgba(30,30,30,0.9)] transition-colors"
+            className="relative w-full sm:w-auto bg-[rgba(17,17,17,0.9)] backdrop-blur-2xl text-white font-sans font-bold text-sm rounded-[40px] px-6 py-3.5 md:px-10 md:py-5 hover:bg-[rgba(30,30,30,0.9)] transition-colors text-center"
           >
             <div
               className="absolute inset-0 rounded-[40px] pointer-events-none"
@@ -272,7 +276,7 @@ export function LandingHero() {
           </Link>
           <Link
             href="/try"
-            className="relative bg-[rgba(191,255,0,0.2)] backdrop-blur-2xl text-[#bfff00] font-sans font-bold text-sm rounded-[40px] px-10 py-5 hover:bg-[rgba(191,255,0,0.3)] transition-colors"
+            className="relative w-full sm:w-auto bg-[rgba(191,255,0,0.2)] backdrop-blur-2xl text-[#bfff00] font-sans font-bold text-sm rounded-[40px] px-6 py-3.5 md:px-10 md:py-5 hover:bg-[rgba(191,255,0,0.3)] transition-colors text-center"
           >
             <div
               className="absolute inset-0 rounded-[40px] pointer-events-none"
@@ -291,63 +295,110 @@ export function LandingHero() {
       </section>
 
       {/* Cards section */}
-      <section className="relative z-10 pb-52">
-        <div
-          className="relative flex items-center justify-center"
-          style={{ height: 500 }}
-          onMouseEnter={() => setIsSpread(true)}
-          onMouseLeave={() => setIsSpread(false)}
-        >
-          {cards.map((card, i) => {
-            const stacked = stackedVariants[i];
-            const spread = spreadVariants[i];
-            return (
+      <section className="relative z-10 pb-20 md:pb-52">
+        {isMobile ? (
+          /* Mobile: vertical stack, tap to expand */
+          <div className="flex flex-col items-center gap-6 px-4">
+            {cards.map((card, i) => (
               <motion.div
                 key={card.title}
-                className="absolute w-[420px] h-[460px] rounded-[40px] px-8 py-10 flex flex-col overflow-hidden"
+                className="w-full max-w-[340px] rounded-[40px] px-6 py-8 flex flex-col overflow-hidden cursor-pointer"
                 style={{
                   background: card.gradient,
                   backdropFilter: "blur(20px)",
                   WebkitBackdropFilter: "blur(20px)",
                   border: "1px solid rgba(255,255,255,0.08)",
-                  zIndex: stacked.zIndex,
                 }}
-                animate={{
-                  rotate: isSpread ? spread.rotate : stacked.rotate,
-                  x: isSpread ? spread.x : stacked.x,
-                }}
+                onClick={() => setExpandedCard(expandedCard === i ? null : i)}
+                animate={{ height: expandedCard === i ? "auto" : 280 }}
                 transition={springTransition}
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={card.image} alt="" className="w-[160px] h-[160px] object-contain shrink-0 pointer-events-none drop-shadow-[0_4px_20px_rgba(0,0,0,0.4)]" />
+                <img src={card.image} alt="" className="w-[120px] h-[120px] object-contain shrink-0 pointer-events-none drop-shadow-[0_4px_20px_rgba(0,0,0,0.4)]" />
                 <div className="flex flex-col gap-[11px] mt-auto pt-4">
                   <h3
-                    className={`font-sans font-bold text-[28px] leading-[1.6] whitespace-pre-line ${
+                    className={`font-sans font-bold text-xl leading-[1.6] whitespace-pre-line ${
                       card.dark ? "text-[#0a0a0a]" : "text-white"
                     }`}
                   >
                     {card.title}
                   </h3>
-                  <p
-                    className={`text-[16px] leading-[1.6] font-sans ${
-                      card.dark
-                        ? "text-[rgba(10,10,10,0.6)]"
-                        : "text-[rgba(255,255,255,0.6)]"
-                    }`}
-                  >
-                    {card.description}
-                  </p>
+                  {expandedCard === i && (
+                    <motion.p
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      className={`text-[14px] leading-[1.6] font-sans ${
+                        card.dark
+                          ? "text-[rgba(10,10,10,0.6)]"
+                          : "text-[rgba(255,255,255,0.6)]"
+                      }`}
+                    >
+                      {card.description}
+                    </motion.p>
+                  )}
                 </div>
               </motion.div>
-            );
-          })}
-        </div>
+            ))}
+          </div>
+        ) : (
+          /* Desktop: absolute positioned with spread animation on hover */
+          <div
+            className="relative flex items-center justify-center"
+            style={{ height: 500 }}
+            onMouseEnter={() => setIsSpread(true)}
+            onMouseLeave={() => setIsSpread(false)}
+          >
+            {cards.map((card, i) => {
+              const stacked = stackedVariants[i];
+              const spread = spreadVariants[i];
+              return (
+                <motion.div
+                  key={card.title}
+                  className="absolute w-[420px] h-[460px] rounded-[40px] px-8 py-10 flex flex-col overflow-hidden"
+                  style={{
+                    background: card.gradient,
+                    backdropFilter: "blur(20px)",
+                    WebkitBackdropFilter: "blur(20px)",
+                    border: "1px solid rgba(255,255,255,0.08)",
+                    zIndex: stacked.zIndex,
+                  }}
+                  animate={{
+                    rotate: isSpread ? spread.rotate : stacked.rotate,
+                    x: isSpread ? spread.x : stacked.x,
+                  }}
+                  transition={springTransition}
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={card.image} alt="" className="w-[160px] h-[160px] object-contain shrink-0 pointer-events-none drop-shadow-[0_4px_20px_rgba(0,0,0,0.4)]" />
+                  <div className="flex flex-col gap-[11px] mt-auto pt-4">
+                    <h3
+                      className={`font-sans font-bold text-[28px] leading-[1.6] whitespace-pre-line ${
+                        card.dark ? "text-[#0a0a0a]" : "text-white"
+                      }`}
+                    >
+                      {card.title}
+                    </h3>
+                    <p
+                      className={`text-[16px] leading-[1.6] font-sans ${
+                        card.dark
+                          ? "text-[rgba(10,10,10,0.6)]"
+                          : "text-[rgba(255,255,255,0.6)]"
+                      }`}
+                    >
+                      {card.description}
+                    </p>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+        )}
       </section>
 
       {/* How it Works */}
       <section className="relative z-10 max-w-xl mx-auto px-6 pb-32">
         <div className="text-center mb-10">
-          <h2 className="text-[40px] font-sans font-normal text-white leading-[1.15]">
+          <h2 className="text-[28px] md:text-[40px] font-sans font-normal text-white leading-[1.15]">
             How it{" "}
             <span className="font-asgardFat text-[#bfff00]">WORKS</span>
           </h2>
@@ -389,7 +440,7 @@ export function LandingHero() {
               }}
             >
               <div
-                className="h-full rounded-[20px] bg-[rgba(17,17,17,0.65)] backdrop-blur-[4px] border border-[rgba(255,255,255,0.08)] px-8 py-8 flex flex-col overflow-hidden"
+                className="h-full rounded-[20px] bg-[rgba(17,17,17,0.65)] backdrop-blur-[4px] border border-[rgba(255,255,255,0.08)] px-5 py-6 md:px-8 md:py-8 flex flex-col overflow-hidden"
               >
                 <div className="flex items-center gap-3 mb-5">
                   <span className="text-xs font-mono font-bold text-[#bfff00] opacity-60">
