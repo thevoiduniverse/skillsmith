@@ -144,7 +144,6 @@ export function LandingHero() {
   const [textColor, setTextColor] = useState(rotatingWords[0].color);
   const [showCursor, setShowCursor] = useState(true);
   const [howStep, setHowStep] = useState(0);
-  const [expandedCard, setExpandedCard] = useState<number | null>(null);
   const isMobile = useIsMobile();
 
   useEffect(() => {
@@ -297,21 +296,18 @@ export function LandingHero() {
       {/* Cards section */}
       <section className="relative z-10 pb-20 md:pb-52">
         {isMobile ? (
-          /* Mobile: vertical stack, tap to expand */
+          /* Mobile: vertical stack, always show description */
           <div className="flex flex-col items-center gap-6 px-4">
-            {cards.map((card, i) => (
-              <motion.div
+            {cards.map((card) => (
+              <div
                 key={card.title}
-                className="w-full max-w-[340px] rounded-[40px] px-6 py-8 flex flex-col overflow-hidden cursor-pointer"
+                className="w-full max-w-[340px] rounded-[40px] px-6 py-8 flex flex-col overflow-hidden"
                 style={{
                   background: card.gradient,
                   backdropFilter: "blur(20px)",
                   WebkitBackdropFilter: "blur(20px)",
                   border: "1px solid rgba(255,255,255,0.08)",
                 }}
-                onClick={() => setExpandedCard(expandedCard === i ? null : i)}
-                animate={{ height: expandedCard === i ? "auto" : 280 }}
-                transition={springTransition}
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={card.image} alt="" className="w-[120px] h-[120px] object-contain shrink-0 pointer-events-none drop-shadow-[0_4px_20px_rgba(0,0,0,0.4)]" />
@@ -323,21 +319,17 @@ export function LandingHero() {
                   >
                     {card.title}
                   </h3>
-                  {expandedCard === i && (
-                    <motion.p
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      className={`text-[14px] leading-[1.6] font-sans ${
-                        card.dark
-                          ? "text-[rgba(10,10,10,0.6)]"
-                          : "text-[rgba(255,255,255,0.6)]"
-                      }`}
-                    >
-                      {card.description}
-                    </motion.p>
-                  )}
+                  <p
+                    className={`text-[14px] leading-[1.6] font-sans ${
+                      card.dark
+                        ? "text-[rgba(10,10,10,0.6)]"
+                        : "text-[rgba(255,255,255,0.6)]"
+                    }`}
+                  >
+                    {card.description}
+                  </p>
                 </div>
-              </motion.div>
+              </div>
             ))}
           </div>
         ) : (
