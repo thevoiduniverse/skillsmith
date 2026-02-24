@@ -236,8 +236,8 @@ export function LandingHero() {
       </nav>
 
       {/* Hero */}
-      <section className="relative z-10 max-w-4xl mx-auto px-4 md:px-6 pt-16 pb-12 md:pt-28 md:pb-20 text-center">
-        <h1 className="text-[32px] md:text-[60px] font-sans font-normal text-white leading-[1.15]">
+      <section className="relative z-10 max-w-4xl mx-auto px-4 md:px-6 pt-10 pb-10 md:pt-28 md:pb-20 text-center">
+        <h1 className="text-[28px] md:text-[60px] font-sans font-normal text-white leading-[1.15]">
           Build your{" "}
           <span className="font-asgardFat text-[#bfff00]">SKILLS</span> for
           <br />
