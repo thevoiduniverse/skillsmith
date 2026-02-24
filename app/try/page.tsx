@@ -399,48 +399,76 @@ export default function TryPage() {
               className="flex flex-col h-full"
             >
               <div className="flex-1 space-y-5">
-                {/* Summary block */}
-                <div className="bg-[rgba(255,255,255,0.05)] rounded-2xl p-4 space-y-2">
-                  <p className="text-sm text-[rgba(255,255,255,0.6)] leading-relaxed line-clamp-3">
-                    {creationPath === "blank"
-                      ? "Blank skill — you\u2019ll fill in the details in the editor"
-                      : description}
-                  </p>
-                  <div className="flex items-center gap-2 pt-1">
-                    <span className="text-xs text-[rgba(255,255,255,0.4)]">
-                      {skillName.trim() || (creationPath === "blank" ? "Untitled Skill" : "AI will name this")}
-                    </span>
-                    {category && (
-                      <span className="bg-[#bfff00] text-[#0a0a0a] text-[10px] font-bold px-2 py-0.5 rounded-full">
-                        {category}
-                      </span>
-                    )}
-                  </div>
-                </div>
-
-                {/* Primary action */}
                 {creationPath === "blank" ? (
-                  <Button
-                    onClick={handleCreateBlank}
-                    disabled={loading}
-                    size="lg"
-                    className="w-full"
-                  >
-                    <IconPlus size={16} />
-                    Create Skill
-                    <IconArrowRight size={16} />
-                  </Button>
+                  <>
+                    {/* Description input for blank flow */}
+                    <div className="space-y-2">
+                      <label className="block text-sm font-medium text-[rgba(255,255,255,0.6)]">
+                        Describe your skill <span className="text-[rgba(255,255,255,0.3)]">(optional)</span>
+                      </label>
+                      <Textarea
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}
+                        placeholder="e.g., A code reviewer that focuses on security vulnerabilities..."
+                        rows={3}
+                        className="text-sm"
+                      />
+                    </div>
+
+                    {/* Primary: Generate with AI (when description present) or Create Blank */}
+                    {description.trim() ? (
+                      <Button
+                        onClick={handleCreateWithAI}
+                        disabled={loading}
+                        size="lg"
+                        className="w-full"
+                      >
+                        <IconSparkles size={16} />
+                        Generate with AI
+                        <IconArrowRight size={16} />
+                      </Button>
+                    ) : (
+                      <Button
+                        onClick={handleCreateBlank}
+                        disabled={loading}
+                        size="lg"
+                        className="w-full"
+                      >
+                        <IconPlus size={16} />
+                        Create Blank Skill
+                        <IconArrowRight size={16} />
+                      </Button>
+                    )}
+                  </>
                 ) : (
-                  <Button
-                    onClick={handleCreateWithAI}
-                    disabled={loading}
-                    size="lg"
-                    className="w-full"
-                  >
-                    <IconSparkles size={16} />
-                    Generate with AI
-                    <IconArrowRight size={16} />
-                  </Button>
+                  <>
+                    {/* Summary block for AI flow */}
+                    <div className="bg-[rgba(255,255,255,0.05)] rounded-2xl p-4 space-y-2">
+                      <p className="text-sm text-[rgba(255,255,255,0.6)] leading-relaxed line-clamp-3">
+                        {description}
+                      </p>
+                      <div className="flex items-center gap-2 pt-1">
+                        <span className="text-xs text-[rgba(255,255,255,0.4)]">
+                          {skillName.trim() || "AI will name this"}
+                        </span>
+                        {category && (
+                          <span className="bg-[#bfff00] text-[#0a0a0a] text-[10px] font-bold px-2 py-0.5 rounded-full">
+                            {category}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                    <Button
+                      onClick={handleCreateWithAI}
+                      disabled={loading}
+                      size="lg"
+                      className="w-full"
+                    >
+                      <IconSparkles size={16} />
+                      Generate with AI
+                      <IconArrowRight size={16} />
+                    </Button>
+                  </>
                 )}
               </div>
 
