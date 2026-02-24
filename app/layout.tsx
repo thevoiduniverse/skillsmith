@@ -42,6 +42,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark">
+      <head>
+        <script
+          defer
+          src="https://cloud.umami.is/script.js"
+          data-website-id="38f21c1a-7561-48ee-8a45-c8d184ca2c96"
+        />
+      </head>
       <body
         className={`${brockmann.className} ${brockmann.variable} ${jetbrains.variable} ${asgardFat.variable} bg-[#0a0a0a]`}
       >
