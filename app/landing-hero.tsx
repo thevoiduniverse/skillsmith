@@ -319,7 +319,7 @@ export function LandingHero() {
                 transition={springTransition}
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={card.image} alt="" className="w-[160px] h-[160px] object-contain shrink-0 pointer-events-none" />
+                <img src={card.image} alt="" className="w-[160px] h-[160px] object-contain shrink-0 pointer-events-none drop-shadow-[0_4px_20px_rgba(0,0,0,0.4)]" />
                 <div className="flex flex-col gap-[11px] mt-auto pt-4">
                   <h3
                     className={`font-sans font-bold text-[28px] leading-[1.6] whitespace-pre-line ${
