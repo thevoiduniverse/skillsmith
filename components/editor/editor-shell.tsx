@@ -12,14 +12,18 @@ import { Input } from "@/components/ui/input";
 import { GuidedEditor } from "./guided-mode/guided-editor";
 import { MonacoMarkdownEditor } from "./markdown-mode/monaco-editor";
 import { AiToolbar } from "./ai-toolbar";
+import Link from "next/link";
 
 interface EditorShellProps {
   skillId: string;
   initialContent: string;
   initialTitle: string;
+  tryMode?: boolean;
 }
 
-export function EditorShell({ skillId, initialContent, initialTitle }: EditorShellProps) {
+const TRY_STORAGE_KEY = "skillsmith-try-skill";
+
+export function EditorShell({ skillId, initialContent, initialTitle, tryMode }: EditorShellProps) {
   const router = useRouter();
   const [title, setTitle] = useState(initialTitle);
   const [saving, setSaving] = useState(false);
@@ -41,11 +45,33 @@ export function EditorShell({ skillId, initialContent, initialTitle }: EditorShe
   } = useEditorSync({
     initialMarkdown: initialContent,
     onAutoSave: async (md) => {
-      await saveSkill(md);
+      if (tryMode) {
+        saveToLocalStorage(md);
+      } else {
+        await saveSkill(md);
+      }
     },
   });
 
+  function saveToLocalStorage(content?: string) {
+    const md = content || getCurrentMarkdown();
+    try {
+      const existing = JSON.parse(localStorage.getItem(TRY_STORAGE_KEY) || "{}");
+      localStorage.setItem(TRY_STORAGE_KEY, JSON.stringify({
+        ...existing,
+        title,
+        content: md,
+      }));
+    } catch {
+      // localStorage may be full or unavailable
+    }
+  }
+
   const saveSkill = useCallback(async (content?: string) => {
+    if (tryMode) {
+      saveToLocalStorage(content);
+      return;
+    }
     setSaving(true);
     try {
       const md = content || getCurrentMarkdown();
@@ -60,19 +86,26 @@ export function EditorShell({ skillId, initialContent, initialTitle }: EditorShe
     } finally {
       setSaving(false);
     }
-  }, [skillId, title, getCurrentMarkdown]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [skillId, title, getCurrentMarkdown, tryMode]);
 
   // Cmd+S save handler
   useEffect(() => {
     function handleKeyDown(e: KeyboardEvent) {
       if ((e.metaKey || e.ctrlKey) && e.key === "s") {
         e.preventDefault();
-        saveSkill();
+        if (tryMode) {
+          saveToLocalStorage();
+          toast.success("Saved locally");
+        } else {
+          saveSkill();
+        }
       }
     }
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [saveSkill]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [saveSkill, tryMode]);
 
   // Warn before leaving with unsaved changes
   useEffect(() => {
@@ -185,6 +218,11 @@ export function EditorShell({ skillId, initialContent, initialTitle }: EditorShe
   }
 
   async function handleDiscard() {
+    if (tryMode) {
+      localStorage.removeItem(TRY_STORAGE_KEY);
+      router.push("/try");
+      return;
+    }
     try {
       await fetch(`/api/skills/${skillId}`, { method: "DELETE" });
     } catch {
@@ -195,6 +233,22 @@ export function EditorShell({ skillId, initialContent, initialTitle }: EditorShe
 
   return (
     <div className="max-w-7xl mx-auto">
+      {/* Try mode banner */}
+      {tryMode && (
+        <div className="mb-4 flex items-center justify-between gap-3 bg-[rgba(191,255,0,0.08)] border border-[rgba(191,255,0,0.2)] rounded-2xl px-5 py-3">
+          <p className="text-sm text-[rgba(255,255,255,0.7)]">
+            You&apos;re editing locally.{" "}
+            <span className="text-[#bfff00] font-medium">Sign up to save your work permanently.</span>
+          </p>
+          <Link
+            href="/signup"
+            className="shrink-0 inline-flex items-center justify-center font-bold rounded-[40px] text-xs px-4 py-2 bg-[#bfff00] text-[#0a0a0a] hover:brightness-110 transition-all"
+          >
+            Sign Up
+          </Link>
+        </div>
+      )}
+
       {/* Top bar */}
       <div className="flex items-center justify-between mb-4 gap-4">
         <Input
@@ -223,17 +277,35 @@ export function EditorShell({ skillId, initialContent, initialTitle }: EditorShe
             variant="secondary"
             size="sm"
             onClick={async () => {
-              await saveSkill();
-              router.push("/dashboard");
+              if (tryMode) {
+                saveToLocalStorage();
+                toast.success("Saved locally");
+              } else {
+                await saveSkill();
+                router.push("/dashboard");
+              }
             }}
             disabled={saving}
           >
             <IconDeviceFloppy size={14} />
-            {saving ? "Saving..." : isDirty ? "Save*" : "Save"}
+            {tryMode
+              ? "Save Locally"
+              : saving
+                ? "Saving..."
+                : isDirty
+                  ? "Save*"
+                  : "Save"}
           </Button>
           <Button
             size="sm"
-            onClick={() => router.push(`/skills/${skillId}/test`)}
+            onClick={() => {
+              if (tryMode) {
+                saveToLocalStorage();
+                router.push("/try/test");
+              } else {
+                router.push(`/skills/${skillId}/test`);
+              }
+            }}
           >
             <IconPlayerPlayFilled size={14} />
             Test
@@ -297,14 +369,19 @@ export function EditorShell({ skillId, initialContent, initialTitle }: EditorShe
             activeStep={guidedStep}
             onStepChange={setGuidedStep}
             onTest={() => {
-              saveSkill();
-              router.push(`/skills/${skillId}/test`);
+              if (tryMode) {
+                saveToLocalStorage();
+                router.push("/try/test");
+              } else {
+                saveSkill();
+                router.push(`/skills/${skillId}/test`);
+              }
             }}
             onEditMarkdown={() => {
-              saveSkill();
+              if (!tryMode) saveSkill();
               switchMode("markdown");
             }}
-            onDashboard={async () => {
+            onDashboard={tryMode ? undefined : async () => {
               await saveSkill();
               router.push("/dashboard");
             }}
@@ -328,7 +405,9 @@ export function EditorShell({ skillId, initialContent, initialTitle }: EditorShe
           >
             <h3 className="text-lg font-bold text-text-primary mb-2">Discard this skill?</h3>
             <p className="text-sm text-text-secondary mb-6">
-              You have unsaved content that will be permanently lost. This action cannot be undone.
+              {tryMode
+                ? "Your local changes will be permanently lost. This action cannot be undone."
+                : "You have unsaved content that will be permanently lost. This action cannot be undone."}
             </p>
             <div className="flex items-center justify-end gap-2">
               <Button

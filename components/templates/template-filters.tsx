@@ -88,7 +88,7 @@ export function TemplateFilters({
           <select
             value={sort}
             onChange={(e) => onSortChange(e.target.value)}
-            className="bg-[rgba(25,25,25,0.8)] border border-[rgba(255,255,255,0.08)] text-white text-xs rounded-[40px] pl-3 pr-6 h-[30px] focus:border-[#bfff00] focus:outline-none appearance-none bg-no-repeat bg-[length:12px] bg-[right_8px_center]"
+            className="bg-[rgba(25,25,25,0.8)] border border-[rgba(255,255,255,0.08)] text-white text-xs font-medium rounded-full px-3 py-1.5 pr-7 focus:border-[#bfff00] focus:outline-none appearance-none bg-no-repeat bg-[length:12px] bg-[right_8px_center]"
             style={{
               ...(selectWidth ? { width: selectWidth } : {}),
               backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='rgba(255,255,255,0.6)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E")`,

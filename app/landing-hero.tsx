@@ -216,16 +216,16 @@ export function LandingHero() {
           </Link>
           <div className="flex items-center gap-5">
             <Link
-              href="/login"
+              href="/try"
               className="text-white text-sm font-sans font-medium hover:text-white/80 transition-colors"
             >
-              Sign in
+              Try now
             </Link>
             <Link
               href="/signup"
               className="bg-[#bfff00] text-[#0a0a0a] font-sans font-bold text-sm rounded-[40px] px-7 py-3 flex items-center justify-center hover:brightness-110 transition-all"
             >
-              GET STARTED
+              SIGN UP / SIGN IN
             </Link>
           </div>
         </div>
@@ -268,7 +268,7 @@ export function LandingHero() {
             BROWSE TEMPLATES
           </Link>
           <Link
-            href="/signup"
+            href="/try"
             className="relative bg-[rgba(191,255,0,0.2)] backdrop-blur-2xl text-[#bfff00] font-sans font-bold text-sm rounded-[40px] px-10 py-5 hover:bg-[rgba(191,255,0,0.3)] transition-colors"
           >
             <div
@@ -282,7 +282,7 @@ export function LandingHero() {
                 maskComposite: "exclude",
               }}
             />
-            GET STARTED
+            BUILD NOW
           </Link>
         </div>
       </section>
