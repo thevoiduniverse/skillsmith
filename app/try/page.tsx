@@ -238,10 +238,10 @@ export default function TryPage() {
               key={key}
               onClick={() => setCreationPath(key)}
               className={cn(
-                "flex items-center justify-center gap-1.5 px-4 py-2.5 text-sm font-medium rounded-full transition-colors whitespace-nowrap md:flex-1",
+                "flex items-center justify-center gap-1.5 px-4 py-2.5 text-sm font-medium rounded-full transition-all duration-200 whitespace-nowrap md:flex-1",
                 creationPath === key
-                  ? "bg-[rgba(191,255,0,0.12)] text-[#bfff00] border border-[rgba(191,255,0,0.25)]"
-                  : "bg-[rgba(255,255,255,0.05)] text-[rgba(255,255,255,0.5)] hover:text-white border border-transparent"
+                  ? "bg-gradient-to-b from-[rgba(191,255,0,0.18)] to-[rgba(191,255,0,0.08)] text-[#bfff00] shadow-[inset_0_1px_0_rgba(191,255,0,0.3),inset_0_-1px_0_rgba(0,0,0,0.2),0_1px_3px_rgba(0,0,0,0.4),0_0_12px_rgba(191,255,0,0.08)] border border-[rgba(191,255,0,0.2)]"
+                  : "bg-gradient-to-b from-[rgba(255,255,255,0.08)] to-[rgba(255,255,255,0.03)] text-[rgba(255,255,255,0.5)] hover:text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.08),inset_0_-1px_0_rgba(0,0,0,0.2),0_1px_2px_rgba(0,0,0,0.3)] border border-[rgba(255,255,255,0.06)]"
               )}
             >
               <Icon size={14} />
@@ -253,7 +253,7 @@ export default function TryPage() {
         {/* Dynamic content based on path */}
         <div className="flex-1">
           {creationPath === "ai" && (
-            <div className="space-y-2">
+            <div className="space-y-3">
               <label className="block text-sm font-medium text-[rgba(255,255,255,0.6)]">
                 What should this skill do?
               </label>
@@ -328,7 +328,7 @@ export default function TryPage() {
     return (
       <div className="flex flex-col h-full">
         <div className="flex-1 space-y-6">
-          <div className="space-y-2">
+          <div className="space-y-3">
             <label className="block text-sm font-medium text-[rgba(255,255,255,0.6)]">
               Skill name
             </label>
@@ -350,7 +350,7 @@ export default function TryPage() {
             </div>
           </div>
 
-          <div className="space-y-2">
+          <div className="space-y-3">
             <label className="block text-sm font-medium text-[rgba(255,255,255,0.6)]">
               Category
             </label>
@@ -406,7 +406,7 @@ export default function TryPage() {
                 {creationPath === "blank" ? (
                   <>
                     {/* Description input for blank flow */}
-                    <div className="space-y-2">
+                    <div className="space-y-3">
                       <label className="block text-sm font-medium text-[rgba(255,255,255,0.6)]">
                         Describe your skill <span className="text-[rgba(255,255,255,0.3)]">(optional)</span>
                       </label>
@@ -560,11 +560,12 @@ export default function TryPage() {
             style={{
               height: CARD_HEIGHT,
               pointerEvents: i === activeStep ? "auto" : "none",
-              backdropFilter: i === activeStep ? "blur(80px)" : "none",
-              WebkitBackdropFilter: i === activeStep ? "blur(80px)" : "none",
+              backdropFilter: "blur(80px)",
+              WebkitBackdropFilter: "blur(80px)",
             }}
           >
-            <Card className="h-full p-5 md:p-8 flex flex-col overflow-hidden !bg-[#111111]">
+            <Card className="h-full p-5 md:p-8 flex flex-col overflow-hidden !bg-[rgba(14,14,14,0.75)]">
+              <div className="absolute inset-0 rounded-[20px] pointer-events-none z-0" style={{ background: "linear-gradient(to bottom, rgba(255,255,255,0.015), transparent 40%)" }} />
               {stepRenderers[i]()}
             </Card>
           </motion.div>

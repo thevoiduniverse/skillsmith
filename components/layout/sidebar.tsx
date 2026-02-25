@@ -35,19 +35,26 @@ export function Sidebar() {
   return (
     <aside className="h-screen sticky top-0 w-64 flex flex-col px-5 py-4">
       {/* Floating glass card */}
-      <div className="relative flex flex-col gap-6 w-full rounded-[20px] bg-[rgba(17,17,17,0.45)] backdrop-blur-[4px] py-6 px-5">
-        {/* Gradient border overlay — matches landing/auth header */}
+      <div className="relative flex flex-col gap-6 w-full rounded-[20px] bg-[rgba(22,22,22,0.50)] border border-[rgba(255,255,255,0.02)] backdrop-blur-[4px] py-6 px-5">
+        {/* Glass gradient border */}
         <div
-          className="absolute inset-0 rounded-[20px] pointer-events-none"
+          className="absolute inset-0 rounded-[20px] pointer-events-none z-0"
           style={{
             padding: 1,
             background:
-              "linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(255,255,255,0.03))",
+              "linear-gradient(to bottom, rgba(255,255,255,0.12), rgba(255,255,255,0.02) 50%, transparent)",
             WebkitMask:
               "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
             WebkitMaskComposite: "xor",
             mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
             maskComposite: "exclude",
+          }}
+        />
+        {/* Top shine */}
+        <div
+          className="absolute inset-0 rounded-[20px] pointer-events-none z-0"
+          style={{
+            background: "linear-gradient(to bottom, rgba(255,255,255,0.02), transparent 35%)",
           }}
         />
 
@@ -71,7 +78,7 @@ export function Sidebar() {
                   "flex items-center gap-2.5 px-3.5 py-2.5 rounded-[40px] text-sm font-medium transition-colors",
                   isActive
                     ? "bg-[rgba(191,255,0,0.08)] text-[#bfff00]"
-                    : "text-[rgba(255,255,255,0.6)] hover:text-[rgba(255,255,255,0.8)]"
+                    : "text-[rgba(255,255,255,0.6)] hover:text-[rgba(255,255,255,0.8)] hover:bg-[rgba(255,255,255,0.04)]"
                 )}
               >
                 <Icon size={18} className="shrink-0" />
@@ -88,7 +95,7 @@ export function Sidebar() {
         <div className="flex items-center gap-1 px-1">
           <button
             onClick={handleSignOut}
-            className="p-2 rounded-[40px] text-[rgba(255,255,255,0.5)] hover:text-[rgba(255,255,255,0.8)] transition-colors"
+            className="p-2 rounded-[40px] text-[rgba(255,255,255,0.5)] hover:text-[rgba(255,255,255,0.8)] hover:bg-[rgba(255,255,255,0.04)] transition-colors"
           >
             <IconLogout size={16} />
           </button>

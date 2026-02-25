@@ -12,6 +12,9 @@ import { headers } from "next/headers";
 
 const AI_FAST_MODEL = process.env.AI_FAST_MODEL || "gpt-4.1-mini";
 
+// Allow up to 60s on Vercel Pro (Hobby is capped at 10s regardless)
+export const maxDuration = 60;
+
 /* ─── Simple in-memory rate limiter for anonymous users ─── */
 const anonBuckets = new Map<string, { count: number; resetAt: number }>();
 const ANON_HOURLY_LIMIT = 5;

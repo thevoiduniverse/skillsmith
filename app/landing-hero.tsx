@@ -200,7 +200,7 @@ export function LandingHero() {
 
       {/* Nav */}
       <nav className="sticky top-0 z-50 flex justify-center pt-[calc(env(safe-area-inset-top,0px)+24px)] px-6">
-        <div className="relative flex items-center justify-between w-full max-w-[1160px] bg-[rgba(17,17,17,0.45)] backdrop-blur-2xl rounded-[40px] pl-4 pr-3 py-3 md:pl-10 md:pr-5 md:py-5">
+        <div className="relative flex items-center justify-between w-full max-w-[1160px] bg-[rgba(22,22,22,0.75)] backdrop-blur-2xl rounded-[40px] pl-4 pr-3 py-3 md:pl-10 md:pr-5 md:py-5">
           {/* Gradient border overlay */}
           <div
             className="absolute inset-0 rounded-[40px] pointer-events-none"
@@ -226,8 +226,25 @@ export function LandingHero() {
             </Link>
             <Link
               href="/signup"
-              className="bg-[#bfff00] text-[#0a0a0a] font-sans font-bold text-sm rounded-[40px] px-4 py-2.5 md:px-7 md:py-3 flex items-center justify-center hover:brightness-110 transition-all"
+              className="relative bg-[rgba(191,255,0,0.15)] backdrop-blur-[4px] border border-[rgba(191,255,0,0.08)] text-[#bfff00] font-sans font-bold text-sm rounded-[40px] px-4 py-2.5 md:px-7 md:py-3 flex items-center justify-center hover:bg-[rgba(191,255,0,0.25)] transition-colors"
             >
+              <div
+                className="absolute inset-0 rounded-[40px] pointer-events-none"
+                style={{
+                  padding: 1,
+                  background: "linear-gradient(to bottom, rgba(191,255,0,0.25), rgba(191,255,0,0.04) 50%, transparent)",
+                  WebkitMask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                  WebkitMaskComposite: "xor",
+                  mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                  maskComposite: "exclude",
+                }}
+              />
+              <div
+                className="absolute inset-0 rounded-[40px] pointer-events-none"
+                style={{
+                  background: "linear-gradient(to bottom, rgba(191,255,0,0.04), transparent 35%)",
+                }}
+              />
               <span className="hidden md:inline">SIGN UP / SIGN IN</span>
               <span className="md:hidden">SIGN UP</span>
             </Link>
@@ -256,36 +273,14 @@ export function LandingHero() {
         <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-3 md:gap-5">
           <Link
             href="/explore"
-            className="relative w-full sm:w-auto bg-[rgba(17,17,17,0.9)] backdrop-blur-2xl text-white font-sans font-bold text-sm rounded-[40px] px-6 py-3.5 md:px-10 md:py-5 hover:bg-[rgba(30,30,30,0.9)] transition-colors text-center"
+            className="w-full sm:w-auto bg-gradient-to-b from-[rgba(255,255,255,0.08)] to-[rgba(255,255,255,0.02)] backdrop-blur-[4px] border border-[rgba(255,255,255,0.06)] text-white font-sans font-bold text-sm rounded-[40px] px-6 py-3.5 md:px-10 md:py-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.08),inset_0_-1px_0_rgba(0,0,0,0.2),0_1px_3px_rgba(0,0,0,0.4)] hover:from-[rgba(255,255,255,0.12)] hover:to-[rgba(255,255,255,0.04)] transition-all text-center"
           >
-            <div
-              className="absolute inset-0 rounded-[40px] pointer-events-none"
-              style={{
-                padding: 1,
-                background: "linear-gradient(to bottom, rgba(255,255,255,0.2), rgba(255,255,255,0.03))",
-                WebkitMask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-                WebkitMaskComposite: "xor",
-                mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-                maskComposite: "exclude",
-              }}
-            />
             BROWSE TEMPLATES
           </Link>
           <Link
             href="/try"
-            className="relative w-full sm:w-auto bg-[rgba(191,255,0,0.2)] backdrop-blur-2xl text-[#bfff00] font-sans font-bold text-sm rounded-[40px] px-6 py-3.5 md:px-10 md:py-5 hover:bg-[rgba(191,255,0,0.3)] transition-colors text-center"
+            className="w-full sm:w-auto bg-gradient-to-b from-[rgba(191,255,0,0.18)] to-[rgba(191,255,0,0.08)] backdrop-blur-[4px] border border-[rgba(191,255,0,0.2)] text-[#bfff00] font-sans font-bold text-sm rounded-[40px] px-6 py-3.5 md:px-10 md:py-5 shadow-[inset_0_1px_0_rgba(191,255,0,0.3),inset_0_-1px_0_rgba(0,0,0,0.2),0_1px_3px_rgba(0,0,0,0.4),0_0_12px_rgba(191,255,0,0.08)] hover:from-[rgba(191,255,0,0.25)] hover:to-[rgba(191,255,0,0.12)] transition-all text-center"
           >
-            <div
-              className="absolute inset-0 rounded-[40px] pointer-events-none"
-              style={{
-                padding: 1,
-                background: "linear-gradient(to bottom, rgba(191,255,0,0.4), rgba(191,255,0,0.05))",
-                WebkitMask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-                WebkitMaskComposite: "xor",
-                mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-                maskComposite: "exclude",
-              }}
-            />
             BUILD NOW
           </Link>
         </div>
@@ -349,7 +344,7 @@ export function LandingHero() {
                     background: card.gradient,
                     backdropFilter: "blur(20px)",
                     WebkitBackdropFilter: "blur(20px)",
-                    border: "1px solid rgba(255,255,255,0.08)",
+                    border: `1px solid rgba(255,255,255,${i === 1 ? 0.04 : 0.08})`,
                     zIndex: stacked.zIndex,
                   }}
                   animate={{
@@ -358,6 +353,27 @@ export function LandingHero() {
                   }}
                   transition={springTransition}
                 >
+                  {i === 1 && (
+                    <>
+                      <div
+                        className="absolute inset-0 rounded-[40px] pointer-events-none z-0"
+                        style={{
+                          padding: 1,
+                          background: "linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(255,255,255,0.06) 50%, transparent)",
+                          WebkitMask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                          WebkitMaskComposite: "xor",
+                          mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                          maskComposite: "exclude",
+                        }}
+                      />
+                      <div
+                        className="absolute inset-0 rounded-[40px] pointer-events-none z-0"
+                        style={{
+                          background: "linear-gradient(to bottom, rgba(255,255,255,0.05), transparent 40%)",
+                        }}
+                      />
+                    </>
+                  )}
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src={card.image} alt="" className="w-[160px] h-[160px] object-contain shrink-0 pointer-events-none drop-shadow-[0_4px_20px_rgba(0,0,0,0.4)]" />
                   <div className="flex flex-col gap-[11px] mt-auto pt-4">
@@ -430,8 +446,27 @@ export function LandingHero() {
               }}
             >
               <div
-                className="h-full rounded-[20px] bg-[rgba(17,17,17,0.65)] backdrop-blur-[4px] border border-[rgba(255,255,255,0.08)] px-5 py-6 md:px-8 md:py-8 flex flex-col overflow-hidden"
+                className="relative h-full rounded-[20px] bg-[rgba(22,22,22,0.50)] hover:bg-[rgba(26,26,26,0.6)] border border-[rgba(255,255,255,0.02)] backdrop-blur-[4px] px-5 py-6 md:px-8 md:py-8 flex flex-col overflow-hidden transition-colors"
               >
+                {/* Glass gradient border */}
+                <div
+                  className="absolute inset-0 rounded-[20px] pointer-events-none z-0"
+                  style={{
+                    padding: 1,
+                    background: "linear-gradient(to bottom, rgba(255,255,255,0.12), rgba(255,255,255,0.02) 50%, transparent)",
+                    WebkitMask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                    WebkitMaskComposite: "xor",
+                    mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                    maskComposite: "exclude",
+                  }}
+                />
+                {/* Top shine */}
+                <div
+                  className="absolute inset-0 rounded-[20px] pointer-events-none z-0"
+                  style={{
+                    background: "linear-gradient(to bottom, rgba(255,255,255,0.02), transparent 35%)",
+                  }}
+                />
                 <div className="flex items-center gap-3 mb-5">
                   <span className="text-xs font-mono font-bold text-[#bfff00] opacity-60">
                     {step.number}

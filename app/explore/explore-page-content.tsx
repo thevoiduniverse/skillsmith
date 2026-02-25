@@ -15,9 +15,9 @@ export function ExplorePageContent() {
         height={isMobile ? 900 : 1320}
         className="fixed inset-0 z-0"
       />
-      <div className="min-h-screen bg-transparent text-white relative overflow-x-clip z-[1]">
+      <div className="min-h-screen bg-transparent text-white relative overflow-x-clip z-10">
         <nav className="sticky top-0 z-50 flex justify-center pt-[calc(env(safe-area-inset-top,0px)+24px)] px-6">
-          <div className="relative flex items-center justify-between w-full max-w-[1160px] bg-[rgba(17,17,17,0.45)] backdrop-blur-2xl rounded-[40px] pl-4 pr-3 py-3 md:pl-10 md:pr-5 md:py-5">
+          <div className="relative flex items-center justify-between w-full max-w-[1160px] bg-[rgba(22,22,22,0.75)] backdrop-blur-2xl rounded-[40px] pl-4 pr-3 py-3 md:pl-10 md:pr-5 md:py-5">
             {/* Gradient border overlay */}
             <div
               className="absolute inset-0 rounded-[40px] pointer-events-none"

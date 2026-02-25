@@ -49,11 +49,11 @@ export default function TemplatesPage() {
 
   return (
     <div className="max-w-6xl mx-auto">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-white tracking-tight">
+      <div className="mb-10 text-center">
+        <h1 className="text-4xl md:text-5xl font-bold text-white tracking-tight">
           Template Library
         </h1>
-        <p className="text-[rgba(255,255,255,0.6)] mt-2">
+        <p className="text-[rgba(255,255,255,0.5)] mt-2 text-base">
           Start from a proven skill template. Fork it and make it your own.
         </p>
       </div>
@@ -67,7 +67,7 @@ export default function TemplatesPage() {
         onSortChange={setSort}
       />
 
-      <div className="mt-6">
+      <div className="mt-10">
         {loading ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {Array.from({ length: 6 }).map((_, i) => (

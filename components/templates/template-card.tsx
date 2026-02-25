@@ -49,7 +49,7 @@ export function TemplateCard({ template, publicMode }: TemplateCardProps) {
 
   return (
     <>
-      <Card className="p-5 flex flex-col h-full hover:border-[rgba(191,255,0,0.3)] transition-all duration-200">
+      <Card className="p-5 flex flex-col h-full hover:bg-[rgba(26,26,26,0.6)] transition-all duration-200">
         <div
           className="cursor-pointer"
           onClick={() => setShowPreview(true)}

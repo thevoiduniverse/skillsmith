@@ -21,11 +21,11 @@ export function SkillListItem({ skill }: SkillListItemProps) {
   return (
     <Link
       href={`/skills/${skill.id}/edit`}
-      className="flex items-center gap-4 px-4 py-3 border-b border-border hover:bg-surface-alt transition-colors group"
+      className="flex items-center gap-4 px-4 py-3 border-b border-border hover:bg-[rgba(26,26,26,0.6)] transition-colors group"
     >
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2">
-          <h3 className="text-sm font-medium text-text-primary group-hover:text-accent transition-colors truncate">
+          <h3 className="text-sm font-medium text-text-primary group-hover:text-white transition-colors truncate">
             {skill.title}
           </h3>
           {skill.fork_of && (

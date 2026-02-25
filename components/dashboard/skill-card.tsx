@@ -95,8 +95,8 @@ export function SkillCard({
     <Card
       onClick={handleCardClick}
       className={cn(
-        "px-5 pt-5 pb-2 hover:border-[rgba(191,255,0,0.3)] transition-all duration-200 cursor-pointer group h-full flex flex-col",
-        selected && "border-[rgba(191,255,0,0.5)] bg-[rgba(191,255,0,0.03)]"
+        "px-5 pt-5 pb-2 hover:bg-[rgba(26,26,26,0.6)] transition-all duration-200 cursor-pointer group h-full flex flex-col",
+        selected && "ring-1 ring-[rgba(191,255,0,0.5)] bg-[rgba(191,255,0,0.03)]"
       )}
     >
       <div className="flex items-start justify-between gap-2 mb-3">
@@ -117,7 +117,7 @@ export function SkillCard({
               )}
             </div>
           )}
-          <h3 className="font-bold text-base text-white group-hover:text-[#bfff00] transition-colors line-clamp-1">
+          <h3 className="font-bold text-base text-white group-hover:text-white transition-colors line-clamp-1">
             {skill.title}
           </h3>
         </div>

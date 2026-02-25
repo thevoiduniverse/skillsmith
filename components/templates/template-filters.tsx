@@ -32,14 +32,14 @@ export function TemplateFilters({
 }: TemplateFiltersProps) {
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       <div className="relative">
-        <IconSearch size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-[rgba(255,255,255,0.6)]" />
+        <IconSearch size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-[rgba(255,255,255,0.6)] z-10" />
         <Input
           value={search}
           onChange={(e) => onSearchChange(e.target.value)}
           placeholder="Search templates..."
-          className="pl-10"
+          className="pl-10 backdrop-blur-xl"
         />
       </div>
 
@@ -51,10 +51,10 @@ export function TemplateFilters({
                 key={cat}
                 onClick={() => onCategoryChange(cat === "All" ? null : cat)}
                 className={cn(
-                  "px-3 py-1.5 text-xs font-medium rounded-full transition-colors",
+                  "px-3 py-1.5 text-xs font-medium rounded-full transition-all duration-200 backdrop-blur-xl",
                   isActive
-                    ? "bg-[#bfff00] text-[#0a0a0a]"
-                    : "bg-[rgba(255,255,255,0.05)] text-[rgba(255,255,255,0.6)] hover:text-white"
+                    ? "bg-gradient-to-b from-[#d4ff4d] to-[#a8e600] text-[#0a0a0a] shadow-[inset_0_1px_0_rgba(255,255,255,0.4),inset_0_-1px_0_rgba(0,0,0,0.15),0_1px_3px_rgba(0,0,0,0.4)] border border-[rgba(0,0,0,0.1)]"
+                    : "bg-gradient-to-b from-[rgba(255,255,255,0.08)] to-[rgba(255,255,255,0.03)] text-[rgba(255,255,255,0.5)] hover:text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.08),inset_0_-1px_0_rgba(0,0,0,0.2),0_1px_2px_rgba(0,0,0,0.3)] border border-[rgba(255,255,255,0.06)]"
                 )}
               >
                 {cat}
