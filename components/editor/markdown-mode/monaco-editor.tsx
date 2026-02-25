@@ -15,7 +15,7 @@ export function MonacoMarkdownEditor({ value, onChange }: MonacoEditorProps) {
     editorRef.current = editor;
 
     // Define custom dark theme to match app
-    monaco.editor.defineTheme("skillforge-dark", {
+    monaco.editor.defineTheme("skillsmith-dark", {
       base: "vs-dark",
       inherit: true,
       rules: [
@@ -35,7 +35,7 @@ export function MonacoMarkdownEditor({ value, onChange }: MonacoEditorProps) {
         "editorWidget.border": "#2A2A2A",
       },
     });
-    monaco.editor.setTheme("skillforge-dark");
+    monaco.editor.setTheme("skillsmith-dark");
   }, []);
 
   return (

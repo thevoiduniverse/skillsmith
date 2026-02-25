@@ -2,7 +2,7 @@
 
 > **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
 
-**Goal:** Holistically improve the create-skill wizard, guided editor UX, error handling, and code quality across SkillForge.
+**Goal:** Holistically improve the create-skill wizard, guided editor UX, error handling, and code quality across SkillSmith.
 
 **Architecture:** Evolve the existing card-stack wizard (Framer Motion spring animations) with a 3-way path selector in Step 0, add a toast system for error feedback, improve the guided editor with a completion card and AI undo, and fix several latent bugs.
 

@@ -1,10 +1,10 @@
 #!/bin/bash
-# SkillForge — One-command setup for a new machine
+# SkillSmith — One-command setup for a new machine
 # Usage: ./setup.sh
 
 set -e
 
-echo "🔧 SkillForge Setup"
+echo "🔧 SkillSmith Setup"
 echo "──────────────────────────────"
 
 # Check Node.js
