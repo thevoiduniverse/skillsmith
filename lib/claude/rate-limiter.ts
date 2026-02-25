@@ -7,7 +7,7 @@ interface RateLimitResult {
 }
 
 const HOURLY_REQUEST_LIMIT = 50;
-const DAILY_TOKEN_LIMIT = 100_000;
+const DAILY_TOKEN_LIMIT = 200_000;
 
 export async function checkRateLimit(userId: string): Promise<RateLimitResult> {
   const supabase = await createClient();
