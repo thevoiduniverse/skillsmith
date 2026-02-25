@@ -3,8 +3,8 @@
 import { IconGitFork } from "@tabler/icons-react";
 import { toast } from "sonner";
 import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { getTagColors } from "@/lib/tag-colors";
 import { TransitionText } from "@/components/ui/transition-text";
 import { TemplatePreview } from "./template-preview";
 import { useRouter } from "next/navigation";
@@ -67,14 +67,28 @@ export function TemplateCard({ template, publicMode }: TemplateCardProps) {
 
         <div className="flex items-center gap-1.5 mb-4 flex-wrap">
           {template.category && (
-            <Badge variant="accent">{template.category}</Badge>
+            <span
+              className="inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium"
+              style={{ backgroundColor: getTagColors(template.category).bg, color: getTagColors(template.category).text }}
+            >
+              {template.category}
+            </span>
           )}
-          {template.tags.slice(0, 2).map((tag) => (
-            <Badge key={tag} variant="outline">{tag}</Badge>
-          ))}
+          {template.tags.slice(0, 2).map((tag) => {
+            const colors = getTagColors(tag);
+            return (
+              <span
+                key={tag}
+                className="inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium"
+                style={{ backgroundColor: colors.bg, color: colors.text }}
+              >
+                {tag}
+              </span>
+            );
+          })}
         </div>
 
-        <div className="flex items-center justify-end pt-3 border-t border-[rgba(255,255,255,0.08)] mt-auto">
+        <div className="flex items-center justify-end pt-5 border-t border-[rgba(255,255,255,0.04)] mt-auto">
           {publicMode ? (
             <Link
               href="/signup"

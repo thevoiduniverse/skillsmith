@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { IconWorld, IconLockFilled, IconGitFork } from "@tabler/icons-react";
-import { Badge } from "@/components/ui/badge";
 import { formatRelativeTime } from "@/lib/utils";
+import { getTagColors } from "@/lib/tag-colors";
 
 interface SkillListItemProps {
   skill: {
@@ -40,11 +40,18 @@ export function SkillListItem({ skill }: SkillListItemProps) {
       </div>
 
       <div className="hidden sm:flex items-center gap-1.5">
-        {skill.tags.slice(0, 2).map((tag) => (
-          <Badge key={tag} variant="outline" className="text-[11px]">
-            {tag}
-          </Badge>
-        ))}
+        {skill.tags.slice(0, 2).map((tag) => {
+          const colors = getTagColors(tag);
+          return (
+            <span
+              key={tag}
+              className="inline-flex items-center rounded-full px-2.5 py-1 text-[11px] font-medium"
+              style={{ backgroundColor: colors.bg, color: colors.text }}
+            >
+              {tag}
+            </span>
+          );
+        })}
       </div>
 
       <div className="flex items-center gap-3 shrink-0">

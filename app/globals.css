@@ -13,6 +13,10 @@
     border-color: theme("colors.border");
   }
 
+  html {
+    overflow-y: scroll;
+  }
+
   body {
     @apply bg-background text-text-primary font-sans antialiased;
   }

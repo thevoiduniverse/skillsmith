@@ -5,10 +5,10 @@ import { createPortal } from "react-dom";
 import { useRouter } from "next/navigation";
 import { IconWorld, IconGitFork, IconTrashFilled, IconPlus, IconX } from "@tabler/icons-react";
 import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { formatRelativeTime } from "@/lib/utils";
 import { cn } from "@/lib/utils";
+import { getTagColors } from "@/lib/tag-colors";
 
 export interface SkillCardSkill {
   id: string;
@@ -121,22 +121,26 @@ export function SkillCard({
             {skill.title}
           </h3>
         </div>
-        <div className="flex items-center gap-1.5 shrink-0">
-          {skill.fork_of && (
-            <IconGitFork size={14} className="text-[rgba(255,255,255,0.6)]" />
-          )}
-          {skill.visibility === "public" && (
-            <IconWorld size={14} className="text-[rgba(255,255,255,0.6)]" />
-          )}
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              onDelete?.(skill.id);
-            }}
-            className="w-6 h-6 flex items-center justify-center rounded-md text-[rgba(255,255,255,0.3)] hover:text-red-400 hover:bg-[rgba(255,0,0,0.08)] transition-colors opacity-0 group-hover:opacity-100"
-          >
-            <IconTrashFilled size={14} />
-          </button>
+        <div className="flex items-center shrink-0">
+          <div className="overflow-hidden w-0 group-hover:w-7 transition-all duration-200 ease-out">
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onDelete?.(skill.id);
+              }}
+              className="w-6 h-6 flex items-center justify-center rounded-md text-[rgba(255,255,255,0.3)] hover:text-red-400 hover:bg-[rgba(255,0,0,0.08)] transition-colors"
+            >
+              <IconTrashFilled size={14} />
+            </button>
+          </div>
+          <div className="flex items-center gap-1.5 transition-transform duration-200 ease-out">
+            {skill.fork_of && (
+              <IconGitFork size={14} className="text-[rgba(255,255,255,0.6)]" />
+            )}
+            {skill.visibility === "public" && (
+              <IconWorld size={14} className="text-[rgba(255,255,255,0.6)]" />
+            )}
+          </div>
         </div>
       </div>
 
@@ -146,22 +150,35 @@ export function SkillCard({
         </p>
       )}
 
-      <div className="flex items-center justify-between mt-auto py-3 border-t border-[rgba(255,255,255,0.08)]">
+      <div className="flex items-center justify-between mt-auto pt-5 pb-3 border-t border-[rgba(255,255,255,0.04)]">
         <div className="flex items-center gap-1.5 flex-wrap">
-          {skill.tags.slice(0, 2).map((tag) => (
-            <Badge key={tag} variant="outline" className="text-[11px]">
-              {tag}
-            </Badge>
-          ))}
+          {skill.tags.slice(0, 2).map((tag) => {
+            const colors = getTagColors(tag);
+            return (
+              <span
+                key={tag}
+                className="inline-flex items-center rounded-full px-2.5 py-1 text-[11px] font-medium"
+                style={{ backgroundColor: colors.bg, color: colors.text }}
+              >
+                {tag}
+              </span>
+            );
+          })}
           {skill.tags.length > 2 && (
             <span className="text-[11px] text-[rgba(255,255,255,0.4)]">
               +{skill.tags.length - 2}
             </span>
           )}
           {skill.category && skill.tags.length === 0 && (
-            <Badge variant="outline" className="text-[11px]">
+            <span
+              className="inline-flex items-center rounded-full px-2.5 py-1 text-[11px] font-medium"
+              style={{
+                backgroundColor: getTagColors(skill.category).bg,
+                color: getTagColors(skill.category).text,
+              }}
+            >
               {skill.category}
-            </Badge>
+            </span>
           )}
           {onUpdateTags && !selectable && (
             <button

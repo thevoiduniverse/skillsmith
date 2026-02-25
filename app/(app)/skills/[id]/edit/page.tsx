@@ -25,6 +25,7 @@ export default async function SkillEditPage({
       skillId={skill.id}
       initialContent={skill.content}
       initialTitle={skill.title}
+      initialVisibility={skill.visibility}
     />
   );
 }

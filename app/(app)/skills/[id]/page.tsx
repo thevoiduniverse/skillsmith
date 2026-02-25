@@ -3,7 +3,9 @@ import { notFound } from "next/navigation";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { MarkdownPreview } from "@/components/editor/markdown-mode/markdown-preview";
+import { getTagColors } from "@/lib/tag-colors";
 import { ForkButton } from "./fork-button";
+import { InstallSkill } from "./install-skill";
 
 export default async function SkillDetailPage({
   params,
@@ -45,9 +47,18 @@ export default async function SkillDetailPage({
             <Badge variant={skill.visibility === "public" ? "accent" : "default"}>
               {skill.visibility}
             </Badge>
-            {skill.tags?.map((tag: string) => (
-              <Badge key={tag} variant="outline">{tag}</Badge>
-            ))}
+            {skill.tags?.map((tag: string) => {
+              const colors = getTagColors(tag);
+              return (
+                <span
+                  key={tag}
+                  className="inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium"
+                  style={{ backgroundColor: colors.bg, color: colors.text }}
+                >
+                  {tag}
+                </span>
+              );
+            })}
           </div>
         </div>
         {user && !isOwner && <ForkButton skillId={skill.id} />}
@@ -61,6 +72,17 @@ export default async function SkillDetailPage({
         </div>
         <MarkdownPreview content={skill.content} />
       </Card>
+
+      <div className="mt-6">
+        <h2 className="text-sm font-semibold text-[rgba(255,255,255,0.4)] uppercase tracking-wider mb-3">
+          Add to your project
+        </h2>
+        <InstallSkill
+          skillId={skill.id}
+          skillTitle={skill.title}
+          content={skill.content}
+        />
+      </div>
     </div>
   );
 }

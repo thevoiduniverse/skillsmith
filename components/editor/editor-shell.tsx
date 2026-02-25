@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { IconDeviceFloppy, IconPlayerPlayFilled, IconShare, IconDownload, IconChevronDown, IconTrash } from "@tabler/icons-react";
+import { IconDeviceFloppy, IconPlayerPlayFilled, IconDownload, IconChevronDown, IconTrash, IconTerminal2, IconCheck, IconWorld, IconLock } from "@tabler/icons-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { useEditorSync } from "@/lib/hooks/use-editor-sync";
@@ -18,17 +18,20 @@ interface EditorShellProps {
   skillId: string;
   initialContent: string;
   initialTitle: string;
+  initialVisibility?: string;
   tryMode?: boolean;
 }
 
 const TRY_STORAGE_KEY = "skillsmith-try-skill";
 
-export function EditorShell({ skillId, initialContent, initialTitle, tryMode }: EditorShellProps) {
+export function EditorShell({ skillId, initialContent, initialTitle, initialVisibility, tryMode }: EditorShellProps) {
   const router = useRouter();
   const [title, setTitle] = useState(initialTitle);
   const [saving, setSaving] = useState(false);
   const [aiLoading, setAiLoading] = useState<string | null>(null);
   const [showExport, setShowExport] = useState(false);
+  const [copiedInstall, setCopiedInstall] = useState(false);
+  const [visibility, setVisibility] = useState(initialVisibility || "private");
   const [showDiscardConfirm, setShowDiscardConfirm] = useState(false);
   const [guidedStep, setGuidedStep] = useState(0);
   const structureSnapshot = useRef<SkillStructure | null>(null);
@@ -206,6 +209,41 @@ export function EditorShell({ skillId, initialContent, initialTitle, tryMode }: 
     setShowExport(false);
   }
 
+  async function handleToggleVisibility() {
+    if (tryMode) return;
+    const newVisibility = visibility === "public" ? "private" : "public";
+    try {
+      const res = await fetch(`/api/skills/${skillId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ visibility: newVisibility }),
+      });
+      if (!res.ok) throw new Error();
+      setVisibility(newVisibility);
+      toast.success(newVisibility === "public" ? "Skill is now public" : "Skill is now private");
+    } catch {
+      toast.error("Failed to update visibility");
+    }
+  }
+
+  function handleCopyInstallCommand() {
+    if (visibility !== "public") {
+      toast.error("Make your skill public first — private skills can't be installed via curl.");
+      setShowExport(false);
+      return;
+    }
+    const filename = (title || "skill")
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-|-$/g, "");
+    const command = `curl -sL ${window.location.origin}/api/skills/${skillId}/raw -o .claude/skills/${filename}.md`;
+    navigator.clipboard.writeText(command);
+    setCopiedInstall(true);
+    setTimeout(() => setCopiedInstall(false), 2000);
+    setShowExport(false);
+    toast.success("Install command copied to clipboard");
+  }
+
   function hasAnyContent() {
     return !!(
       title.trim() ||
@@ -259,21 +297,6 @@ export function EditorShell({ skillId, initialContent, initialTitle, tryMode }: 
         />
         <div className="flex items-center gap-2 flex-wrap">
           <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => {
-              if (hasAnyContent()) {
-                setShowDiscardConfirm(true);
-              } else {
-                handleDiscard();
-              }
-            }}
-            className="text-text-secondary hover:text-error"
-          >
-            <IconTrash size={14} />
-            <span className="hidden sm:inline">Discard</span>
-          </Button>
-          <Button
             variant="secondary"
             size="sm"
             onClick={async () => {
@@ -316,21 +339,77 @@ export function EditorShell({ skillId, initialContent, initialTitle, tryMode }: 
               size="sm"
               onClick={() => setShowExport(!showExport)}
             >
-              <IconShare size={14} />
+              <IconDownload size={14} />
               <IconChevronDown size={12} />
             </Button>
             {showExport && (
-              <div className="absolute right-0 top-full mt-1 bg-surface border border-border rounded-2xl shadow-xl z-20 py-1 min-w-[160px]">
+              <div className="absolute right-0 top-full mt-1 bg-surface border border-border rounded-2xl shadow-xl z-20 py-1 min-w-[200px]">
                 <button
                   className="w-full text-left px-3 py-2 text-sm text-text-primary hover:bg-surface-alt transition-colors flex items-center gap-2"
                   onClick={handleExportMarkdown}
                 >
                   <IconDownload size={14} />
-                  Export .md
+                  Download SKILL.md
                 </button>
+                {!tryMode && (
+                  <button
+                    className="w-full text-left px-3 py-2 text-sm text-text-primary hover:bg-surface-alt transition-colors flex items-center gap-2"
+                    onClick={handleCopyInstallCommand}
+                  >
+                    {copiedInstall ? <IconCheck size={14} className="text-accent" /> : <IconTerminal2 size={14} />}
+                    Copy install command
+                  </button>
+                )}
               </div>
             )}
           </div>
+          {!tryMode && (
+            <div className="group flex items-center">
+              <div className="overflow-hidden w-0 group-hover:w-[72px] transition-all duration-200 ease-out">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => {
+                    if (hasAnyContent()) {
+                      setShowDiscardConfirm(true);
+                    } else {
+                      handleDiscard();
+                    }
+                  }}
+                  className="text-text-secondary hover:text-error whitespace-nowrap"
+                >
+                  <IconTrash size={14} />
+                  <span className="hidden sm:inline">Delete</span>
+                </Button>
+              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleToggleVisibility}
+                className="transition-transform duration-200 ease-out"
+              >
+                {visibility === "public" ? <IconWorld size={14} className="text-accent" /> : <IconLock size={14} />}
+                <span className="hidden sm:inline">{visibility === "public" ? "Public" : "Private"}</span>
+              </Button>
+            </div>
+          )}
+          {tryMode && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => {
+                if (hasAnyContent()) {
+                  setShowDiscardConfirm(true);
+                } else {
+                  handleDiscard();
+                }
+              }}
+              className="text-text-secondary hover:text-error"
+            >
+              <IconTrash size={14} />
+              <span className="hidden sm:inline">Discard</span>
+            </Button>
+          )}
         </div>
       </div>
 

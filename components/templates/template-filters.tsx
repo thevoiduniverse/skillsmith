@@ -1,6 +1,5 @@
 "use client";
 
-import { useRef, useEffect, useState } from "react";
 import { IconSearch } from "@tabler/icons-react";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
@@ -31,17 +30,6 @@ export function TemplateFilters({
   sort,
   onSortChange,
 }: TemplateFiltersProps) {
-  const measureRef = useRef<HTMLSpanElement>(null);
-  const [selectWidth, setSelectWidth] = useState<number | undefined>();
-
-  const selectedLabel = sortOptions.find((o) => o.value === sort)?.label ?? "";
-
-  useEffect(() => {
-    if (measureRef.current) {
-      // 12px left padding + 24px right for caret + border
-      setSelectWidth(measureRef.current.offsetWidth + 12 + 24 + 2);
-    }
-  }, [selectedLabel]);
 
   return (
     <div className="space-y-4">
@@ -55,8 +43,7 @@ export function TemplateFilters({
         />
       </div>
 
-      <div className="flex items-center justify-between gap-4">
-        <div className="flex items-center gap-1.5 flex-wrap">
+      <div className="flex items-center gap-1.5 flex-wrap justify-center">
           {categories.map((cat) => {
             const isActive = cat === "All" ? !category : category === cat;
             return (
@@ -74,23 +61,11 @@ export function TemplateFilters({
               </button>
             );
           })}
-        </div>
-
-        <div className="relative shrink-0">
-          {/* Hidden span to measure selected text width */}
-          <span
-            ref={measureRef}
-            className="absolute invisible whitespace-nowrap text-xs font-medium"
-            aria-hidden="true"
-          >
-            {selectedLabel}
-          </span>
           <select
             value={sort}
             onChange={(e) => onSortChange(e.target.value)}
-            className="bg-[rgba(25,25,25,0.8)] border border-[rgba(255,255,255,0.08)] text-white text-xs font-medium rounded-full px-3 py-1.5 pr-7 focus:border-[#bfff00] focus:outline-none appearance-none bg-no-repeat bg-[length:12px] bg-[right_8px_center]"
+            className="shrink-0 bg-[rgba(25,25,25,0.8)] border border-[rgba(255,255,255,0.08)] text-white text-xs font-medium rounded-full px-3 py-1.5 pr-7 focus:border-[#bfff00] focus:outline-none appearance-none bg-no-repeat bg-[length:12px] bg-[right_8px_center]"
             style={{
-              ...(selectWidth ? { width: selectWidth } : {}),
               backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='rgba(255,255,255,0.6)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E")`,
             }}
           >
@@ -101,7 +76,6 @@ export function TemplateFilters({
             ))}
           </select>
         </div>
-      </div>
     </div>
   );
 }

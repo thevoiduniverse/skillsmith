@@ -4,8 +4,8 @@ import { useEffect } from "react";
 import { IconX } from "@tabler/icons-react";
 import { Button } from "@/components/ui/button";
 import { TransitionText } from "@/components/ui/transition-text";
-import { Badge } from "@/components/ui/badge";
 import { parseSkillMarkdown } from "@/lib/skill-parser/parse";
+import { getTagColors } from "@/lib/tag-colors";
 import Link from "next/link";
 
 interface TemplatePreviewProps {
@@ -100,10 +100,26 @@ export function TemplatePreview({
         {/* Footer */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-6 border-t border-border">
           <div className="flex gap-1.5">
-            {template.category && <Badge>{template.category}</Badge>}
-            {template.tags?.slice(0, 2).map((tag) => (
-              <Badge key={tag} variant="outline">{tag}</Badge>
-            ))}
+            {template.category && (
+              <span
+                className="inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium"
+                style={{ backgroundColor: getTagColors(template.category).bg, color: getTagColors(template.category).text }}
+              >
+                {template.category}
+              </span>
+            )}
+            {template.tags?.slice(0, 2).map((tag) => {
+              const colors = getTagColors(tag);
+              return (
+                <span
+                  key={tag}
+                  className="inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium"
+                  style={{ backgroundColor: colors.bg, color: colors.text }}
+                >
+                  {tag}
+                </span>
+              );
+            })}
           </div>
           {publicMode ? (
             <Link
