@@ -226,25 +226,8 @@ export function LandingHero() {
             </Link>
             <Link
               href="/signup"
-              className="relative bg-[rgba(191,255,0,0.15)] backdrop-blur-[4px] border border-[rgba(191,255,0,0.08)] text-[#bfff00] font-sans font-bold text-sm rounded-[40px] px-4 py-2.5 md:px-7 md:py-3 flex items-center justify-center hover:bg-[rgba(191,255,0,0.25)] transition-colors"
+              className="bg-gradient-to-b from-[#d4ff4d] to-[#a8e600] text-[#0a0a0a] font-sans font-bold text-sm rounded-[40px] px-4 py-2.5 md:px-7 md:py-3 flex items-center justify-center shadow-[inset_0_1px_0_rgba(255,255,255,0.4),inset_0_-1px_0_rgba(0,0,0,0.15),0_1px_3px_rgba(0,0,0,0.4)] border border-[rgba(0,0,0,0.1)] hover:brightness-105 transition-all"
             >
-              <div
-                className="absolute inset-0 rounded-[40px] pointer-events-none"
-                style={{
-                  padding: 1,
-                  background: "linear-gradient(to bottom, rgba(191,255,0,0.25), rgba(191,255,0,0.04) 50%, transparent)",
-                  WebkitMask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-                  WebkitMaskComposite: "xor",
-                  mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-                  maskComposite: "exclude",
-                }}
-              />
-              <div
-                className="absolute inset-0 rounded-[40px] pointer-events-none"
-                style={{
-                  background: "linear-gradient(to bottom, rgba(191,255,0,0.04), transparent 35%)",
-                }}
-              />
               <span className="hidden md:inline">SIGN UP / SIGN IN</span>
               <span className="md:hidden">SIGN UP</span>
             </Link>
@@ -279,7 +262,7 @@ export function LandingHero() {
           </Link>
           <Link
             href="/try"
-            className="w-full sm:w-auto bg-gradient-to-b from-[rgba(191,255,0,0.18)] to-[rgba(191,255,0,0.08)] backdrop-blur-[4px] border border-[rgba(191,255,0,0.2)] text-[#bfff00] font-sans font-bold text-sm rounded-[40px] px-6 py-3.5 md:px-10 md:py-5 shadow-[inset_0_1px_0_rgba(191,255,0,0.3),inset_0_-1px_0_rgba(0,0,0,0.2),0_1px_3px_rgba(0,0,0,0.4),0_0_12px_rgba(191,255,0,0.08)] hover:from-[rgba(191,255,0,0.25)] hover:to-[rgba(191,255,0,0.12)] transition-all text-center"
+            className="w-full sm:w-auto bg-gradient-to-b from-[#d4ff4d] to-[#a8e600] text-[#0a0a0a] font-sans font-bold text-sm rounded-[40px] px-6 py-3.5 md:px-10 md:py-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.4),inset_0_-1px_0_rgba(0,0,0,0.15),0_1px_3px_rgba(0,0,0,0.4)] border border-[rgba(0,0,0,0.1)] hover:brightness-105 transition-all text-center"
           >
             BUILD NOW
           </Link>
