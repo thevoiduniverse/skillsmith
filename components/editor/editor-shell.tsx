@@ -13,6 +13,7 @@ import { GuidedEditor } from "./guided-mode/guided-editor";
 import { MonacoMarkdownEditor } from "./markdown-mode/monaco-editor";
 import { AiToolbar } from "./ai-toolbar";
 import Link from "next/link";
+import { track } from "@/lib/analytics";
 
 interface EditorShellProps {
   skillId: string;
@@ -123,6 +124,7 @@ export function EditorShell({ skillId, initialContent, initialTitle, initialVisi
 
   async function handleAiDraft() {
     if (!structure.description && !structure.name) return;
+    track("ai_draft_triggered");
     setAiLoading("draft");
     structureSnapshot.current = { ...structure, examples: [...structure.examples] };
     try {
@@ -160,6 +162,7 @@ export function EditorShell({ skillId, initialContent, initialTitle, initialVisi
   }
 
   async function handleAiSuggest(section: string) {
+    track("ai_suggest_triggered", { section });
     setAiLoading(section);
     structureSnapshot.current = { ...structure, examples: [...structure.examples] };
     try {
@@ -198,6 +201,7 @@ export function EditorShell({ skillId, initialContent, initialTitle, initialVisi
   }
 
   function handleExportMarkdown() {
+    track("skill_exported");
     const md = getCurrentMarkdown();
     const blob = new Blob([md], { type: "text/markdown" });
     const url = URL.createObjectURL(blob);
@@ -220,6 +224,7 @@ export function EditorShell({ skillId, initialContent, initialTitle, initialVisi
       });
       if (!res.ok) throw new Error();
       setVisibility(newVisibility);
+      track("visibility_toggled", { visibility: newVisibility });
       toast.success(newVisibility === "public" ? "Skill is now public" : "Skill is now private");
     } catch {
       toast.error("Failed to update visibility");
@@ -238,6 +243,7 @@ export function EditorShell({ skillId, initialContent, initialTitle, initialVisi
       .replace(/^-|-$/g, "");
     const command = `curl -sL ${window.location.origin}/api/skills/${skillId}/raw -o .claude/skills/${filename}.md`;
     navigator.clipboard.writeText(command);
+    track("install_command_copied");
     setCopiedInstall(true);
     setTimeout(() => setCopiedInstall(false), 2000);
     setShowExport(false);
@@ -261,6 +267,7 @@ export function EditorShell({ skillId, initialContent, initialTitle, initialVisi
       router.push("/try");
       return;
     }
+    track("skill_deleted");
     try {
       await fetch(`/api/skills/${skillId}`, { method: "DELETE" });
     } catch {
@@ -304,6 +311,7 @@ export function EditorShell({ skillId, initialContent, initialTitle, initialVisi
                 saveToLocalStorage();
                 toast.success("Saved locally");
               } else {
+                track("skill_saved");
                 await saveSkill();
                 router.push("/dashboard");
               }
@@ -322,6 +330,7 @@ export function EditorShell({ skillId, initialContent, initialTitle, initialVisi
           <Button
             size="sm"
             onClick={() => {
+              track("skill_tested");
               if (tryMode) {
                 saveToLocalStorage();
                 router.push("/try/test");
@@ -418,7 +427,7 @@ export function EditorShell({ skillId, initialContent, initialTitle, initialVisi
         {(["guided", "markdown"] as const).map((mode) => (
           <button
             key={mode}
-            onClick={() => switchMode(mode)}
+            onClick={() => { switchMode(mode); track("editor_mode_switched", { mode }); }}
             className={cn(
               "px-4 py-2 text-sm font-medium transition-colors border-b-2 -mb-px",
               activeMode === mode

@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { IconGitFork } from "@tabler/icons-react";
 import { Button } from "@/components/ui/button";
 import { TransitionText } from "@/components/ui/transition-text";
+import { track } from "@/lib/analytics";
 
 export function ForkButton({ skillId }: { skillId: string }) {
   const [loading, setLoading] = useState(false);
@@ -17,6 +18,7 @@ export function ForkButton({ skillId }: { skillId: string }) {
         method: "POST",
       });
       const fork = await res.json();
+      track("skill_forked", { source_skill_id: skillId });
       router.push(`/skills/${fork.id}/edit`);
     } catch {
       setLoading(false);

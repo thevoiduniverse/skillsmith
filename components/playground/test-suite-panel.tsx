@@ -9,6 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
 import { TestCaseRow } from "./test-case-row";
 import { useTestCases } from "@/lib/hooks/use-test-cases";
+import { track } from "@/lib/analytics";
 
 interface TestSuitePanelProps {
   skillId: string;
@@ -27,12 +28,14 @@ export function TestSuitePanel({ skillId, skillContent }: TestSuitePanelProps) {
   async function handleAdd() {
     if (!newPrompt.trim() || !newExpected.trim()) return;
     await addTestCase(newPrompt.trim(), newExpected.trim());
+    track("test_case_added");
     setNewPrompt("");
     setNewExpected("");
     setShowForm(false);
   }
 
   async function runSingleTest(testCaseId: string) {
+    track("test_run_single");
     setRunningId(testCaseId);
     const tc = testCases.find((t) => t.id === testCaseId);
     if (!tc) return;
@@ -74,6 +77,7 @@ export function TestSuitePanel({ skillId, skillContent }: TestSuitePanelProps) {
   }
 
   async function runAllTests() {
+    track("test_run_all", { count: testCases.length });
     setRunningAll(true);
     for (const tc of testCases) {
       await runSingleTest(tc.id);

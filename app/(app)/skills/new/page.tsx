@@ -21,6 +21,7 @@ import { cn } from "@/lib/utils";
 import { TransitionText } from "@/components/ui/transition-text";
 import { SKILL_CATEGORIES } from "@/lib/constants";
 import { useIsMobile } from "@/lib/hooks/use-is-mobile";
+import { track } from "@/lib/analytics";
 
 /* ─── Types ───────────────────────────────────── */
 
@@ -159,6 +160,7 @@ export default function NewSkillPage() {
       if (!createRes.ok) throw new Error("Skill creation failed");
       const skill = await createRes.json();
 
+      track("skill_created", { method: "ai", category: category ?? undefined });
       router.push(`/skills/${skill.id}/edit`);
     } catch {
       toast.error("Failed to generate skill. Please try again.");
@@ -182,6 +184,7 @@ export default function NewSkillPage() {
       });
       if (!res.ok) throw new Error();
       const skill = await res.json();
+      track("skill_created", { method: "blank", category: category ?? undefined });
       router.push(`/skills/${skill.id}/edit`);
     } catch {
       toast.error("Failed to create skill. Please try again.");
@@ -198,6 +201,7 @@ export default function NewSkillPage() {
       const res = await fetch(`/api/skills/${templateId}/fork`, { method: "POST" });
       if (!res.ok) throw new Error();
       const fork = await res.json();
+      track("template_forked", { template_id: templateId });
       router.push(`/skills/${fork.id}/edit`);
     } catch {
       toast.error("Failed to use template. Please try again.");
@@ -219,6 +223,7 @@ export default function NewSkillPage() {
       const data = await res.json();
       if (data.name) {
         setSkillName(data.name.trim());
+        track("skill_name_randomised");
       }
     } catch {
       toast.error("Failed to generate name. Please try again.");
@@ -241,7 +246,7 @@ export default function NewSkillPage() {
           ]).map(({ key, label, icon: Icon }) => (
             <button
               key={key}
-              onClick={() => setCreationPath(key)}
+              onClick={() => { setCreationPath(key); track("creation_path_selected", { path: key }); }}
               className={cn(
                 "flex items-center justify-center gap-1.5 px-4 py-2.5 text-sm font-medium rounded-full transition-all duration-200 whitespace-nowrap md:flex-1",
                 creationPath === key
@@ -363,9 +368,11 @@ export default function NewSkillPage() {
               {SKILL_CATEGORIES.map((cat) => (
                 <button
                   key={cat}
-                  onClick={() =>
-                    setCategory(category === cat ? null : cat)
-                  }
+                  onClick={() => {
+                    const isSelecting = category !== cat;
+                    setCategory(isSelecting ? cat : null);
+                    if (isSelecting) track("category_selected", { category: cat });
+                  }}
                   className={cn(
                     "px-3 py-1.5 text-xs font-medium rounded-full transition-all duration-200",
                     category === cat
