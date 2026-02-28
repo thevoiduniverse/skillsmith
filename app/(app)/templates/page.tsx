@@ -66,7 +66,7 @@ export default function TemplatesPage() {
   }, [search, category, sort]);
 
   return (
-    <div className="max-w-6xl mx-auto flex flex-col h-[calc(100dvh-6.5rem)] md:h-[calc(100dvh-4.5rem)]">
+    <div className="max-w-6xl mx-auto flex flex-col h-[calc(100dvh-6.5rem-env(safe-area-inset-bottom,0px))] md:h-[calc(100dvh-4.5rem)]">
       {/* Fixed header + filters */}
       <div className="shrink-0">
         <div className="mb-10 text-center">
@@ -99,7 +99,7 @@ export default function TemplatesPage() {
           }}
         />
 
-        <div ref={scrollRef} onScroll={handleScroll} className="h-full overflow-y-auto pt-2">
+        <div ref={scrollRef} onScroll={handleScroll} className="h-full overflow-y-auto pt-2 pb-14">
           {loading ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {Array.from({ length: 6 }).map((_, i) => (
@@ -135,7 +135,7 @@ export default function TemplatesPage() {
 
         {/* Bottom gradient fade mask */}
         <div
-          className="absolute bottom-0 left-0 right-0 h-24 pointer-events-none z-10"
+          className="absolute bottom-0 left-0 right-0 h-12 pointer-events-none z-10"
           style={{ background: "linear-gradient(to bottom, transparent, rgba(10,10,10,1))" }}
         />
       </div>

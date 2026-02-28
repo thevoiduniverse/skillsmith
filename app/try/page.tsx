@@ -519,7 +519,7 @@ export default function TryPage() {
     <>
       {/* Header */}
       <div className="mb-10 text-center">
-        <h1 className="text-4xl md:text-5xl font-bold text-white tracking-tight">
+        <h1 className="text-xl md:text-5xl font-bold text-white tracking-tight">
           Create a New Skill
         </h1>
         <p className="text-[rgba(255,255,255,0.5)] mt-2 text-base">

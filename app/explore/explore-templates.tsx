@@ -81,7 +81,7 @@ export function ExploreTemplates() {
           }}
         />
 
-        <div ref={scrollRef} onScroll={handleScroll} className="h-full overflow-y-auto pt-2">
+        <div ref={scrollRef} onScroll={handleScroll} className="h-full overflow-y-auto pt-2 pb-14">
           {loading ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {Array.from({ length: 6 }).map((_, i) => (
@@ -117,7 +117,7 @@ export function ExploreTemplates() {
 
         {/* Bottom gradient fade mask */}
         <div
-          className="absolute bottom-0 left-0 right-0 h-24 pointer-events-none z-10"
+          className="absolute bottom-0 left-0 right-0 h-12 pointer-events-none z-10"
           style={{ background: "linear-gradient(to bottom, transparent, rgba(10,10,10,1))" }}
         />
       </div>

@@ -52,9 +52,9 @@ export function ExplorePageContent() {
           </div>
         </nav>
 
-        <main className="relative z-10 max-w-6xl mx-auto px-6 pt-12 flex flex-col" style={{ height: "calc(100dvh - 5.5rem)" }}>
+        <main className="relative z-10 max-w-6xl mx-auto px-6 pt-12 flex flex-col" style={{ height: "calc(100dvh - 5.5rem - env(safe-area-inset-bottom, 0px))" }}>
           <div className="mb-10 text-center shrink-0">
-            <h1 className="text-4xl md:text-5xl font-bold tracking-tight">
+            <h1 className="text-xl md:text-5xl font-bold tracking-tight">
               Templates
             </h1>
             <p className="text-[rgba(255,255,255,0.5)] mt-2 text-base">
