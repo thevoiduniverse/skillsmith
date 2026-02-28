@@ -256,15 +256,15 @@ export function LandingHero() {
         <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-3 md:gap-5">
           <Link
             href="/explore"
-            className="w-full sm:w-auto bg-gradient-to-b from-[rgba(255,255,255,0.08)] to-[rgba(255,255,255,0.02)] backdrop-blur-[4px] border border-[rgba(255,255,255,0.06)] text-white font-sans font-bold text-sm rounded-[40px] px-6 py-3.5 md:px-10 md:py-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.08),inset_0_-1px_0_rgba(0,0,0,0.2),0_1px_3px_rgba(0,0,0,0.4)] hover:from-[rgba(255,255,255,0.12)] hover:to-[rgba(255,255,255,0.04)] transition-all text-center"
+            className="w-1/2 sm:w-auto bg-gradient-to-b from-[rgba(255,255,255,0.08)] to-[rgba(255,255,255,0.02)] backdrop-blur-[4px] border border-[rgba(255,255,255,0.06)] text-white font-sans font-bold text-sm rounded-[40px] px-6 py-3.5 md:px-10 md:py-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.08),inset_0_-1px_0_rgba(0,0,0,0.2),0_1px_3px_rgba(0,0,0,0.4)] hover:from-[rgba(255,255,255,0.12)] hover:to-[rgba(255,255,255,0.04)] transition-all text-center"
           >
-            BROWSE TEMPLATES
+            Browse Templates
           </Link>
           <Link
             href="/try"
-            className="w-full sm:w-auto bg-gradient-to-b from-[#d4ff4d] to-[#a8e600] text-[#0a0a0a] font-sans font-bold text-sm rounded-[40px] px-6 py-3.5 md:px-10 md:py-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.4),inset_0_-1px_0_rgba(0,0,0,0.15),0_1px_3px_rgba(0,0,0,0.4)] border border-[rgba(0,0,0,0.1)] hover:brightness-105 transition-all text-center"
+            className="w-1/2 sm:w-auto bg-gradient-to-b from-[#d4ff4d] to-[#a8e600] text-[#0a0a0a] font-sans font-bold text-sm rounded-[40px] px-6 py-3.5 md:px-10 md:py-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.4),inset_0_-1px_0_rgba(0,0,0,0.15),0_1px_3px_rgba(0,0,0,0.4)] border border-[rgba(0,0,0,0.1)] hover:brightness-105 transition-all text-center"
           >
-            BUILD NOW
+            Build Now
           </Link>
         </div>
       </section>
@@ -358,7 +358,7 @@ export function LandingHero() {
                     </>
                   )}
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={card.image} alt="" className="w-[160px] h-[160px] object-contain shrink-0 pointer-events-none drop-shadow-[0_4px_20px_rgba(0,0,0,0.4)]" />
+                  <img src={card.image} alt="" className="w-[160px] h-[160px] object-contain shrink-0 pointer-events-none" />
                   <div className="flex flex-col gap-[11px] mt-auto pt-4">
                     <h3
                       className={`font-sans font-bold text-[28px] leading-[1.6] whitespace-pre-line ${

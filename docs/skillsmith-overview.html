@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SkillSMITH — Project Overview</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+  :root {
+    --bg: #0a0a0a;
+    --surface: #111111;
+    --surface-alt: #1a1a1a;
+    --accent: #bfff00;
+    --accent-dim: rgba(191, 255, 0, 0.15);
+    --text-primary: #ffffff;
+    --text-secondary: rgba(255, 255, 255, 0.6);
+    --text-tertiary: rgba(255, 255, 255, 0.35);
+    --border: rgba(255, 255, 255, 0.08);
+    --border-accent: rgba(191, 255, 0, 0.3);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Page structure ── */
+  .page {
+    width: 100%;
+    min-height: 100vh;
+    padding: 80px 72px;
+    page-break-after: always;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .page:last-child { page-break-after: avoid; }
+
+  /* ── Cover page ── */
+  .cover {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 100vh;
+    position: relative;
+  }
+
+  .cover::before {
+    content: '';
+    position: absolute;
+    top: -200px;
+    right: -200px;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(191,255,0,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .cover::after {
+    content: '';
+    position: absolute;
+    bottom: -100px;
+    left: -100px;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(191,255,0,0.04) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .cover-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--accent-dim);
+    border: 1px solid var(--border-accent);
+    border-radius: 40px;
+    padding: 6px 16px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 40px;
+    width: fit-content;
+  }
+
+  .cover-badge::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+  }
+
+  .cover h1 {
+    font-size: 72px;
+    font-weight: 900;
+    letter-spacing: -2px;
+    line-height: 1;
+    margin-bottom: 12px;
+  }
+
+  .cover h1 .accent {
+    color: var(--accent);
+  }
+
+  .cover .tagline {
+    font-size: 22px;
+    color: var(--text-secondary);
+    font-weight: 300;
+    line-height: 1.5;
+    max-width: 520px;
+    margin-bottom: 56px;
+  }
+
+  .cover-meta {
+    display: flex;
+    gap: 32px;
+    padding-top: 40px;
+    border-top: 1px solid var(--border);
+  }
+
+  .cover-meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .cover-meta-label {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--text-tertiary);
+  }
+
+  .cover-meta-value {
+    font-size: 13px;
+    color: var(--text-secondary);
+    font-weight: 500;
+  }
+
+  /* ── Section headers ── */
+  .section-number {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  h2 {
+    font-size: 36px;
+    font-weight: 800;
+    letter-spacing: -1px;
+    line-height: 1.15;
+    margin-bottom: 16px;
+  }
+
+  h2 .accent { color: var(--accent); }
+
+  .section-intro {
+    font-size: 16px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    max-width: 600px;
+    margin-bottom: 48px;
+  }
+
+  h3 {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    margin-top: 32px;
+    color: var(--text-primary);
+  }
+
+  /* ── Cards grid ── */
+  .card-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 32px;
+  }
+
+  .card-grid-3 {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+  }
+
+  .card-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: var(--accent-dim);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+    font-size: 18px;
+  }
+
+  .card h4 {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--text-primary);
+  }
+
+  .card p {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+
+  /* ── Feature rows ── */
+  .feature-row {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    padding: 24px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .feature-row:last-child { border-bottom: none; }
+
+  .feature-number {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--accent);
+    opacity: 0.4;
+    min-width: 56px;
+    line-height: 1;
+    padding-top: 4px;
+  }
+
+  .feature-content h4 {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  .feature-content p {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.65;
+  }
+
+  /* ── Tech stack pills ── */
+  .stack-category {
+    margin-bottom: 28px;
+  }
+
+  .stack-category-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--text-tertiary);
+    margin-bottom: 10px;
+    display: block;
+  }
+
+  .pill-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--surface-alt);
+    border: 1px solid var(--border);
+    border-radius: 40px;
+    padding: 7px 14px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-secondary);
+  }
+
+  .pill.accent-pill {
+    background: var(--accent-dim);
+    border-color: var(--border-accent);
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  /* ── Stats bar ── */
+  .stats-bar {
+    display: flex;
+    gap: 0;
+    margin: 40px 0;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+
+  .stat {
+    flex: 1;
+    padding: 28px 24px;
+    background: var(--surface);
+    text-align: center;
+    border-right: 1px solid var(--border);
+  }
+
+  .stat:last-child { border-right: none; }
+
+  .stat-value {
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 6px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .stat-label {
+    font-size: 11px;
+    color: var(--text-tertiary);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 600;
+  }
+
+  /* ── Code block ── */
+  .code-block {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    line-height: 1.8;
+    color: var(--text-secondary);
+    overflow: hidden;
+    margin-top: 20px;
+  }
+
+  .code-block .keyword { color: var(--accent); }
+  .code-block .comment { color: var(--text-tertiary); }
+  .code-block .string { color: #ff8b3e; }
+  .code-block .muted { color: var(--text-tertiary); }
+
+  /* ── Diagram / flow ── */
+  .flow {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin: 32px 0;
+  }
+
+  .flow-step {
+    flex: 1;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 16px;
+    text-align: center;
+  }
+
+  .flow-step-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+
+  .flow-step-text {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  .flow-arrow {
+    color: var(--text-tertiary);
+    font-size: 18px;
+    padding: 0 6px;
+    flex-shrink: 0;
+  }
+
+  /* ── Highlight box ── */
+  .highlight-box {
+    background: linear-gradient(135deg, rgba(191,255,0,0.06) 0%, rgba(191,255,0,0.02) 100%);
+    border: 1px solid var(--border-accent);
+    border-radius: 16px;
+    padding: 32px;
+    margin: 32px 0;
+  }
+
+  .highlight-box h4 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+
+  .highlight-box p {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+  }
+
+  .highlight-box ul {
+    list-style: none;
+    margin-top: 12px;
+  }
+
+  .highlight-box ul li {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    padding-left: 18px;
+    position: relative;
+  }
+
+  .highlight-box ul li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 9px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    opacity: 0.6;
+  }
+
+  /* ── Separator ── */
+  .sep {
+    height: 1px;
+    background: var(--border);
+    margin: 48px 0;
+  }
+
+  /* ── Footer ── */
+  .page-footer {
+    position: absolute;
+    bottom: 40px;
+    left: 72px;
+    right: 72px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 10px;
+    color: var(--text-tertiary);
+    letter-spacing: 0.05em;
+  }
+
+  .page-footer .logo-small {
+    font-weight: 800;
+    font-size: 11px;
+    color: var(--text-tertiary);
+  }
+
+  .page-footer .logo-small .a { color: var(--accent); opacity: 0.5; }
+
+  /* ── List styles ── */
+  .clean-list {
+    list-style: none;
+    margin-top: 16px;
+  }
+
+  .clean-list li {
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+  }
+
+  .clean-list li:last-child { border-bottom: none; }
+
+  .clean-list .bullet {
+    color: var(--accent);
+    font-size: 16px;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+
+  /* ── Scoring table ── */
+  .score-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+
+  .score-table th {
+    text-align: left;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--text-tertiary);
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .score-table td {
+    font-size: 13px;
+    color: var(--text-secondary);
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .score-table tr:last-child td { border-bottom: none; }
+
+  .score-table .score-val {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    color: var(--accent);
+  }
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- PAGE 1: COVER                               -->
+<!-- ════════════════════════════════════════════ -->
+<div class="page cover">
+  <div class="cover-badge">Project Overview</div>
+  <h1><span class="accent">SKILL</span>SMITH</h1>
+  <p class="tagline">
+    Build, test, and share custom Claude skills with an AI-assisted editor and split-pane testing playground.
+  </p>
+
+  <div class="cover-meta">
+    <div class="cover-meta-item">
+      <span class="cover-meta-label">Platform</span>
+      <span class="cover-meta-value">Web Application</span>
+    </div>
+    <div class="cover-meta-item">
+      <span class="cover-meta-label">Framework</span>
+      <span class="cover-meta-value">Next.js 14 + React 18</span>
+    </div>
+    <div class="cover-meta-item">
+      <span class="cover-meta-label">AI Engine</span>
+      <span class="cover-meta-value">Claude (Anthropic SDK)</span>
+    </div>
+    <div class="cover-meta-item">
+      <span class="cover-meta-label">Database</span>
+      <span class="cover-meta-value">Supabase (PostgreSQL)</span>
+    </div>
+    <div class="cover-meta-item">
+      <span class="cover-meta-label">Date</span>
+      <span class="cover-meta-value">February 2026</span>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span class="logo-small"><span class="a">SKILL</span>SMITH</span>
+    <span>Page 1</span>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- PAGE 2: THE PROBLEM                         -->
+<!-- ════════════════════════════════════════════ -->
+<div class="page">
+  <span class="section-number">01 &mdash; The Problem</span>
+  <h2>AI skills are <span class="accent">hard to build</span> and harder to validate</h2>
+  <p class="section-intro">
+    Prompt engineering is one of the most impactful skills of the AI era, yet the tooling around it remains primitive. SkillSMITH addresses five fundamental friction points.
+  </p>
+
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-icon">01</div>
+      <h4>Creation Friction</h4>
+      <p>Translating a vague idea into a structured, production-grade prompt requires expertise most users don't have. There's no guided workflow to go from concept to polished skill.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">02</div>
+      <h4>Quality Blindness</h4>
+      <p>There's no easy way to know if a prompt actually works well. Users test manually, one message at a time, with no systematic evaluation or scoring methodology.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">03</div>
+      <h4>Discovery Gap</h4>
+      <p>Proven skills live in scattered docs, tweets, and repos. There's no central hub to browse, evaluate, and fork high-quality skill templates.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">04</div>
+      <h4>Refinement Tedium</h4>
+      <p>Improving a skill requires manual iteration: try, fail, edit, repeat. No AI-powered suggestions, no targeted improvements for specific sections.</p>
+    </div>
+  </div>
+
+  <div class="highlight-box" style="margin-top: 32px;">
+    <h4>The Core Insight</h4>
+    <p>
+      The SKILL.md format &mdash; a structured markdown file with instructions, edge cases, and examples &mdash; is the emerging standard for reusable AI behaviors. But writing great SKILL.md files requires the same AI assistance they're designed to deliver. SkillSMITH closes this loop.
+    </p>
+  </div>
+
+  <div class="page-footer">
+    <span class="logo-small"><span class="a">SKILL</span>SMITH</span>
+    <span>Page 2</span>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- PAGE 3: THE SOLUTION                        -->
+<!-- ════════════════════════════════════════════ -->
+<div class="page">
+  <span class="section-number">02 &mdash; The Solution</span>
+  <h2>An end-to-end <span class="accent">skill forge</span></h2>
+  <p class="section-intro">
+    SkillSMITH is a full-stack platform for creating, testing, and sharing Claude skills. Every step &mdash; from blank idea to community template &mdash; is AI-assisted.
+  </p>
+
+  <div class="flow">
+    <div class="flow-step">
+      <div class="flow-step-label">Step 1</div>
+      <div class="flow-step-text">Describe</div>
+    </div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step">
+      <div class="flow-step-label">Step 2</div>
+      <div class="flow-step-text">Generate</div>
+    </div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step">
+      <div class="flow-step-label">Step 3</div>
+      <div class="flow-step-text">Refine</div>
+    </div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step">
+      <div class="flow-step-label">Step 4</div>
+      <div class="flow-step-text">Test</div>
+    </div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step">
+      <div class="flow-step-label">Step 5</div>
+      <div class="flow-step-text">Share</div>
+    </div>
+  </div>
+
+  <div class="feature-row">
+    <div class="feature-number">01</div>
+    <div class="feature-content">
+      <h4>Multi-Path Skill Creation</h4>
+      <p>Three ways to start: describe your idea and let AI generate a complete SKILL.md, fork an existing community template, or start from a blank canvas. An animated card-stack interface guides you through naming, categorization, and generation.</p>
+    </div>
+  </div>
+
+  <div class="feature-row">
+    <div class="feature-number">02</div>
+    <div class="feature-content">
+      <h4>Dual-Mode Editor</h4>
+      <p><strong>Guided Mode</strong> breaks skill authoring into five structured steps: name &amp; trigger, instructions, edge cases, examples, and review. <strong>Markdown Mode</strong> opens a full Monaco editor for raw SKILL.md control. Switch between modes seamlessly &mdash; changes sync automatically.</p>
+    </div>
+  </div>
+
+  <div class="feature-row">
+    <div class="feature-number">03</div>
+    <div class="feature-content">
+      <h4>Split-Pane Testing Playground</h4>
+      <p>Send the same prompt to Claude with and without your skill applied. See responses side-by-side to visually compare the impact. Instantly validate that your skill produces the behavior you want.</p>
+    </div>
+  </div>
+
+  <div class="feature-row">
+    <div class="feature-number">04</div>
+    <div class="feature-content">
+      <h4>Automated Test Suites</h4>
+      <p>Build a suite of test cases with prompts and expected behaviors. Run them individually or all at once. AI scores each response across five quality dimensions, giving you a quantitative view of skill performance.</p>
+    </div>
+  </div>
+
+  <div class="feature-row">
+    <div class="feature-number">05</div>
+    <div class="feature-content">
+      <h4>Community Templates</h4>
+      <p>Browse a curated library of proven skill templates. Filter by category (Writing, Code, Business, Education, Productivity), sort by popularity or recency. Fork any template to make it your own. A public explore page lets unauthenticated users discover skills before signing up.</p>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span class="logo-small"><span class="a">SKILL</span>SMITH</span>
+    <span>Page 3</span>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- PAGE 4: AI INTELLIGENCE                     -->
+<!-- ════════════════════════════════════════════ -->
+<div class="page">
+  <span class="section-number">03 &mdash; AI Intelligence</span>
+  <h2>Five layers of <span class="accent">Claude integration</span></h2>
+  <p class="section-intro">
+    SkillSMITH isn't a thin wrapper around an API. Every AI interaction is purpose-built with specialized system prompts, structured output parsing, and quality guardrails.
+  </p>
+
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-icon" style="font-size: 14px; font-weight: 800;">GEN</div>
+      <h4>Skill Generation</h4>
+      <p>Takes a natural-language description and produces a complete SKILL.md with 5&ndash;10 behavioral rules, 5&ndash;8 edge case handlers, and 3 diverse examples. The system prompt enforces specificity over generality and demands behavioral boundaries.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon" style="font-size: 14px; font-weight: 800;">IMP</div>
+      <h4>Section Improvement</h4>
+      <p>Targeted AI suggestions for individual sections. Context-aware: considers recent test failures to recommend fixes. Returns a rationale explaining <em>why</em> each change matters, teaching users skill design principles.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon" style="font-size: 14px; font-weight: 800;">EVL</div>
+      <h4>Response Evaluation</h4>
+      <p>Scores Claude's output against expected behavior using a five-dimension rubric. Returns a 0&ndash;100 score, detailed reasoning, and a pass/fail determination. Powers the automated test suite.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon" style="font-size: 14px; font-weight: 800;">A/B</div>
+      <h4>Side-by-Side Testing</h4>
+      <p>Runs parallel requests &mdash; one with the skill injected as a system prompt, one without. Surfaces the behavioral delta so users can see the exact impact of their skill in real-time.</p>
+    </div>
+  </div>
+
+  <h3 style="margin-top: 40px;">Evaluation Rubric</h3>
+  <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 4px;">
+    Every test case response is scored across five weighted dimensions:
+  </p>
+
+  <table class="score-table">
+    <thead>
+      <tr>
+        <th>Dimension</th>
+        <th>Weight</th>
+        <th>What It Measures</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Instruction Adherence</td>
+        <td class="score-val">30%</td>
+        <td>Does the response follow the skill's behavioral rules?</td>
+      </tr>
+      <tr>
+        <td>Format Compliance</td>
+        <td class="score-val">20%</td>
+        <td>Does the output match the expected structure and formatting?</td>
+      </tr>
+      <tr>
+        <td>Tone Consistency</td>
+        <td class="score-val">15%</td>
+        <td>Is the voice and tone aligned with the skill's persona?</td>
+      </tr>
+      <tr>
+        <td>Edge Case Handling</td>
+        <td class="score-val">20%</td>
+        <td>Does it gracefully handle unusual inputs and boundaries?</td>
+      </tr>
+      <tr>
+        <td>Completeness</td>
+        <td class="score-val">15%</td>
+        <td>Is the response thorough without being excessive?</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="highlight-box">
+    <h4>Rate Limiting &amp; Safety</h4>
+    <p>All AI endpoints are rate-limited per user: 50 requests/hour and 100,000 tokens/day. Usage is tracked in the database to prevent abuse while allowing generous experimentation. Every request validates authentication before processing.</p>
+  </div>
+
+  <div class="page-footer">
+    <span class="logo-small"><span class="a">SKILL</span>SMITH</span>
+    <span>Page 4</span>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- PAGE 5: TECH STACK                          -->
+<!-- ════════════════════════════════════════════ -->
+<div class="page">
+  <span class="section-number">04 &mdash; Technology Stack</span>
+  <h2>Built on a <span class="accent">modern, production-grade</span> foundation</h2>
+  <p class="section-intro">
+    Every layer is chosen for developer experience, performance, and scalability. No unnecessary abstractions.
+  </p>
+
+  <div class="stack-category">
+    <span class="stack-category-label">Framework &amp; Runtime</span>
+    <div class="pill-row">
+      <span class="pill accent-pill">Next.js 14</span>
+      <span class="pill accent-pill">React 18</span>
+      <span class="pill">TypeScript 5</span>
+      <span class="pill">App Router</span>
+      <span class="pill">Server Components</span>
+    </div>
+  </div>
+
+  <div class="stack-category">
+    <span class="stack-category-label">Styling &amp; UI</span>
+    <div class="pill-row">
+      <span class="pill accent-pill">Tailwind CSS</span>
+      <span class="pill">Framer Motion</span>
+      <span class="pill">Monaco Editor</span>
+      <span class="pill">Tabler Icons</span>
+      <span class="pill">Custom Component Library</span>
+    </div>
+  </div>
+
+  <div class="stack-category">
+    <span class="stack-category-label">AI &amp; Intelligence</span>
+    <div class="pill-row">
+      <span class="pill accent-pill">Anthropic SDK</span>
+      <span class="pill accent-pill">Claude API</span>
+      <span class="pill">OpenAI SDK (fallback)</span>
+      <span class="pill">Custom System Prompts</span>
+      <span class="pill">Structured Output Parsing</span>
+    </div>
+  </div>
+
+  <div class="stack-category">
+    <span class="stack-category-label">Data &amp; Auth</span>
+    <div class="pill-row">
+      <span class="pill accent-pill">Supabase</span>
+      <span class="pill">PostgreSQL</span>
+      <span class="pill">Row-Level Security</span>
+      <span class="pill">SSR Auth</span>
+      <span class="pill">Middleware Guards</span>
+    </div>
+  </div>
+
+  <div class="stack-category">
+    <span class="stack-category-label">Content Processing</span>
+    <div class="pill-row">
+      <span class="pill">Gray Matter (YAML)</span>
+      <span class="pill">Remark GFM</span>
+      <span class="pill">React Markdown</span>
+      <span class="pill">Custom SKILL.md Parser</span>
+    </div>
+  </div>
+
+  <div class="sep"></div>
+
+  <h3>The SKILL.md Format</h3>
+  <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 4px;">
+    Each skill follows a structured markdown standard with YAML frontmatter:
+  </p>
+
+  <div class="code-block">
+    <span class="comment">---</span><br>
+    <span class="keyword">name</span>: <span class="string">Explain Like I'm 5</span><br>
+    <span class="keyword">description</span>: <span class="string">Breaks down concepts to match a specified comprehension level</span><br>
+    <span class="comment">---</span><br><br>
+    <span class="keyword"># Explain Like I'm 5</span><br><br>
+    <span class="keyword">## Instructions</span><br>
+    <span class="muted">- Default to age-5 level unless specified otherwise</span><br>
+    <span class="muted">- Use concrete, physical-world analogies</span><br>
+    <span class="muted">- Never use jargon without immediately explaining it</span><br><br>
+    <span class="keyword">## Edge Cases</span><br>
+    <span class="muted">- If asked about inherently adult topics, be honest and age-appropriate</span><br>
+    <span class="muted">- If concept can't be simplified without inaccuracy, explain at lowest honest level</span><br><br>
+    <span class="keyword">## Examples</span><br>
+    <span class="muted">### Example 1: Happy path</span><br>
+    <span class="keyword">User:</span> <span class="string">What is gravity?</span><br>
+    <span class="keyword">Claude:</span> <span class="string">Imagine you're holding a ball. When you let go, it falls down...</span>
+  </div>
+
+  <div class="page-footer">
+    <span class="logo-small"><span class="a">SKILL</span>SMITH</span>
+    <span>Page 5</span>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- PAGE 6: ARCHITECTURE & DATA                 -->
+<!-- ════════════════════════════════════════════ -->
+<div class="page">
+  <span class="section-number">05 &mdash; Architecture</span>
+  <h2>Secure, scalable, <span class="accent">real-time</span></h2>
+  <p class="section-intro">
+    A clean separation between public and authenticated routes, with row-level security ensuring users only access their own data.
+  </p>
+
+  <div class="stats-bar">
+    <div class="stat">
+      <div class="stat-value">5</div>
+      <div class="stat-label">AI Endpoints</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">12</div>
+      <div class="stat-label">API Routes</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">4</div>
+      <div class="stat-label">DB Tables</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">20+</div>
+      <div class="stat-label">Components</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">5</div>
+      <div class="stat-label">Categories</div>
+    </div>
+  </div>
+
+  <h3>Database Schema</h3>
+
+  <div class="card-grid" style="margin-top: 16px;">
+    <div class="card">
+      <h4 style="font-family: 'JetBrains Mono', monospace; color: var(--accent); font-size: 13px;">profiles</h4>
+      <p>Extends Supabase auth.users with display name and avatar. Auto-created on signup via database trigger.</p>
+    </div>
+    <div class="card">
+      <h4 style="font-family: 'JetBrains Mono', monospace; color: var(--accent); font-size: 13px;">skills</h4>
+      <p>Core entity: title, description, markdown content, visibility, category, tags, fork lineage, template flags, and usage count.</p>
+    </div>
+    <div class="card">
+      <h4 style="font-family: 'JetBrains Mono', monospace; color: var(--accent); font-size: 13px;">test_cases</h4>
+      <p>Per-skill test cases with prompt, expected behavior, last results (with/without skill), AI score, and reasoning.</p>
+    </div>
+    <div class="card">
+      <h4 style="font-family: 'JetBrains Mono', monospace; color: var(--accent); font-size: 13px;">api_usage</h4>
+      <p>Rate-limiting tracker: input/output tokens, endpoint, request count per user. Enforces 50 req/hr and 100k tokens/day.</p>
+    </div>
+  </div>
+
+  <h3>Route Architecture</h3>
+
+  <div class="card-grid" style="margin-top: 16px;">
+    <div class="card">
+      <h4>Public Routes</h4>
+      <p style="font-family: 'JetBrains Mono', monospace; font-size: 11px; line-height: 2;">
+        <span style="color: var(--accent);">/</span> Landing page<br>
+        <span style="color: var(--accent);">/explore</span> Browse templates<br>
+        <span style="color: var(--accent);">/login</span> Sign in<br>
+        <span style="color: var(--accent);">/signup</span> Register
+      </p>
+    </div>
+    <div class="card">
+      <h4>Authenticated Routes</h4>
+      <p style="font-family: 'JetBrains Mono', monospace; font-size: 11px; line-height: 2;">
+        <span style="color: var(--accent);">/dashboard</span> Skill list<br>
+        <span style="color: var(--accent);">/skills/new</span> Create skill<br>
+        <span style="color: var(--accent);">/skills/[id]/edit</span> Edit skill<br>
+        <span style="color: var(--accent);">/skills/[id]/test</span> Test playground<br>
+        <span style="color: var(--accent);">/templates</span> Template library
+      </p>
+    </div>
+  </div>
+
+  <div class="highlight-box" style="margin-top: 32px;">
+    <h4>Security Model</h4>
+    <ul>
+      <li>Supabase Row-Level Security (RLS) policies on all tables</li>
+      <li>Users can only read their own skills + public skills</li>
+      <li>Middleware intercepts unauthenticated requests to protected routes</li>
+      <li>API routes validate sessions before processing</li>
+      <li>Fork operations verify source skill is public or owned by user</li>
+    </ul>
+  </div>
+
+  <div class="page-footer">
+    <span class="logo-small"><span class="a">SKILL</span>SMITH</span>
+    <span>Page 6</span>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- PAGE 7: CLOSING                             -->
+<!-- ════════════════════════════════════════════ -->
+<div class="page" style="display: flex; flex-direction: column; justify-content: center;">
+  <span class="section-number">06 &mdash; Summary</span>
+  <h2 style="font-size: 42px;">The complete platform for <span class="accent">AI skill engineering</span></h2>
+
+  <p style="font-size: 16px; color: var(--text-secondary); line-height: 1.8; max-width: 560px; margin-top: 20px; margin-bottom: 48px;">
+    SkillSMITH democratizes prompt engineering by making skill creation, validation, and sharing as intuitive as writing a document. Every step is AI-assisted. Every skill is testable. Every improvement is measurable.
+  </p>
+
+  <div class="card-grid card-grid-3">
+    <div class="card" style="text-align: center; padding: 32px 20px;">
+      <div style="font-size: 28px; font-weight: 800; color: var(--accent); font-family: 'JetBrains Mono', monospace; margin-bottom: 8px;">Create</div>
+      <p>AI-generated skills from natural language descriptions, with guided and raw editing modes</p>
+    </div>
+    <div class="card" style="text-align: center; padding: 32px 20px;">
+      <div style="font-size: 28px; font-weight: 800; color: var(--accent); font-family: 'JetBrains Mono', monospace; margin-bottom: 8px;">Test</div>
+      <p>Side-by-side comparison, automated test suites, and five-dimension AI scoring</p>
+    </div>
+    <div class="card" style="text-align: center; padding: 32px 20px;">
+      <div style="font-size: 28px; font-weight: 800; color: var(--accent); font-family: 'JetBrains Mono', monospace; margin-bottom: 8px;">Share</div>
+      <p>Community template library with forking, discovery, and usage tracking</p>
+    </div>
+  </div>
+
+  <div style="margin-top: 56px; padding-top: 32px; border-top: 1px solid var(--border);">
+    <p style="font-size: 12px; color: var(--text-tertiary); line-height: 1.8;">
+      Built with Next.js 14, React 18, TypeScript, Tailwind CSS, Supabase, and the Anthropic Claude SDK.<br>
+      Designed and developed by <strong style="color: var(--text-secondary);">Karthik</strong> &mdash; February 2026.
+    </p>
+  </div>
+
+  <div class="page-footer">
+    <span class="logo-small"><span class="a">SKILL</span>SMITH</span>
+    <span>Page 7</span>
+  </div>
+</div>
+
+</body>
+</html>
