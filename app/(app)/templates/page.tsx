@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { TemplateCard } from "@/components/templates/template-card";
 import { TemplateFilters } from "@/components/templates/template-filters";
 import { Skeleton } from "@/components/ui/skeleton";
+import { track } from "@/lib/analytics";
 
 interface Template {
   id: string;
@@ -32,6 +33,14 @@ export default function TemplatesPage() {
       if (category) params.set("category", category);
       params.set("sort", sort);
 
+      if (search || category || sort !== "featured") {
+        track("template_searched", {
+          query: search || undefined,
+          category: category || undefined,
+          sort,
+        });
+      }
+
       try {
         const res = await fetch(`/api/templates?${params}`);
         const data = await res.json();
@@ -50,10 +59,10 @@ export default function TemplatesPage() {
   return (
     <div className="max-w-6xl mx-auto">
       <div className="mb-10 text-center">
-        <h1 className="text-4xl md:text-5xl font-bold text-white tracking-tight">
+        <h1 className="text-3xl font-bold text-white tracking-tight">
           Template Library
         </h1>
-        <p className="text-[rgba(255,255,255,0.5)] mt-2 text-base">
+        <p className="text-[rgba(255,255,255,0.5)] text-base mt-2">
           Start from a proven skill template. Fork it and make it your own.
         </p>
       </div>

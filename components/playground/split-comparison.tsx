@@ -5,6 +5,7 @@ import { IconSend2 } from "@tabler/icons-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { ChatPane } from "./chat-pane";
+import { track } from "@/lib/analytics";
 
 interface SplitComparisonProps {
   skillContent: string;
@@ -19,6 +20,7 @@ export function SplitComparison({ skillContent }: SplitComparisonProps) {
 
   async function handleSend() {
     if (!prompt.trim() || loading) return;
+    track("split_comparison_run");
     const currentPrompt = prompt.trim();
     setSentPrompt(currentPrompt);
     setPrompt("");

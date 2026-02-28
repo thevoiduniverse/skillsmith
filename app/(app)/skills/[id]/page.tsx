@@ -6,6 +6,7 @@ import { MarkdownPreview } from "@/components/editor/markdown-mode/markdown-prev
 import { getTagColors } from "@/lib/tag-colors";
 import { ForkButton } from "./fork-button";
 import { InstallSkill } from "./install-skill";
+import { TemplateViewTracker } from "./template-view-tracker";
 
 export default async function SkillDetailPage({
   params,
@@ -29,7 +30,8 @@ export default async function SkillDetailPage({
   if (!isOwner && skill.visibility !== "public") notFound();
 
   return (
-    <div className="max-w-4xl mx-auto">
+    <div className="max-w-6xl mx-auto">
+      <TemplateViewTracker templateId={skill.id} />
       <div className="flex items-start justify-between mb-6">
         <div>
           <h1 className="text-3xl font-bold text-white tracking-tight">
