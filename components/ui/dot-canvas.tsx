@@ -511,13 +511,20 @@ export function DotCanvas({
   }, [draw]);
 
   return (
-    <div className={`pointer-events-none ${className}`}>
-      {/* Light bulb glow — top center, extends into iOS safe area */}
+    <div
+      className={`pointer-events-none ${className}`}
+      style={{
+        // Extend into iOS safe area (behind status bar / Dynamic Island)
+        top: "calc(-1 * env(safe-area-inset-top, 0px))",
+        paddingTop: "env(safe-area-inset-top, 0px)",
+        height: "calc(100% + env(safe-area-inset-top, 0px))",
+      }}
+    >
+      {/* Light bulb glow — top center */}
       {showGlow && (
         <div
-          className="absolute left-1/2 -translate-x-1/2"
+          className="absolute top-0 left-1/2 -translate-x-1/2"
           style={{
-            top: "calc(-1 * env(safe-area-inset-top, 0px))",
             width: "100%",
             height: 600,
             background:
@@ -526,15 +533,11 @@ export function DotCanvas({
         />
       )}
 
-      {/* Dot pattern canvas — extends into iOS safe area */}
+      {/* Dot pattern canvas */}
       <canvas
         ref={canvasRef}
-        className="absolute left-0 right-0"
-        style={{
-          top: "calc(-1 * env(safe-area-inset-top, 0px))",
-          height,
-          width: "100%",
-        }}
+        className="absolute inset-0"
+        style={{ height, width: "100%" }}
       />
     </div>
   );
