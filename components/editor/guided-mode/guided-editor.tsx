@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { IconPlus, IconChevronLeft, IconChevronRight, IconSparkles, IconCircleCheckFilled, IconPlayerPlayFilled, IconDice3 } from "@tabler/icons-react";
+import { IconPlus, IconChevronLeft, IconChevronRight, IconSparklesFilled, IconCircleCheckFilled, IconPlayerPlayFilled, IconDice3Filled } from "@tabler/icons-react";
 import { type SkillStructure } from "@/lib/skill-parser/schema";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -111,7 +111,7 @@ export function GuidedEditor({
                   disabled={aiLoadingSection === "name" || !structure.description.trim()}
                   className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1 text-xs font-medium text-[#bfff00] hover:text-[#d4ff4d] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
                 >
-                  <IconDice3 size={14} />
+                  <IconDice3Filled size={14} />
                   <span className="hidden sm:inline"><TransitionText active={aiLoadingSection === "name"} idle="Randomise" activeText="Generating..." /></span>
                 </button>
               )}
@@ -166,7 +166,7 @@ export function GuidedEditor({
                 disabled={aiLoadingSection === "instructions"}
                 className="shrink-0 text-[#bfff00]"
               >
-                <IconSparkles size={14} />
+                <IconSparklesFilled size={14} />
                 <TransitionText active={aiLoadingSection === "instructions"} idle="AI Suggest" activeText="Thinking..." />
               </Button>
             )}
@@ -214,7 +214,7 @@ export function GuidedEditor({
                 disabled={aiLoadingSection === "edgeCases"}
                 className="shrink-0 text-[#bfff00]"
               >
-                <IconSparkles size={14} />
+                <IconSparklesFilled size={14} />
                 <TransitionText active={aiLoadingSection === "edgeCases"} idle="AI Suggest" activeText="Thinking..." />
               </Button>
             )}

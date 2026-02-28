@@ -4,13 +4,13 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  IconSparkles,
+  IconSparklesFilled,
   IconArrowRight,
   IconChevronLeft,
   IconChevronRight,
   IconBookmarkFilled,
   IconPlus,
-  IconDice3,
+  IconDice3Filled,
 } from "@tabler/icons-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -18,6 +18,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
+import { TemplateCard } from "@/components/templates/template-card";
 import { TransitionText } from "@/components/ui/transition-text";
 import { SKILL_CATEGORIES } from "@/lib/constants";
 import { useIsMobile } from "@/lib/hooks/use-is-mobile";
@@ -28,13 +29,19 @@ import { track } from "@/lib/analytics";
 interface Template {
   id: string;
   title: string;
-  description: string;
+  description: string | null;
+  content: string;
+  category: string | null;
+  tags: string[];
+  usage_count: number;
+  featured: boolean;
+  profiles?: { display_name: string } | null;
 }
 
 /* ─── Constants ────────────────────────────────── */
 
-const CARD_HEIGHT_DESKTOP = 420;
-const CARD_HEIGHT_MOBILE = 380;
+const CARD_HEIGHT_DESKTOP = 520;
+const CARD_HEIGHT_MOBILE = 460;
 const TOTAL_STEPS = 3;
 
 const springTransition = {
@@ -193,24 +200,6 @@ export default function NewSkillPage() {
     }
   }
 
-  async function handleForkTemplate(templateId: string) {
-    setLoading(true);
-    setMode("creating");
-    setActiveStep(2);
-    try {
-      const res = await fetch(`/api/skills/${templateId}/fork`, { method: "POST" });
-      if (!res.ok) throw new Error();
-      const fork = await res.json();
-      track("template_forked", { template_id: templateId });
-      router.push(`/skills/${fork.id}/edit`);
-    } catch {
-      toast.error("Failed to use template. Please try again.");
-      setMode("idle");
-      setLoading(false);
-      setActiveStep(0);
-    }
-  }
-
   async function handleRandomiseName() {
     setRandomising(true);
     try {
@@ -240,7 +229,7 @@ export default function NewSkillPage() {
         {/* Path selector tabs */}
         <div className="flex flex-wrap justify-center gap-1.5 mb-4 md:gap-2 md:mb-6">
           {([
-            { key: "ai" as const, label: "Describe with AI", icon: IconSparkles },
+            { key: "ai" as const, label: "Describe with AI", icon: IconSparklesFilled },
             { key: "template" as const, label: "From Template", icon: IconBookmarkFilled },
             { key: "blank" as const, label: "Start Blank", icon: IconPlus },
           ]).map(({ key, label, icon: Icon }) => (
@@ -261,10 +250,10 @@ export default function NewSkillPage() {
         </div>
 
         {/* Dynamic content based on path */}
-        <div className="flex-1">
+        <div className="flex-1 min-h-0 flex flex-col">
           {creationPath === "ai" && (
             <div className="space-y-3">
-              <label className="block text-sm font-medium text-[rgba(255,255,255,0.6)]">
+              <label className="block text-sm text-[rgba(255,255,255,0.6)]">
                 What should this skill do?
               </label>
               <Textarea
@@ -278,36 +267,37 @@ export default function NewSkillPage() {
           )}
 
           {creationPath === "template" && (
-            <div className="space-y-3">
+            <div className="flex flex-col flex-1 min-h-0">
               <Input
                 value={templateSearch}
                 onChange={(e) => setTemplateSearch(e.target.value)}
                 placeholder="Search templates..."
-                className="text-sm"
+                className="text-sm shrink-0"
               />
-              <div className="space-y-2 max-h-[200px] overflow-y-auto pr-1">
-                {templateLoading ? (
-                  <p className="text-sm text-[rgba(255,255,255,0.4)] text-center py-4">Loading templates...</p>
-                ) : templates
-                    .filter((t) =>
-                      t.title.toLowerCase().includes(templateSearch.toLowerCase())
-                    )
-                    .map((t) => (
-                      <button
-                        key={t.id}
-                        onClick={() => handleForkTemplate(t.id)}
-                        disabled={loading}
-                        className="w-full text-left p-3 rounded-xl bg-[rgba(255,255,255,0.03)] hover:bg-[rgba(255,255,255,0.07)] border border-[rgba(255,255,255,0.06)] transition-colors"
-                      >
-                        <div className="font-medium text-sm text-white">{t.title}</div>
-                        <div className="text-xs text-[rgba(255,255,255,0.5)] line-clamp-1 mt-0.5">
-                          {t.description}
-                        </div>
-                      </button>
-                    ))}
-                {!templateLoading && templates.length === 0 && (
-                  <p className="text-sm text-[rgba(255,255,255,0.4)] text-center py-4">No templates available</p>
-                )}
+              <div className="relative flex-1 min-h-0 mt-6 -mb-5 md:-mb-8">
+                <div className="h-full overflow-y-auto px-5 md:px-8 -mx-5 md:-mx-8">
+                  {templateLoading ? (
+                    <p className="text-sm text-[rgba(255,255,255,0.4)] text-center py-4">Loading templates...</p>
+                  ) : (
+                    <div className="grid grid-cols-2 gap-3">
+                      {templates
+                        .filter((t) =>
+                          t.title.toLowerCase().includes(templateSearch.toLowerCase())
+                        )
+                        .map((t) => (
+                          <TemplateCard key={t.id} template={t} compact />
+                        ))}
+                    </div>
+                  )}
+                  {!templateLoading && templates.length === 0 && (
+                    <p className="text-sm text-[rgba(255,255,255,0.4)] text-center py-4">No templates available</p>
+                  )}
+                </div>
+                {/* Gradient fade mask at bottom */}
+                <div
+                  className="absolute bottom-0 left-0 right-0 h-12 pointer-events-none"
+                  style={{ background: "linear-gradient(to bottom, transparent, rgba(16,16,16,0.9))" }}
+                />
               </div>
             </div>
           )}
@@ -339,7 +329,7 @@ export default function NewSkillPage() {
       <div className="flex flex-col h-full">
         <div className="flex-1 space-y-6">
           <div className="space-y-3">
-            <label className="block text-sm font-medium text-[rgba(255,255,255,0.6)]">
+            <label className="block text-sm text-[rgba(255,255,255,0.6)]">
               Skill name
             </label>
             <div className="relative">
@@ -354,14 +344,14 @@ export default function NewSkillPage() {
                 disabled={randomising}
                 className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1 text-xs font-medium text-[#bfff00] hover:text-[#d4ff4d] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
               >
-                <IconDice3 size={14} />
+                <IconDice3Filled size={14} />
                 <span className="hidden sm:inline"><TransitionText active={randomising} idle="Randomise" activeText="Generating..." /></span>
               </button>
             </div>
           </div>
 
           <div className="space-y-3">
-            <label className="block text-sm font-medium text-[rgba(255,255,255,0.6)]">
+            <label className="block text-sm text-[rgba(255,255,255,0.6)]">
               Category
             </label>
             <div className="flex items-center gap-1.5 flex-wrap">
@@ -419,7 +409,7 @@ export default function NewSkillPage() {
                   <>
                     {/* Description input for blank flow */}
                     <div className="space-y-3">
-                      <label className="block text-sm font-medium text-[rgba(255,255,255,0.6)]">
+                      <label className="block text-sm text-[rgba(255,255,255,0.6)]">
                         Describe your skill <span className="text-[rgba(255,255,255,0.3)]">(optional)</span>
                       </label>
                       <Textarea
@@ -439,7 +429,7 @@ export default function NewSkillPage() {
                         size="lg"
                         className="w-full"
                       >
-                        <IconSparkles size={16} />
+                        <IconSparklesFilled size={16} />
                         Generate with AI
                         <IconArrowRight size={16} />
                       </Button>
@@ -480,7 +470,7 @@ export default function NewSkillPage() {
                       size="lg"
                       className="w-full"
                     >
-                      <IconSparkles size={16} />
+                      <IconSparklesFilled size={16} />
                       Generate with AI
                       <IconArrowRight size={16} />
                     </Button>
@@ -530,10 +520,10 @@ export default function NewSkillPage() {
     <div className="max-w-2xl mx-auto px-4 py-8 md:px-0 md:py-12">
       {/* Header */}
       <div className="text-center mb-6 md:mb-10">
-        <h1 className="text-2xl md:text-3xl font-bold text-white tracking-tight">
+        <h1 className="text-3xl font-bold text-white tracking-tight">
           Create a New Skill
         </h1>
-        <p className="text-[rgba(255,255,255,0.6)] mt-2">
+        <p className="text-[rgba(255,255,255,0.5)] text-base mt-2">
           Describe what you want Claude to do, and AI will generate a skill for
           you.
         </p>

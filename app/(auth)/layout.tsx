@@ -18,7 +18,7 @@ export default function AuthLayout({
         <div className="w-full max-w-md">
           <Link
             href="/"
-            className="flex items-center justify-center gap-1.5 text-sm font-medium text-[rgba(255,255,255,0.5)] hover:text-white transition-colors mb-8"
+            className="flex items-center justify-center gap-1.5 text-sm text-[rgba(255,255,255,0.5)] hover:text-white transition-colors mb-8"
           >
             <IconArrowLeft size={14} />
             Back to home

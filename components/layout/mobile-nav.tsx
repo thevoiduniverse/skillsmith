@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
-  IconLayoutGrid,
+  IconLayoutGridFilled,
   IconPlus,
   IconBookmarkFilled,
   IconSettingsFilled,
@@ -15,7 +15,7 @@ import {
 import { cn } from "@/lib/utils";
 
 const navItems = [
-  { href: "/dashboard", label: "Dashboard", icon: IconLayoutGrid },
+  { href: "/dashboard", label: "Dashboard", icon: IconLayoutGridFilled },
   { href: "/skills/new", label: "New Skill", icon: IconPlus },
   { href: "/templates", label: "Templates", icon: IconBookmarkFilled },
   { href: "/settings", label: "Settings", icon: IconSettingsFilled },
@@ -67,9 +67,20 @@ export function MobileNav() {
                     className={cn(
                       "flex items-center gap-3 rounded-2xl px-3 py-2 text-sm font-medium transition-colors",
                       isActive
-                        ? "bg-accent/10 text-accent"
+                        ? "text-[#bfff00]"
                         : "text-text-secondary hover:text-text-primary hover:bg-surface-alt"
                     )}
+                    style={
+                      isActive
+                        ? {
+                            background:
+                              "linear-gradient(to bottom, rgba(255,255,255,0.08), rgba(255,255,255,0.02))",
+                            boxShadow:
+                              "inset 0 1px 0 rgba(255,255,255,0.08), inset 0 -1px 0 rgba(0,0,0,0.2), 0 1px 3px rgba(0,0,0,0.3)",
+                            border: "1px solid rgba(255,255,255,0.06)",
+                          }
+                        : undefined
+                    }
                   >
                     <Icon size={16} className="shrink-0" />
                     <span>{item.label}</span>

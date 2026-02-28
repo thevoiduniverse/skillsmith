@@ -4,13 +4,13 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  IconSparkles,
+  IconSparklesFilled,
   IconArrowRight,
   IconChevronLeft,
   IconChevronRight,
   IconBookmarkFilled,
   IconPlus,
-  IconDice3,
+  IconDice3Filled,
 } from "@tabler/icons-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -230,7 +230,7 @@ export default function TryPage() {
         {/* Path selector tabs */}
         <div className="flex flex-wrap justify-center gap-1.5 mb-4 md:gap-2 md:mb-6">
           {([
-            { key: "ai" as const, label: "Describe with AI", icon: IconSparkles },
+            { key: "ai" as const, label: "Describe with AI", icon: IconSparklesFilled },
             { key: "template" as const, label: "From Template", icon: IconBookmarkFilled },
             { key: "blank" as const, label: "Start Blank", icon: IconPlus },
           ]).map(({ key, label, icon: Icon }) => (
@@ -254,7 +254,7 @@ export default function TryPage() {
         <div className="flex-1">
           {creationPath === "ai" && (
             <div className="space-y-3">
-              <label className="block text-sm font-medium text-[rgba(255,255,255,0.6)]">
+              <label className="block text-sm text-[rgba(255,255,255,0.6)]">
                 What should this skill do?
               </label>
               <Textarea
@@ -329,7 +329,7 @@ export default function TryPage() {
       <div className="flex flex-col h-full">
         <div className="flex-1 space-y-6">
           <div className="space-y-3">
-            <label className="block text-sm font-medium text-[rgba(255,255,255,0.6)]">
+            <label className="block text-sm text-[rgba(255,255,255,0.6)]">
               Skill name
             </label>
             <div className="relative">
@@ -344,14 +344,14 @@ export default function TryPage() {
                 disabled={randomising}
                 className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1 text-xs font-medium text-[#bfff00] hover:text-[#d4ff4d] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
               >
-                <IconDice3 size={14} />
+                <IconDice3Filled size={14} />
                 <span className="hidden sm:inline"><TransitionText active={randomising} idle="Randomise" activeText="Generating..." /></span>
               </button>
             </div>
           </div>
 
           <div className="space-y-3">
-            <label className="block text-sm font-medium text-[rgba(255,255,255,0.6)]">
+            <label className="block text-sm text-[rgba(255,255,255,0.6)]">
               Category
             </label>
             <div className="flex items-center gap-1.5 flex-wrap">
@@ -407,7 +407,7 @@ export default function TryPage() {
                   <>
                     {/* Description input for blank flow */}
                     <div className="space-y-3">
-                      <label className="block text-sm font-medium text-[rgba(255,255,255,0.6)]">
+                      <label className="block text-sm text-[rgba(255,255,255,0.6)]">
                         Describe your skill <span className="text-[rgba(255,255,255,0.3)]">(optional)</span>
                       </label>
                       <Textarea
@@ -427,7 +427,7 @@ export default function TryPage() {
                         size="lg"
                         className="w-full"
                       >
-                        <IconSparkles size={16} />
+                        <IconSparklesFilled size={16} />
                         Generate with AI
                         <IconArrowRight size={16} />
                       </Button>
@@ -468,7 +468,7 @@ export default function TryPage() {
                       size="lg"
                       className="w-full"
                     >
-                      <IconSparkles size={16} />
+                      <IconSparklesFilled size={16} />
                       Generate with AI
                       <IconArrowRight size={16} />
                     </Button>

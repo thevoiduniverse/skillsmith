@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { IconDeviceFloppy, IconPlayerPlayFilled, IconDownload, IconChevronDown, IconTrash, IconTerminal2, IconCheck, IconWorld, IconLock } from "@tabler/icons-react";
+import { IconDeviceFloppy, IconPlayerPlayFilled, IconDownload, IconChevronDown, IconTrashFilled, IconTerminal2, IconCheck, IconWorld, IconLockFilled } from "@tabler/icons-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { useEditorSync } from "@/lib/hooks/use-editor-sync";
@@ -387,7 +387,7 @@ export function EditorShell({ skillId, initialContent, initialTitle, initialVisi
                   }}
                   className="text-text-secondary hover:text-error whitespace-nowrap"
                 >
-                  <IconTrash size={14} />
+                  <IconTrashFilled size={14} />
                   <span className="hidden sm:inline">Delete</span>
                 </Button>
               </div>
@@ -397,7 +397,7 @@ export function EditorShell({ skillId, initialContent, initialTitle, initialVisi
                 onClick={handleToggleVisibility}
                 className="transition-transform duration-200 ease-out"
               >
-                {visibility === "public" ? <IconWorld size={14} className="text-accent" /> : <IconLock size={14} />}
+                {visibility === "public" ? <IconWorld size={14} className="text-accent" /> : <IconLockFilled size={14} />}
                 <span className="hidden sm:inline">{visibility === "public" ? "Public" : "Private"}</span>
               </Button>
             </div>
@@ -415,7 +415,7 @@ export function EditorShell({ skillId, initialContent, initialTitle, initialVisi
               }}
               className="text-text-secondary hover:text-error"
             >
-              <IconTrash size={14} />
+              <IconTrashFilled size={14} />
               <span className="hidden sm:inline">Discard</span>
             </Button>
           )}

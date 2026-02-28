@@ -1,5 +1,5 @@
 import {
-  IconSparkles,
+  IconSparklesFilled,
   IconPencil,
   IconTestPipe,
   IconWorld,
@@ -13,7 +13,7 @@ const steps = [
     title: "Create a Skill",
     description:
       "Describe what you want Claude to do and let AI generate a complete skill draft. Or start from a template, or build from scratch.",
-    icon: IconSparkles,
+    icon: IconSparklesFilled,
     details: [
       "Describe your use case in plain English",
       "AI generates instructions, edge cases & examples",
@@ -60,7 +60,7 @@ const steps = [
 
 export default function HowItWorksPage() {
   return (
-    <div className="max-w-2xl mx-auto space-y-10">
+    <div className="max-w-6xl mx-auto space-y-10">
       <div>
         <h1 className="text-3xl font-bold text-white tracking-tight mb-2">
           How it Works

@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import { motion, LayoutGroup } from "framer-motion";
 import {
-  IconLayoutGrid,
+  IconLayoutGridFilled,
   IconPlus,
   IconBookmarkFilled,
   IconSettingsFilled,
@@ -16,7 +16,7 @@ import { cn } from "@/lib/utils";
 import { track } from "@/lib/analytics";
 
 const navItems = [
-  { href: "/dashboard", label: "Dashboard", icon: IconLayoutGrid },
+  { href: "/dashboard", label: "Dashboard", icon: IconLayoutGridFilled },
   { href: "/skills/new", label: "New Skill", icon: IconPlus },
   { href: "/templates", label: "Templates", icon: IconBookmarkFilled },
   { href: "/settings", label: "Settings", icon: IconSettingsFilled },
@@ -111,7 +111,7 @@ export function Sidebar() {
         </LayoutGroup>
 
         {/* Divider */}
-        <div className="h-px bg-[rgba(255,255,255,0.08)]" />
+        <div className="h-px bg-[rgba(255,255,255,0.03)]" />
 
         {/* User actions — icon-only */}
         <div className="flex items-center gap-1 px-1">
@@ -119,7 +119,7 @@ export function Sidebar() {
             onClick={handleSignOut}
             className="p-2 rounded-[40px] text-[rgba(255,255,255,0.5)] hover:text-[rgba(255,255,255,0.8)] hover:bg-[rgba(255,255,255,0.04)] transition-colors"
           >
-            <IconLogout size={16} />
+            <IconLogout size={20} />
           </button>
         </div>
       </div>

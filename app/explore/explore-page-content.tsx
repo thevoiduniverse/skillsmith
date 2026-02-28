@@ -52,8 +52,8 @@ export function ExplorePageContent() {
           </div>
         </nav>
 
-        <main className="relative z-10 max-w-6xl mx-auto px-6 pt-12 pb-16">
-          <div className="mb-10 text-center">
+        <main className="relative z-10 max-w-6xl mx-auto px-6 pt-12 flex flex-col" style={{ height: "calc(100dvh - 5.5rem)" }}>
+          <div className="mb-10 text-center shrink-0">
             <h1 className="text-4xl md:text-5xl font-bold tracking-tight">
               Templates
             </h1>

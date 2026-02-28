@@ -1,6 +1,6 @@
 "use client";
 
-import { IconSparkles } from "@tabler/icons-react";
+import { IconSparklesFilled } from "@tabler/icons-react";
 import { Button } from "@/components/ui/button";
 import { TransitionText } from "@/components/ui/transition-text";
 
@@ -23,7 +23,7 @@ export function AiToolbar({
         onClick={onDraft}
         disabled={disabled || loading === "draft"}
       >
-        <IconSparkles size={14} />
+        <IconSparklesFilled size={14} />
         <TransitionText active={loading === "draft"} idle="Draft with AI" activeText="Drafting..." />
       </Button>
     </div>

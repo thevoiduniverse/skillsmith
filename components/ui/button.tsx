@@ -13,7 +13,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         disabled={disabled}
         className={cn(
-          "inline-flex items-center justify-center font-bold rounded-[40px] transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#bfff00]/50 disabled:opacity-50 disabled:cursor-not-allowed",
+          "inline-flex items-center justify-center font-bold rounded-[40px] capitalize transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#bfff00]/50 disabled:opacity-50 disabled:cursor-not-allowed",
           {
             "bg-gradient-to-b from-[#d4ff4d] to-[#a8e600] text-[#0a0a0a] shadow-[inset_0_1px_0_rgba(255,255,255,0.4),inset_0_-1px_0_rgba(0,0,0,0.15),0_1px_3px_rgba(0,0,0,0.4)] border border-[rgba(0,0,0,0.1)] hover:from-[#dbff66] hover:to-[#b3f000] active:shadow-[inset_0_1px_3px_rgba(0,0,0,0.2)]": variant === "primary",
             "relative bg-gradient-to-b from-[rgba(255,255,255,0.08)] to-[rgba(255,255,255,0.02)] backdrop-blur-2xl text-white border border-[rgba(255,255,255,0.06)] shadow-[inset_0_1px_0_rgba(255,255,255,0.08),inset_0_-1px_0_rgba(0,0,0,0.2),0_1px_2px_rgba(0,0,0,0.3)] hover:from-[rgba(255,255,255,0.12)] hover:to-[rgba(255,255,255,0.04)]": variant === "secondary",

@@ -21,19 +21,12 @@
     @apply bg-background text-text-primary font-sans antialiased;
   }
 
-  /* Custom scrollbar */
-  ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+  /* Hide scrollbar but keep scroll functionality */
+  * {
+    scrollbar-width: none; /* Firefox */
   }
-  ::-webkit-scrollbar-track {
-    background: transparent;
-  }
-  ::-webkit-scrollbar-thumb {
-    @apply bg-border rounded-full;
-  }
-  ::-webkit-scrollbar-thumb:hover {
-    @apply bg-text-secondary;
+  *::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Edge */
   }
 
   /* Selection */
