@@ -18,13 +18,26 @@ export default function SignupPage() {
     }
   }, [searchParams]);
 
+  useEffect(() => {
+    // Clear any stale session so OAuth starts fresh
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session) {
+        supabase.auth.signOut();
+      }
+    });
+  }, []);
+
   async function handleGoogleSignup() {
-    await supabase.auth.signInWithOAuth({
+    setError("");
+    const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
         redirectTo: `${window.location.origin}/api/auth/callback`,
       },
     });
+    if (error) {
+      setError(error.message);
+    }
   }
 
   return (

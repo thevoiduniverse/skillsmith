@@ -29,6 +29,17 @@ export async function updateSession(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
+  if (!user) {
+    // Clear stale Supabase auth cookies
+    const allCookies = request.cookies.getAll();
+    const sbCookies = allCookies.filter(c => c.name.startsWith('sb-'));
+    if (sbCookies.length > 0) {
+      sbCookies.forEach(({ name }) => {
+        supabaseResponse.cookies.delete(name);
+      });
+    }
+  }
+
   // Redirect unauthenticated users to login (except public routes)
   const publicPaths = ["/", "/login", "/signup", "/explore", "/try"];
   const pathname = request.nextUrl.pathname;
