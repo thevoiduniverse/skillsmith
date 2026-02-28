@@ -510,24 +510,8 @@ export function DotCanvas({
     return () => cancelAnimationFrame(rafRef.current);
   }, [draw]);
 
-  // Strip inset-0 from className — we handle positioning via inline styles
-  // to extend into the iOS safe area behind the status bar
-  const safeClassName = className.replace(/\binset-0\b/, "").trim();
-
   return (
-    <div
-      className={`pointer-events-none ${safeClassName}`}
-      style={{
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        // Extend into iOS safe area (behind status bar / Dynamic Island)
-        marginTop: "calc(-1 * env(safe-area-inset-top, 0px))",
-        paddingTop: "env(safe-area-inset-top, 0px)",
-        minHeight: "calc(100vh + env(safe-area-inset-top, 0px))",
-      }}
-    >
+    <div className={`pointer-events-none ${className}`}>
       {/* Light bulb glow — top center */}
       {showGlow && (
         <div
