@@ -36,7 +36,7 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "SkillSMITH — Build, Test & Share Claude Skills",
+  title: "Skillsmith — Craft Skills for Workflows",
   description:
     "Create, test, and share custom Claude skills with an AI-assisted editor and testing playground.",
 };
