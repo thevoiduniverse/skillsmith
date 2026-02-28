@@ -45,7 +45,7 @@ export function MobileNav() {
             <div className="h-14 flex items-center justify-between px-4 border-b border-border">
               <div className="flex items-center gap-2">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/logo.png" alt="SkillSmith" className="h-[20px] w-auto" />
+                <img src="/logo.png" alt="SkillSmith" className="h-[26px] w-auto" />
               </div>
               <button
                 onClick={() => setOpen(false)}

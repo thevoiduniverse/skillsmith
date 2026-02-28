@@ -40,6 +40,7 @@ interface DotCanvasProps {
   className?: string;
   height?: string | number;
   showGlow?: boolean;
+  disableCursorTrail?: boolean;
 }
 
 export function DotCanvas({
@@ -47,6 +48,7 @@ export function DotCanvas({
   className = "",
   height = "100%",
   showGlow = true,
+  disableCursorTrail = false,
 }: DotCanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const cursorRef = useRef<{ x: number; y: number }>({ x: -9999, y: -9999 });
@@ -67,11 +69,16 @@ export function DotCanvas({
   const targetRgbRef = useRef<[number, number, number]>(hexToRgb(accentColor));
   const plinkoBallsRef = useRef<PlinkoBall[]>([]);
   const lastBallSpawnRef = useRef<number>(0);
+  const disableCursorTrailRef = useRef(disableCursorTrail);
 
-  // Reactive accent — update target when prop changes
+  // Reactive props — update refs when props change
   useEffect(() => {
     targetRgbRef.current = hexToRgb(accentColor);
   }, [accentColor]);
+
+  useEffect(() => {
+    disableCursorTrailRef.current = disableCursorTrail;
+  }, [disableCursorTrail]);
 
   const draw = useCallback(() => {
     const canvas = canvasRef.current;
@@ -114,56 +121,58 @@ export function DotCanvas({
     const pathLenSq = pathDx * pathDx + pathDy * pathDy;
     const vrSq = TRAIL_RADIUS * TRAIL_RADIUS;
 
-    const pad = TRAIL_RADIUS + 8;
-    const minCol = Math.max(0, Math.floor((Math.min(px, cx) - pad) / DOT_SPACE));
-    const maxCol = Math.ceil((Math.max(px, cx) + pad) / DOT_SPACE);
-    const minRow = Math.max(0, Math.floor((Math.min(py, cy) - pad) / DOT_SPACE));
-    const maxRow = Math.ceil((Math.max(py, cy) + pad) / DOT_SPACE);
+    if (!disableCursorTrailRef.current) {
+      const pad = TRAIL_RADIUS + 8;
+      const minCol = Math.max(0, Math.floor((Math.min(px, cx) - pad) / DOT_SPACE));
+      const maxCol = Math.ceil((Math.max(px, cx) + pad) / DOT_SPACE);
+      const minRow = Math.max(0, Math.floor((Math.min(py, cy) - pad) / DOT_SPACE));
+      const maxRow = Math.ceil((Math.max(py, cy) + pad) / DOT_SPACE);
 
-    for (let row = minRow; row <= maxRow; row++) {
-      for (let col = minCol; col <= maxCol; col++) {
-        const gx = col * DOT_SPACE;
-        const gy = row * DOT_SPACE;
+      for (let row = minRow; row <= maxRow; row++) {
+        for (let col = minCol; col <= maxCol; col++) {
+          const gx = col * DOT_SPACE;
+          const gy = row * DOT_SPACE;
 
-        let nearX: number, nearY: number;
-        if (pathLenSq < 0.01) {
-          nearX = cx;
-          nearY = cy;
-        } else {
-          const proj = Math.max(
-            0,
-            Math.min(
-              1,
-              ((gx - px) * pathDx + (gy - py) * pathDy) / pathLenSq,
-            ),
-          );
-          nearX = px + proj * pathDx;
-          nearY = py + proj * pathDy;
+          let nearX: number, nearY: number;
+          if (pathLenSq < 0.01) {
+            nearX = cx;
+            nearY = cy;
+          } else {
+            const proj = Math.max(
+              0,
+              Math.min(
+                1,
+                ((gx - px) * pathDx + (gy - py) * pathDy) / pathLenSq,
+              ),
+            );
+            nearX = px + proj * pathDx;
+            nearY = py + proj * pathDy;
+          }
+
+          const dx = gx - nearX;
+          const dy = gy - nearY;
+          const distSq = dx * dx + dy * dy;
+          if (distSq > vrSq || distSq < 0.01) continue;
+
+          const dist = Math.sqrt(distSq);
+
+          const key = `${col},${row}`;
+          let dot = dots.get(key);
+          if (!dot) {
+            dot = { ox: 0, oy: 0, vx: 0, vy: 0 };
+            dots.set(key, dot);
+          }
+
+          const inf = 1 - dist / TRAIL_RADIUS;
+          const influence = inf * inf;
+
+          const radX = dx / dist;
+          const radY = dy / dist;
+          const forceMag =
+            Math.min(cursorSpeed, 40) * TRAIL_STRENGTH * influence;
+          dot.vx += radX * forceMag;
+          dot.vy += radY * forceMag;
         }
-
-        const dx = gx - nearX;
-        const dy = gy - nearY;
-        const distSq = dx * dx + dy * dy;
-        if (distSq > vrSq || distSq < 0.01) continue;
-
-        const dist = Math.sqrt(distSq);
-
-        const key = `${col},${row}`;
-        let dot = dots.get(key);
-        if (!dot) {
-          dot = { ox: 0, oy: 0, vx: 0, vy: 0 };
-          dots.set(key, dot);
-        }
-
-        const inf = 1 - dist / TRAIL_RADIUS;
-        const influence = inf * inf;
-
-        const radX = dx / dist;
-        const radY = dy / dist;
-        const forceMag =
-          Math.min(cursorSpeed, 40) * TRAIL_STRENGTH * influence;
-        dot.vx += radX * forceMag;
-        dot.vy += radY * forceMag;
       }
     }
 
@@ -273,7 +282,7 @@ export function DotCanvas({
       ball.vy += PLINKO_GRAVITY;
 
       // Cursor vortex → ball
-      {
+      if (!disableCursorTrailRef.current) {
         let nearX: number, nearY: number;
         if (pathLenSq < 0.01) {
           nearX = cx;

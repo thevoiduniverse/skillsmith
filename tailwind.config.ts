@@ -22,6 +22,7 @@ const config: Config = {
       },
       fontFamily: {
         asgardFat: ["Asgard Fat", "var(--font-asgard-fat)", "sans-serif"],
+        birdsOfParadise: ["var(--font-birds-of-paradise)", "cursive"],
         sans: [
           "var(--font-brockmann)",
           "system-ui",

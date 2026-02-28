@@ -64,7 +64,7 @@ export function Sidebar() {
         {/* Logo — centered, matching landing/auth pages */}
         <Link href="/dashboard" className="flex items-center justify-center">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/logo.png" alt="SkillSmith" className="h-[24px] w-auto" />
+          <img src="/logo.png" alt="SkillSmith" className="h-[32px] w-auto" />
         </Link>
 
         {/* Navigation */}

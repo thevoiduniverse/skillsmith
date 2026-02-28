@@ -30,6 +30,8 @@ export default function LoginPage() {
   return (
     <div className="w-full max-w-md">
       <GlassCard radius={32} className="p-6 md:p-8">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/logo.png" alt="SkillSmith" className="h-[42px] w-auto mx-auto mb-6" />
         <h1 className="text-2xl font-bold text-white mb-2 text-center">
           Welcome back
         </h1>

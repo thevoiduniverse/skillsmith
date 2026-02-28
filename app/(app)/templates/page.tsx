@@ -4,6 +4,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { TemplateCard } from "@/components/templates/template-card";
 import { TemplateFilters } from "@/components/templates/template-filters";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Card } from "@/components/ui/card";
 import { track } from "@/lib/analytics";
 
 interface Template {
@@ -102,19 +103,19 @@ export default function TemplatesPage() {
           {loading ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {Array.from({ length: 6 }).map((_, i) => (
-                <div key={i} className="rounded-xl border border-[rgba(255,255,255,0.08)] p-5 flex flex-col">
-                  <Skeleton className="h-4 w-3/4 rounded mb-3" />
+                <Card key={i} className="p-5 flex flex-col">
+                  <Skeleton className="h-4 w-3/4 rounded mb-2" />
                   <Skeleton className="h-3 w-full rounded mb-1.5" />
                   <Skeleton className="h-3 w-full rounded mb-1.5" />
-                  <Skeleton className="h-3 w-2/3 rounded mb-5" />
+                  <Skeleton className="h-3 w-2/3 rounded mb-4" />
                   <div className="flex gap-1.5 mb-4">
                     <Skeleton className="h-6 w-16 rounded-full" />
                     <Skeleton className="h-6 w-14 rounded-full" />
                   </div>
-                  <div className="border-t border-[rgba(255,255,255,0.04)] pt-3 mt-auto flex justify-end">
-                    <Skeleton className="h-7 w-24 rounded-full" />
+                  <div className="border-t border-[rgba(255,255,255,0.04)] pt-5 mt-auto flex justify-end">
+                    <Skeleton className="h-7 w-28 rounded-full" />
                   </div>
-                </div>
+                </Card>
               ))}
             </div>
           ) : templates.length === 0 ? (

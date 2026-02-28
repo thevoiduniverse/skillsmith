@@ -215,7 +215,7 @@ export function LandingHero() {
           />
           <Link href="/">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/logo.png" alt="SkillSmith" className="h-[22px] md:h-[28px] w-auto" />
+            <img src="/logo.png" alt="SkillSmith" className="h-[28px] md:h-[36px] w-auto" />
           </Link>
           <div className="flex items-center gap-3 md:gap-5">
             <Link
@@ -239,7 +239,7 @@ export function LandingHero() {
       <section className="relative z-10 max-w-4xl mx-auto px-4 md:px-6 pt-10 pb-10 md:pt-28 md:pb-20 text-center">
         <h1 className="text-[28px] md:text-[60px] font-sans font-normal text-white leading-[1.15]">
           Build your{" "}
-          <span className="font-asgardFat text-[#bfff00]">SKILLS</span> for
+          <img src="/Skills.png" alt="Skills" className="inline-block h-[46px] md:h-[92px] align-middle relative -top-[3px] md:-top-[6px]" />{" "}for
           <br />
           <span className="inline-block" style={{ color: textColor }}>
             {displayText}

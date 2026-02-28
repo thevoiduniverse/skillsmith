@@ -34,7 +34,7 @@ export default function TryLayout({
             />
             <Link href="/">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/logo.png" alt="SkillSmith" className="h-[22px] md:h-[28px] w-auto" />
+              <img src="/logo.png" alt="SkillSmith" className="h-[28px] md:h-[36px] w-auto" />
             </Link>
             <div className="flex items-center gap-3 md:gap-5">
               <Link

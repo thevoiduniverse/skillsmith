@@ -25,7 +25,7 @@ export default async function SkillTestPage({
   if (!skill) notFound();
 
   return (
-    <div className="max-w-7xl mx-auto space-y-8">
+    <div className="max-w-6xl mx-auto space-y-8">
       <div>
         <Link href={`/skills/${skill.id}/edit`}>
           <Button variant="ghost" size="sm" className="mb-3">
@@ -33,10 +33,10 @@ export default async function SkillTestPage({
             Back to Editor
           </Button>
         </Link>
-        <h1 className="text-2xl font-bold text-text-primary tracking-tight">
+        <h1 className="text-3xl font-bold text-white tracking-tight">
           Test: {skill.title}
         </h1>
-        <p className="text-text-secondary text-sm mt-0.5">
+        <p className="text-[rgba(255,255,255,0.5)] text-base mt-2">
           Compare Claude&apos;s responses with and without your skill
         </p>
       </div>

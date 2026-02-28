@@ -15,6 +15,12 @@ const asgardFat = localFont({
   display: "swap",
 });
 
+const birdsOfParadise = localFont({
+  src: "./fonts/BirdsOfParadise.ttf",
+  variable: "--font-birds-of-paradise",
+  display: "swap",
+});
+
 const brockmann = localFont({
   src: "./fonts/brockmann-medium-webfont.woff2",
   variable: "--font-brockmann",
@@ -43,7 +49,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body
-        className={`${brockmann.className} ${brockmann.variable} ${jetbrains.variable} ${asgardFat.variable} bg-[#0a0a0a]`}
+        className={`${brockmann.className} ${brockmann.variable} ${jetbrains.variable} ${asgardFat.variable} ${birdsOfParadise.variable} bg-[#0a0a0a]`}
       >
         <PostHogProvider>{children}</PostHogProvider>
       </body>
