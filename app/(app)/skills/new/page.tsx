@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
 import {
   IconSparklesFilled,
   IconArrowRight,
@@ -41,7 +41,6 @@ interface Template {
 /* ─── Constants ────────────────────────────────── */
 
 const CARD_HEIGHT_DESKTOP = 520;
-const CARD_HEIGHT_MOBILE = 460;
 const TOTAL_STEPS = 3;
 
 const springTransition = {
@@ -83,7 +82,16 @@ const cardTransition = {
 export default function NewSkillPage() {
   const router = useRouter();
   const isMobile = useIsMobile();
-  const CARD_HEIGHT = isMobile ? CARD_HEIGHT_MOBILE : CARD_HEIGHT_DESKTOP;
+  // On mobile, card height fills available viewport (minus header, heading, dots, padding)
+  const [mobileCardHeight, setMobileCardHeight] = useState(400);
+  useEffect(() => {
+    if (!isMobile) return;
+    const calc = () => setMobileCardHeight(Math.max(320, window.innerHeight - 360));
+    calc();
+    window.addEventListener("resize", calc);
+    return () => window.removeEventListener("resize", calc);
+  }, [isMobile]);
+  const CARD_HEIGHT = isMobile ? mobileCardHeight : CARD_HEIGHT_DESKTOP;
 
   const [activeStep, setActiveStep] = useState(0);
   const [mode, setMode] = useState<"idle" | "generating" | "creating">("idle");
@@ -227,28 +235,41 @@ export default function NewSkillPage() {
     return (
       <div className="flex flex-col h-full">
         {/* Path selector tabs */}
-        <div className="flex justify-center gap-1 mb-4 md:gap-2 md:mb-6">
-          {([
-            { key: "ai" as const, label: "AI", labelFull: "Describe with AI", icon: IconSparklesFilled },
-            { key: "template" as const, label: "Template", labelFull: "From Template", icon: IconBookmarkFilled },
-            { key: "blank" as const, label: "Blank", labelFull: "Start Blank", icon: IconPlus },
-          ]).map(({ key, label, labelFull, icon: Icon }) => (
-            <button
-              key={key}
-              onClick={() => { setCreationPath(key); track("creation_path_selected", { path: key }); }}
-              className={cn(
-                "flex items-center justify-center gap-1.5 px-3 py-2 text-[13px] md:px-4 md:py-2.5 md:text-sm font-medium rounded-full transition-all duration-200 whitespace-nowrap flex-1 md:flex-1",
-                creationPath === key
-                  ? "bg-gradient-to-b from-[rgba(191,255,0,0.18)] to-[rgba(191,255,0,0.08)] text-[#bfff00] shadow-[inset_0_1px_0_rgba(191,255,0,0.3),inset_0_-1px_0_rgba(0,0,0,0.2),0_1px_3px_rgba(0,0,0,0.4),0_0_12px_rgba(191,255,0,0.08)] border border-[rgba(191,255,0,0.2)]"
-                  : "bg-gradient-to-b from-[rgba(255,255,255,0.08)] to-[rgba(255,255,255,0.03)] text-[rgba(255,255,255,0.5)] hover:text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.08),inset_0_-1px_0_rgba(0,0,0,0.2),0_1px_2px_rgba(0,0,0,0.3)] border border-[rgba(255,255,255,0.06)]"
-              )}
-            >
-              <Icon size={14} className="shrink-0" />
-              <span className="md:hidden">{label}</span>
-              <span className="hidden md:inline">{labelFull}</span>
-            </button>
-          ))}
-        </div>
+        <LayoutGroup>
+          <div className="flex justify-center gap-0.5 mb-6 md:gap-1 md:mb-8">
+            {([
+              { key: "ai" as const, label: "AI", labelFull: "Describe with AI", icon: IconSparklesFilled },
+              { key: "template" as const, label: "Template", labelFull: "From Template", icon: IconBookmarkFilled },
+              { key: "blank" as const, label: "Blank", labelFull: "Start Blank", icon: IconPlus },
+            ]).map(({ key, label, labelFull, icon: Icon }) => (
+              <button
+                key={key}
+                onClick={() => { setCreationPath(key); track("creation_path_selected", { path: key }); }}
+                className={cn(
+                  "relative flex items-center justify-center gap-1.5 px-3 py-2 text-[13px] md:px-4 md:py-2.5 md:text-sm font-medium rounded-full transition-colors whitespace-nowrap flex-1",
+                  creationPath === key
+                    ? "text-[#bfff00]"
+                    : "text-[rgba(255,255,255,0.45)] hover:text-[rgba(255,255,255,0.7)]"
+                )}
+              >
+                {creationPath === key && (
+                  <motion.div
+                    layoutId="creation-path-tab"
+                    className="absolute inset-0 rounded-full border border-[rgba(255,255,255,0.06)]"
+                    style={{
+                      background: "linear-gradient(to bottom, rgba(255,255,255,0.08), rgba(255,255,255,0.02))",
+                      boxShadow: "inset 0 1px 0 rgba(255,255,255,0.08), inset 0 -1px 0 rgba(0,0,0,0.2), 0 1px 3px rgba(0,0,0,0.3)",
+                    }}
+                    transition={{ type: "spring", bounce: 0.15, duration: 0.5 }}
+                  />
+                )}
+                <Icon size={14} className="relative z-10 shrink-0" />
+                <span className="relative z-10 md:hidden">{label}</span>
+                <span className="relative z-10 hidden md:inline">{labelFull}</span>
+              </button>
+            ))}
+          </div>
+        </LayoutGroup>
 
         {/* Dynamic content based on path */}
         <div className="flex-1 min-h-0 flex flex-col">
