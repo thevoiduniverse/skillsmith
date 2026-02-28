@@ -92,7 +92,7 @@ export function TemplateCard({ template, publicMode }: TemplateCardProps) {
           {publicMode ? (
             <Link
               href="/signup"
-              className="inline-flex items-center justify-center font-bold rounded-[40px] text-xs px-3 py-1.5 bg-[#bfff00] text-[#0a0a0a] hover:brightness-110 transition-all"
+              className="inline-flex items-center justify-center font-bold rounded-[40px] text-xs px-3 py-1.5 bg-gradient-to-b from-[#d4ff4d] to-[#a8e600] text-[#0a0a0a] shadow-[inset_0_1px_0_rgba(255,255,255,0.4),inset_0_-1px_0_rgba(0,0,0,0.15),0_1px_3px_rgba(0,0,0,0.4)] border border-[rgba(0,0,0,0.1)] hover:brightness-105 transition-all"
             >
               Login to use
             </Link>

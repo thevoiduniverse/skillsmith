@@ -17,7 +17,7 @@ export function ExplorePageContent() {
       />
       <div className="min-h-screen bg-transparent text-white relative overflow-x-clip z-10">
         <nav className="sticky top-0 z-50 flex justify-center pt-[calc(env(safe-area-inset-top,0px)+24px)] px-6">
-          <div className="relative flex items-center justify-between w-full max-w-[1160px] bg-[rgba(22,22,22,0.75)] backdrop-blur-2xl rounded-[40px] pl-4 pr-3 py-3 md:pl-10 md:pr-5 md:py-5">
+          <div className="relative flex items-center justify-between w-full max-w-[1160px] bg-gradient-to-b from-[rgba(28,28,28,0.85)] to-[rgba(18,18,18,0.75)] backdrop-blur-2xl rounded-[40px] pl-4 pr-3 py-3 md:pl-10 md:pr-5 md:py-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.08),inset_0_-1px_0_rgba(0,0,0,0.2),0_4px_20px_rgba(0,0,0,0.4)]">
             {/* Gradient border overlay */}
             <div
               className="absolute inset-0 rounded-[40px] pointer-events-none"

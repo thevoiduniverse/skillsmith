@@ -575,7 +575,7 @@ export default function NewSkillPage() {
               WebkitBackdropFilter: "blur(80px)",
             }}
           >
-            <Card className="h-full p-5 md:p-8 flex flex-col overflow-hidden !bg-[rgba(14,14,14,0.75)]">
+            <Card className="h-full p-5 md:p-8 flex flex-col overflow-hidden !from-[rgba(28,28,28,0.72)] !to-[rgba(16,16,16,0.62)]">
               <div className="absolute inset-0 rounded-[20px] pointer-events-none z-0" style={{ background: "linear-gradient(to bottom, rgba(255,255,255,0.015), transparent 40%)" }} />
               {stepRenderers[i]()}
             </Card>

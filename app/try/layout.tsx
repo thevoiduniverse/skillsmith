@@ -1,4 +1,8 @@
+"use client";
+
 import { ToastProvider } from "@/components/ui/toast-provider";
+import { DotCanvas } from "@/components/ui/dot-canvas";
+import { useIsMobile } from "@/lib/hooks/use-is-mobile";
 import Link from "next/link";
 
 export default function TryLayout({
@@ -6,13 +10,16 @@ export default function TryLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const isMobile = useIsMobile();
+
   return (
-    <div className="relative flex min-h-screen bg-[#0a0a0a]">
+    <div className="relative flex min-h-screen">
+      <DotCanvas accentColor="#bfff00" height={isMobile ? 900 : 1320} className="fixed inset-0 z-0" />
       {/* Main content area — mirrors (app) layout structure */}
-      <div className="relative z-10 flex-1 flex flex-col min-w-0">
+      <div className="relative z-10 flex-1 flex flex-col min-w-0 bg-transparent">
         {/* Header — glassmorphic sticky nav matching home/explore */}
         <nav className="sticky top-0 z-50 flex justify-center pt-[calc(env(safe-area-inset-top,0px)+24px)] px-6">
-          <div className="relative flex items-center justify-between w-full max-w-[1160px] bg-[rgba(22,22,22,0.75)] backdrop-blur-2xl rounded-[40px] pl-4 pr-3 py-3 md:pl-10 md:pr-5 md:py-5">
+          <div className="relative flex items-center justify-between w-full max-w-[1160px] bg-gradient-to-b from-[rgba(28,28,28,0.85)] to-[rgba(18,18,18,0.75)] backdrop-blur-2xl rounded-[40px] pl-4 pr-3 py-3 md:pl-10 md:pr-5 md:py-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.08),inset_0_-1px_0_rgba(0,0,0,0.2),0_4px_20px_rgba(0,0,0,0.4)]">
             {/* Gradient border overlay */}
             <div
               className="absolute inset-0 rounded-[40px] pointer-events-none"

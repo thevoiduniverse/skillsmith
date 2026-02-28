@@ -516,61 +516,64 @@ export default function TryPage() {
   /* Identical to app/(app)/skills/new/page.tsx return JSX */
 
   return (
-    <div className="max-w-2xl mx-auto px-4 py-8 md:px-0 md:py-12">
+    <>
       {/* Header */}
-      <div className="text-center mb-6 md:mb-10">
-        <h1 className="text-2xl md:text-3xl font-bold text-white tracking-tight">
+      <div className="mb-10 text-center">
+        <h1 className="text-4xl md:text-5xl font-bold text-white tracking-tight">
           Create a New Skill
         </h1>
-        <p className="text-[rgba(255,255,255,0.6)] mt-2">
+        <p className="text-[rgba(255,255,255,0.5)] mt-2 text-base">
           Describe what you want Claude to do, and AI will generate a skill for
           you.
         </p>
       </div>
 
-      {/* Step indicator dots */}
-      <div
-        className="flex items-center justify-center gap-1 mb-8 transition-opacity duration-300"
-        style={{ opacity: mode !== "idle" ? 0.3 : 1 }}
-      >
-        {Array.from({ length: TOTAL_STEPS }).map((_, i) => (
-          <motion.div
-            key={i}
-            className="h-1 rounded-full"
-            animate={{
-              width: i === activeStep ? 16 : 5,
-              backgroundColor:
-                i === activeStep
-                  ? "#bfff00"
-                  : "rgba(255,255,255,0.15)",
-            }}
-            transition={springTransition}
-          />
-        ))}
-      </div>
+      {/* Step dots + Card stack */}
+      <div className="max-w-2xl mx-auto">
+        {/* Step indicator dots */}
+        <div
+          className="flex items-center justify-center gap-1 mb-8 transition-opacity duration-300"
+          style={{ opacity: mode !== "idle" ? 0.3 : 1 }}
+        >
+          {Array.from({ length: TOTAL_STEPS }).map((_, i) => (
+            <motion.div
+              key={i}
+              className="h-1 rounded-full"
+              animate={{
+                width: i === activeStep ? 16 : 5,
+                backgroundColor:
+                  i === activeStep
+                    ? "#bfff00"
+                    : "rgba(255,255,255,0.15)",
+              }}
+              transition={springTransition}
+            />
+          ))}
+        </div>
 
-      {/* Card stack */}
-      <div className="relative" style={{ height: CARD_HEIGHT }}>
-        {Array.from({ length: TOTAL_STEPS }).map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute inset-x-0 top-0 origin-top rounded-[20px]"
-            animate={getStackStyles(i, activeStep)}
-            transition={cardTransition}
-            style={{
-              height: CARD_HEIGHT,
-              pointerEvents: i === activeStep ? "auto" : "none",
-              backdropFilter: "blur(80px)",
-              WebkitBackdropFilter: "blur(80px)",
-            }}
-          >
-            <Card className="h-full p-5 md:p-8 flex flex-col overflow-hidden !bg-[rgba(14,14,14,0.75)]">
-              <div className="absolute inset-0 rounded-[20px] pointer-events-none z-0" style={{ background: "linear-gradient(to bottom, rgba(255,255,255,0.015), transparent 40%)" }} />
-              {stepRenderers[i]()}
-            </Card>
-          </motion.div>
-        ))}
+        {/* Card stack */}
+        <div className="relative" style={{ height: CARD_HEIGHT }}>
+          {Array.from({ length: TOTAL_STEPS }).map((_, i) => (
+            <motion.div
+              key={i}
+              className="absolute inset-x-0 top-0 origin-top rounded-[20px]"
+              animate={getStackStyles(i, activeStep)}
+              transition={cardTransition}
+              style={{
+                height: CARD_HEIGHT,
+                pointerEvents: i === activeStep ? "auto" : "none",
+                backdropFilter: "blur(80px)",
+                WebkitBackdropFilter: "blur(80px)",
+              }}
+            >
+              <Card className="h-full p-5 md:p-8 flex flex-col overflow-hidden !from-[rgba(28,28,28,0.72)] !to-[rgba(16,16,16,0.62)]">
+                <div className="absolute inset-0 rounded-[20px] pointer-events-none z-0" style={{ background: "linear-gradient(to bottom, rgba(255,255,255,0.015), transparent 40%)" }} />
+                {stepRenderers[i]()}
+              </Card>
+            </motion.div>
+          ))}
+        </div>
       </div>
-    </div>
+    </>
   );
 }
