@@ -1,0 +1,82 @@
+"use client";
+
+import { useEffect, useRef } from "react";
+import { usePathname, useSearchParams } from "next/navigation";
+import posthog from "posthog-js";
+import { createClient } from "@/lib/supabase/client";
+import { track, identify, reset } from "@/lib/analytics";
+
+let posthogInitialized = false;
+
+export function PostHogProvider({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const prevUserRef = useRef<string | null>(null);
+
+  // Initialize PostHog once
+  useEffect(() => {
+    if (posthogInitialized) return;
+    const key = process.env.NEXT_PUBLIC_POSTHOG_KEY;
+    const host = process.env.NEXT_PUBLIC_POSTHOG_HOST;
+    if (!key) return;
+
+    posthog.init(key, {
+      api_host: host || "https://us.i.posthog.com",
+      capture_pageview: false, // We fire manually on route change
+      capture_pageleave: true,
+      persistence: "localStorage+cookie",
+    });
+    posthogInitialized = true;
+  }, []);
+
+  // Track pageviews on route changes
+  useEffect(() => {
+    if (!posthogInitialized) return;
+    const url = window.origin + pathname + (searchParams?.toString() ? `?${searchParams.toString()}` : "");
+    posthog.capture("$pageview", { $current_url: url });
+  }, [pathname, searchParams]);
+
+  // Listen to Supabase auth state for identify/reset
+  useEffect(() => {
+    if (!posthogInitialized) return;
+    const supabase = createClient();
+
+    // Check initial auth state
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      if (user) {
+        identify(user.id, { email: user.email });
+        prevUserRef.current = user.id;
+      }
+    });
+
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        if (event === "SIGNED_IN" && session?.user) {
+          const user = session.user;
+          identify(user.id, { email: user.email });
+
+          // Detect if this is a new signup or returning login
+          const createdAt = new Date(user.created_at).getTime();
+          const isNewUser = Date.now() - createdAt < 60_000;
+
+          if (isNewUser && prevUserRef.current !== user.id) {
+            track("signup_completed", { method: "google" });
+          } else if (prevUserRef.current !== user.id) {
+            track("login_completed", { method: "google" });
+          }
+          prevUserRef.current = user.id;
+        }
+
+        if (event === "SIGNED_OUT") {
+          reset();
+          prevUserRef.current = null;
+        }
+      }
+    );
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  return <>{children}</>;
+}
