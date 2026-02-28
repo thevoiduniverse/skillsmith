@@ -75,7 +75,7 @@ const cards = [
     gradient:
       "linear-gradient(135.21deg, rgba(255,255,255,0.5) 0%, rgba(191,255,0,0) 51.08%), linear-gradient(90deg, rgba(191,255,0,0.6) 0%, rgba(191,255,0,0.6) 100%)",
     dark: false,
-    image: "/card-share.png",
+    image: "/card-share.png?v=2",
   },
   {
     title: "One-Line\nBuilder",
@@ -84,7 +84,7 @@ const cards = [
     gradient:
       "linear-gradient(135.21deg, rgba(191,255,0,0.2) 0%, rgba(0,0,0,0) 51.08%), linear-gradient(90deg, rgba(25,25,25,0.8) 0%, rgba(25,25,25,0.8) 100%)",
     dark: false,
-    image: "/card-editor.png",
+    image: "/card-editor.png?v=2",
   },
   {
     title: "Side-by-Side\nPlayground",
@@ -93,7 +93,7 @@ const cards = [
     gradient:
       "linear-gradient(135.21deg, rgba(191,255,0,0.8) 0%, rgba(255,255,255,0) 51.08%), linear-gradient(90deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.9) 100%)",
     dark: true,
-    image: "/card-testing.png",
+    image: "/card-testing.png?v=2",
   },
 ];
 
@@ -116,26 +116,51 @@ const springTransition = {
 };
 
 const rotatingWords = [
+  // AI Tools
   { text: "Claude", color: "#E8855B" },
-  { text: "Broking", color: "#00C805" },
+  { text: "ChatGPT", color: "#10A37F" },
+  { text: "Gemini", color: "#4285F4" },
+  { text: "Cursor", color: "#00D1FF" },
+  { text: "Copilot", color: "#6CC644" },
+  { text: "Perplexity", color: "#20B8CD" },
+  // SaaS & Tools
   { text: "Google Sheets", color: "#34A853" },
+  { text: "Slack", color: "#E01E5A" },
+  { text: "Notion", color: "#E0E0E0" },
+  { text: "Figma", color: "#A259FF" },
+  { text: "Jira", color: "#0052CC" },
+  { text: "Linear", color: "#5E6AD2" },
+  { text: "Airtable", color: "#18BFFF" },
+  { text: "HubSpot", color: "#FF7A59" },
+  { text: "Salesforce", color: "#00A1E0" },
+  { text: "Excel", color: "#217346" },
+  { text: "Zapier", color: "#FF4F00" },
+  // Domains
+  { text: "Sales", color: "#00A1E0" },
+  { text: "Marketing", color: "#FF4081" },
+  { text: "Finance", color: "#00C805" },
+  { text: "HR", color: "#52C41A" },
+  { text: "Legal Review", color: "#8C8CFF" },
+  { text: "Customer Support", color: "#00B8D9" },
+  { text: "Product", color: "#F57C00" },
+  { text: "Engineering", color: "#78909C" },
+  { text: "Design", color: "#E040FB" },
+  { text: "Operations", color: "#26A69A" },
+  // Tasks & Workflows
   { text: "Research", color: "#7B61FF" },
   { text: "Code Review", color: "#F78166" },
   { text: "Data Analysis", color: "#4285F4" },
   { text: "Writing", color: "#FF6B6B" },
-  { text: "Customer Support", color: "#00B8D9" },
-  { text: "Sales", color: "#00A1E0" },
-  { text: "Marketing", color: "#FF4081" },
-  { text: "Slack", color: "#E01E5A" },
-  { text: "Notion", color: "#E0E0E0" },
-  { text: "ChatGPT", color: "#10A37F" },
   { text: "Copywriting", color: "#F5A623" },
   { text: "SQL Queries", color: "#CC6699" },
-  { text: "Summarisation", color: "#36CFC9" },
-  { text: "Legal Review", color: "#8C8CFF" },
-  { text: "Figma", color: "#A259FF" },
-  { text: "Onboarding", color: "#52C41A" },
+  { text: "Summaries", color: "#36CFC9" },
   { text: "Debugging", color: "#FF4D4F" },
+  { text: "Documentation", color: "#90A4AE" },
+  { text: "Email Drafts", color: "#EA4335" },
+  { text: "Proposals", color: "#AB47BC" },
+  { text: "Automation", color: "#FFB300" },
+  { text: "Reports", color: "#5C6BC0" },
+  { text: "Testing", color: "#66BB6A" },
 ];
 
 export function LandingHero() {
@@ -238,7 +263,7 @@ export function LandingHero() {
       {/* Hero */}
       <section className="relative z-10 max-w-4xl mx-auto px-4 md:px-6 pt-10 pb-10 md:pt-28 md:pb-20 text-center">
         <h1 className="text-[28px] md:text-[60px] font-sans font-normal text-white leading-[1.15]">
-          Build your{" "}
+          Craft your{" "}
           <img src="/Skills.png" alt="Skills" className="inline-block h-[46px] md:h-[92px] align-middle relative -top-[3px] md:-top-[6px]" />{" "}for
           <br />
           <span className="inline-block" style={{ color: textColor }}>
@@ -274,17 +299,39 @@ export function LandingHero() {
         {isMobile ? (
           /* Mobile: vertical stack, always show description — AI-Assisted Editor first */
           <div className="flex flex-col items-center gap-6 px-5">
-            {[cards[1], cards[0], cards[2]].map((card) => (
+            {[cards[1], cards[0], cards[2]].map((card, i) => (
               <div
                 key={card.title}
-                className="w-full rounded-[40px] px-6 py-8 flex flex-col overflow-hidden"
+                className="relative w-full rounded-[40px] px-6 py-8 flex flex-col overflow-hidden"
                 style={{
                   background: card.gradient,
                   backdropFilter: "blur(20px)",
                   WebkitBackdropFilter: "blur(20px)",
-                  border: "1px solid rgba(255,255,255,0.08)",
+                  border: `1px solid rgba(255,255,255,${i === 0 ? 0.04 : 0.08})`,
                 }}
               >
+                {/* Gradient border overlay */}
+                {i === 0 && (
+                  <>
+                    <div
+                      className="absolute inset-0 rounded-[40px] pointer-events-none z-0"
+                      style={{
+                        padding: 1,
+                        background: "linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(255,255,255,0.06) 50%, transparent)",
+                        WebkitMask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                        WebkitMaskComposite: "xor",
+                        mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                        maskComposite: "exclude",
+                      }}
+                    />
+                    <div
+                      className="absolute inset-0 rounded-[40px] pointer-events-none z-0"
+                      style={{
+                        background: "linear-gradient(to bottom, rgba(255,255,255,0.05), transparent 40%)",
+                      }}
+                    />
+                  </>
+                )}
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={card.image} alt="" className="w-[120px] h-[120px] object-contain shrink-0 pointer-events-none" />
                 <div className="flex flex-col gap-[11px] mt-auto pt-4">
