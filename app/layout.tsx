@@ -1,8 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { JetBrains_Mono } from "next/font/google";
 import localFont from "next/font/local";
-import { Analytics } from "@vercel/analytics/react";
-import { SpeedInsights } from "@vercel/speed-insights/next";
+import { PostHogProvider } from "@/components/providers/posthog-provider";
 import "./globals.css";
 
 const jetbrains = JetBrains_Mono({
@@ -43,19 +42,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark">
-      <head>
-        <script
-          defer
-          src="https://cloud.umami.is/script.js"
-          data-website-id="38f21c1a-7561-48ee-8a45-c8d184ca2c96"
-        />
-      </head>
       <body
         className={`${brockmann.className} ${brockmann.variable} ${jetbrains.variable} ${asgardFat.variable} bg-[#0a0a0a]`}
       >
-        {children}
-        <Analytics />
-        <SpeedInsights />
+        <PostHogProvider>{children}</PostHogProvider>
       </body>
     </html>
   );
