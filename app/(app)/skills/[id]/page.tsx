@@ -34,7 +34,7 @@ export default async function SkillDetailPage({
       <TemplateViewTracker templateId={skill.id} />
       <div className="flex items-start justify-between mb-6">
         <div>
-          <h1 className="text-3xl font-bold text-white tracking-tight">
+          <h1 className="text-xl md:text-3xl font-bold text-white tracking-tight">
             {skill.title}
           </h1>
           {skill.description && (

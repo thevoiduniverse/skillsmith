@@ -520,7 +520,7 @@ export default function NewSkillPage() {
     <div className="max-w-2xl mx-auto px-4 py-8 md:px-0 md:py-12">
       {/* Header */}
       <div className="text-center mb-6 md:mb-10">
-        <h1 className="text-3xl font-bold text-white tracking-tight">
+        <h1 className="text-xl md:text-3xl font-bold text-white tracking-tight">
           Create a New Skill
         </h1>
         <p className="text-[rgba(255,255,255,0.5)] text-base mt-2">

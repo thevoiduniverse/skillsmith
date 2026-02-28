@@ -62,7 +62,7 @@ export default function HowItWorksPage() {
   return (
     <div className="max-w-6xl mx-auto space-y-10">
       <div>
-        <h1 className="text-3xl font-bold text-white tracking-tight mb-2">
+        <h1 className="text-xl md:text-3xl font-bold text-white tracking-tight mb-2">
           How it Works
         </h1>
         <p className="text-[rgba(255,255,255,0.6)] text-base leading-relaxed max-w-lg">

@@ -33,7 +33,7 @@ export default async function SkillTestPage({
             Back to Editor
           </Button>
         </Link>
-        <h1 className="text-3xl font-bold text-white tracking-tight">
+        <h1 className="text-xl md:text-3xl font-bold text-white tracking-tight">
           Test: {skill.title}
         </h1>
         <p className="text-[rgba(255,255,255,0.5)] text-base mt-2">

@@ -1,7 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { Sidebar } from "@/components/layout/sidebar";
-import { MobileNav } from "@/components/layout/mobile-nav";
+import { MobileHeader } from "@/components/layout/mobile-header";
 import { ToastProvider } from "@/components/ui/toast-provider";
 import { DotCanvas } from "@/components/ui/dot-canvas";
 
@@ -29,11 +29,7 @@ export default async function AppLayout({
 
       {/* Main content area */}
       <div className="relative z-10 flex-1 flex flex-col min-w-0">
-        <div className="flex items-center md:hidden px-4 h-14 border-b border-border pt-[env(safe-area-inset-top,0px)]">
-          <MobileNav />
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/logo.png" alt="SkillSmith" className="ml-2 h-[26px] w-auto" />
-        </div>
+        <MobileHeader />
         <main className="flex-1 px-4 pt-8 pb-4 md:px-6 md:pt-12 md:pb-6">
 {children}
         </main>

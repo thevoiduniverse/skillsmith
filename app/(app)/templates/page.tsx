@@ -70,7 +70,7 @@ export default function TemplatesPage() {
       {/* Fixed header + filters */}
       <div className="shrink-0">
         <div className="mb-10 text-center">
-          <h1 className="text-3xl font-bold text-white tracking-tight">
+          <h1 className="text-xl md:text-3xl font-bold text-white tracking-tight">
             Template Library
           </h1>
           <p className="text-[rgba(255,255,255,0.5)] text-base mt-2">
