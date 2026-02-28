@@ -275,11 +275,11 @@ export default function NewSkillPage() {
                 className="text-sm shrink-0"
               />
               <div className="relative flex-1 min-h-0 mt-6 -mb-5 md:-mb-8">
-                <div className="h-full overflow-y-auto px-5 md:px-8 -mx-5 md:-mx-8">
+                <div className="h-full overflow-y-auto px-5 md:px-8 -mx-5 md:-mx-8 pb-14">
                   {templateLoading ? (
                     <p className="text-sm text-[rgba(255,255,255,0.4)] text-center py-4">Loading templates...</p>
                   ) : (
-                    <div className="grid grid-cols-2 gap-3">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       {templates
                         .filter((t) =>
                           t.title.toLowerCase().includes(templateSearch.toLowerCase())

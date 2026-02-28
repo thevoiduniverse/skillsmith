@@ -21,14 +21,20 @@ import { cn } from "@/lib/utils";
 import { TransitionText } from "@/components/ui/transition-text";
 import { SKILL_CATEGORIES } from "@/lib/constants";
 import { useIsMobile } from "@/lib/hooks/use-is-mobile";
+import { TemplateCard } from "@/components/templates/template-card";
 
 /* ─── Types ───────────────────────────────────── */
 
 interface Template {
   id: string;
   title: string;
-  description: string;
+  description: string | null;
   content: string;
+  category: string | null;
+  tags: string[];
+  usage_count: number;
+  featured: boolean;
+  profiles?: { display_name: string } | null;
 }
 
 /* ─── Constants ────────────────────────────────── */
@@ -251,7 +257,7 @@ export default function TryPage() {
         </div>
 
         {/* Dynamic content based on path */}
-        <div className="flex-1">
+        <div className="flex-1 min-h-0 flex flex-col">
           {creationPath === "ai" && (
             <div className="space-y-3">
               <label className="block text-sm text-[rgba(255,255,255,0.6)]">
@@ -268,36 +274,37 @@ export default function TryPage() {
           )}
 
           {creationPath === "template" && (
-            <div className="space-y-3">
+            <div className="flex flex-col flex-1 min-h-0">
               <Input
                 value={templateSearch}
                 onChange={(e) => setTemplateSearch(e.target.value)}
                 placeholder="Search templates..."
-                className="text-sm"
+                className="text-sm shrink-0"
               />
-              <div className="space-y-2 max-h-[200px] overflow-y-auto pr-1">
-                {templateLoading ? (
-                  <p className="text-sm text-[rgba(255,255,255,0.4)] text-center py-4">Loading templates...</p>
-                ) : templates
-                    .filter((t) =>
-                      t.title.toLowerCase().includes(templateSearch.toLowerCase())
-                    )
-                    .map((t) => (
-                      <button
-                        key={t.id}
-                        onClick={() => handleUseTemplate(t)}
-                        disabled={loading}
-                        className="w-full text-left p-3 rounded-xl bg-[rgba(255,255,255,0.03)] hover:bg-[rgba(255,255,255,0.07)] border border-[rgba(255,255,255,0.06)] transition-colors"
-                      >
-                        <div className="font-medium text-sm text-white">{t.title}</div>
-                        <div className="text-xs text-[rgba(255,255,255,0.5)] line-clamp-1 mt-0.5">
-                          {t.description}
-                        </div>
-                      </button>
-                    ))}
-                {!templateLoading && templates.length === 0 && (
-                  <p className="text-sm text-[rgba(255,255,255,0.4)] text-center py-4">No templates available</p>
-                )}
+              <div className="relative flex-1 min-h-0 mt-6 -mb-5 md:-mb-8">
+                <div className="h-full overflow-y-auto px-5 md:px-8 -mx-5 md:-mx-8 pb-14">
+                  {templateLoading ? (
+                    <p className="text-sm text-[rgba(255,255,255,0.4)] text-center py-4">Loading templates...</p>
+                  ) : (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      {templates
+                        .filter((t) =>
+                          t.title.toLowerCase().includes(templateSearch.toLowerCase())
+                        )
+                        .map((t) => (
+                          <TemplateCard key={t.id} template={t} compact onUse={() => handleUseTemplate(t)} />
+                        ))}
+                    </div>
+                  )}
+                  {!templateLoading && templates.length === 0 && (
+                    <p className="text-sm text-[rgba(255,255,255,0.4)] text-center py-4">No templates available</p>
+                  )}
+                </div>
+                {/* Gradient fade mask at bottom */}
+                <div
+                  className="absolute bottom-0 left-0 right-0 h-12 pointer-events-none"
+                  style={{ background: "linear-gradient(to bottom, transparent, rgba(16,16,16,0.9))" }}
+                />
               </div>
             </div>
           )}

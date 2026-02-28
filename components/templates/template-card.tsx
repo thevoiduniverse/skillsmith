@@ -26,9 +26,10 @@ interface TemplateCardProps {
   };
   publicMode?: boolean;
   compact?: boolean;
+  onUse?: () => void;
 }
 
-export function TemplateCard({ template, publicMode, compact }: TemplateCardProps) {
+export function TemplateCard({ template, publicMode, compact, onUse }: TemplateCardProps) {
   const router = useRouter();
   const [forking, setForking] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
@@ -111,7 +112,7 @@ export function TemplateCard({ template, publicMode, compact }: TemplateCardProp
                 {template.category}
               </span>
             )}
-            <Button size="sm" onClick={handleFork} disabled={forking} className="h-7 text-xs px-2.5">
+            <Button size="sm" onClick={onUse || handleFork} disabled={forking} className="h-7 text-xs px-2.5">
               <IconGitFork size={12} />
               <TransitionText active={forking} idle="Use" activeText="..." />
             </Button>
