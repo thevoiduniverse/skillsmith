@@ -47,8 +47,8 @@ export default function TryLayout({
                 href="/signup"
                 className="bg-gradient-to-b from-[#d4ff4d] to-[#a8e600] text-[#0a0a0a] font-sans font-bold text-sm rounded-[40px] px-4 py-2.5 md:px-7 md:py-3 flex items-center justify-center shadow-[inset_0_1px_0_rgba(255,255,255,0.4),inset_0_-1px_0_rgba(0,0,0,0.15),0_1px_3px_rgba(0,0,0,0.4)] border border-[rgba(0,0,0,0.1)] hover:brightness-105 transition-all"
               >
-                <span className="hidden md:inline">SIGN UP / SIGN IN</span>
-                <span className="md:hidden">SIGN UP</span>
+                <span className="hidden md:inline">Sign Up / Sign In</span>
+                <span className="md:hidden">Sign Up</span>
               </Link>
             </div>
           </div>
