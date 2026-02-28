@@ -6,22 +6,23 @@ import posthog from "posthog-js";
 import { createClient } from "@/lib/supabase/client";
 import { track, identify, reset } from "@/lib/analytics";
 
-let posthogInitialized = false;
+// Initialize at module level so it's ready before any component renders.
+// posthog.init is idempotent — safe to call once at import time.
+const posthogInitialized =
+  typeof window !== "undefined" &&
+  (() => {
+    const key = process.env.NEXT_PUBLIC_POSTHOG_KEY;
+    const host = process.env.NEXT_PUBLIC_POSTHOG_HOST;
+    if (!key) return false;
 
-function initPostHog() {
-  if (posthogInitialized) return;
-  const key = process.env.NEXT_PUBLIC_POSTHOG_KEY;
-  const host = process.env.NEXT_PUBLIC_POSTHOG_HOST;
-  if (!key) return;
-
-  posthog.init(key, {
-    api_host: host || "https://us.i.posthog.com",
-    capture_pageview: false,
-    capture_pageleave: true,
-    persistence: "localStorage+cookie",
-  });
-  posthogInitialized = true;
-}
+    posthog.init(key, {
+      api_host: host || "https://us.i.posthog.com",
+      capture_pageview: false,
+      capture_pageleave: true,
+      persistence: "localStorage+cookie",
+    });
+    return true;
+  })();
 
 /** Tracks pageviews on route changes — must be inside Suspense because of useSearchParams */
 function PostHogPageviewTracker() {
@@ -42,11 +43,6 @@ function PostHogPageviewTracker() {
 
 export function PostHogProvider({ children }: { children: React.ReactNode }) {
   const prevUserRef = useRef<string | null>(null);
-
-  // Initialize PostHog once
-  useEffect(() => {
-    initPostHog();
-  }, []);
 
   // Listen to Supabase auth state for identify/reset
   useEffect(() => {
