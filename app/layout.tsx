@@ -3,6 +3,7 @@ import { JetBrains_Mono } from "next/font/google";
 import localFont from "next/font/local";
 import { PostHogProvider } from "@/components/providers/posthog-provider";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import Script from "next/script";
 import "./globals.css";
 
 const jetbrains = JetBrains_Mono({
@@ -54,6 +55,12 @@ export default function RootLayout({
       >
         <PostHogProvider>{children}</PostHogProvider>
         <SpeedInsights />
+        <Script
+          async
+          src="https://analytics.umami.is/script.js"
+          data-website-id="38f21c1a-7561-48ee-8a45-c8d184ca2c96"
+          strategy="afterInteractive"
+        />
       </body>
     </html>
   );
