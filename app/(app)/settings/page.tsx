@@ -8,7 +8,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
-import { track } from "@/lib/analytics";
 
 function Skeleton({ className }: { className?: string }) {
   return (
@@ -122,7 +121,6 @@ export default function SettingsPage() {
   }
 
   async function handleSignOut() {
-    track("logout");
     await supabase.auth.signOut();
     router.push("/login");
     router.refresh();

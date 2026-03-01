@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { JetBrains_Mono } from "next/font/google";
 import localFont from "next/font/local";
 import { PostHogProvider } from "@/components/providers/posthog-provider";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 
 const jetbrains = JetBrains_Mono({
@@ -52,6 +53,7 @@ export default function RootLayout({
         className={`${brockmann.className} ${brockmann.variable} ${jetbrains.variable} ${asgardFat.variable} ${birdsOfParadise.variable} bg-[#0a0a0a]`}
       >
         <PostHogProvider>{children}</PostHogProvider>
+        <SpeedInsights />
       </body>
     </html>
   );
