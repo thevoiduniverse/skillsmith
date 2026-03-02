@@ -56,18 +56,18 @@ function getStackStyles(cardIndex: number, activeStep: number) {
 
   // Active — front and center, sharp
   if (offset === 0) {
-    return { scale: 1, y: 0, opacity: 1, filter: "blur(0px)", zIndex: 30 };
+    return { scale: 1, y: 0, opacity: 1, filter: "blur(0px) brightness(1)", zIndex: 30 };
   }
   // +1 behind — peeking below
   if (offset === 1) {
-    return { scale: 0.95, y: 40, opacity: 0.7, filter: "blur(0px)", zIndex: 20 };
+    return { scale: 0.95, y: 40, opacity: 1, filter: "blur(0px) brightness(0.85)", zIndex: 20 };
   }
   // +2 behind — deeper peek
   if (offset === 2) {
-    return { scale: 0.9, y: 72, opacity: 0.4, filter: "blur(0px)", zIndex: 10 };
+    return { scale: 0.9, y: 72, opacity: 1, filter: "blur(0px) brightness(0.7)", zIndex: 10 };
   }
   // Completed — fades out with blur
-  return { scale: 0.98, y: 12, opacity: 0, filter: "blur(12px)", zIndex: 40 };
+  return { scale: 0.98, y: 12, opacity: 0, filter: "blur(12px) brightness(1)", zIndex: 40 };
 }
 
 const cardTransition = {
@@ -585,7 +585,7 @@ export default function TryPage() {
           {Array.from({ length: TOTAL_STEPS }).map((_, i) => (
             <motion.div
               key={i}
-              className="absolute inset-x-0 top-0 origin-top rounded-[20px]"
+              className="absolute inset-x-0 top-0 origin-top rounded-[32px] overflow-hidden"
               animate={getStackStyles(i, activeStep)}
               transition={cardTransition}
               style={{
@@ -595,8 +595,8 @@ export default function TryPage() {
                 WebkitBackdropFilter: "blur(80px)",
               }}
             >
-              <Card className="h-full p-5 md:p-8 flex flex-col overflow-hidden !from-[rgba(28,28,28,0.72)] !to-[rgba(16,16,16,0.62)]">
-                <div className="absolute inset-0 rounded-[20px] pointer-events-none z-0" style={{ background: "linear-gradient(to bottom, rgba(255,255,255,0.015), transparent 40%)" }} />
+              <Card className="h-full p-5 md:p-8 flex flex-col overflow-hidden">
+                <div className="absolute inset-0 rounded-[32px] pointer-events-none z-0" style={{ background: "linear-gradient(to bottom, rgba(255,255,255,0.015), transparent 40%)" }} />
                 {stepRenderers[i]()}
               </Card>
             </motion.div>

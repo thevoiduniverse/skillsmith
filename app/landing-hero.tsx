@@ -42,20 +42,19 @@ const HOW_CARD_HEIGHT = 280;
 
 function getHowStackStyles(cardIndex: number, activeStep: number) {
   const offset = cardIndex - activeStep;
-  // Keep opacity at 1 for visible cards so backdrop-filter works correctly
   if (offset === 0) {
-    return { scale: 1, y: 0, opacity: 1, filter: "blur(0px)", zIndex: 30 };
+    return { scale: 1, y: 0, opacity: 1, filter: "blur(0px) brightness(1)", zIndex: 30 };
   }
   if (offset === 1) {
-    return { scale: 0.95, y: 36, opacity: 1, filter: "blur(0px)", zIndex: 20 };
+    return { scale: 0.95, y: 36, opacity: 1, filter: "blur(0px) brightness(0.85)", zIndex: 20 };
   }
   if (offset === 2) {
-    return { scale: 0.9, y: 64, opacity: 1, filter: "blur(0px)", zIndex: 10 };
+    return { scale: 0.9, y: 64, opacity: 1, filter: "blur(0px) brightness(0.7)", zIndex: 10 };
   }
   if (offset === 3) {
-    return { scale: 0.85, y: 84, opacity: 1, filter: "blur(0px)", zIndex: 5 };
+    return { scale: 0.85, y: 84, opacity: 1, filter: "blur(0px) brightness(0.55)", zIndex: 5 };
   }
-  return { scale: 0.98, y: 12, opacity: 0, filter: "blur(12px)", zIndex: 40 };
+  return { scale: 0.98, y: 12, opacity: 0, filter: "blur(12px) brightness(1)", zIndex: 40 };
 }
 
 const howCardTransition = {
@@ -251,7 +250,7 @@ export function LandingHero() {
       </nav>
 
       {/* Hero */}
-      <section className="relative z-10 max-w-4xl mx-auto px-4 md:px-6 pt-10 pb-10 md:pt-28 md:pb-20 text-center">
+      <section className="relative z-10 max-w-4xl mx-auto px-4 md:px-6 pt-10 pb-10 md:pt-20 md:pb-20 text-center">
         <h1 className="text-[28px] md:text-[60px] font-display font-semibold text-white leading-[1.15]">
           Craft your{" "}
           <img src="/Skills.png" alt="Skills" className="inline-block h-[46px] md:h-[92px] align-middle relative -top-[3px] md:-top-[6px]" />{" "}for
@@ -426,7 +425,7 @@ export function LandingHero() {
           {HOW_STEPS.map((step, i) => (
             <motion.div
               key={step.number}
-              className="absolute inset-x-0 top-0 origin-top rounded-[20px]"
+              className="absolute inset-x-0 top-0 origin-top rounded-[32px] overflow-hidden"
               animate={getHowStackStyles(i, howStep)}
               transition={howCardTransition}
               style={{
@@ -437,11 +436,11 @@ export function LandingHero() {
               }}
             >
               <div
-                className="relative h-full rounded-[20px] bg-gradient-to-b from-[rgba(28,28,28,0.72)] to-[rgba(16,16,16,0.62)] hover:from-[rgba(32,32,32,0.80)] hover:to-[rgba(20,20,20,0.72)] border border-[rgba(255,255,255,0.02)] backdrop-blur-[4px] px-5 py-6 md:px-8 md:py-8 flex flex-col overflow-hidden transition-colors shadow-[inset_0_1px_0_rgba(255,255,255,0.08),inset_0_-1px_0_rgba(0,0,0,0.25),0_4px_20px_rgba(0,0,0,0.4)]"
+                className="relative h-full rounded-[32px] bg-gradient-to-b from-[rgba(28,28,28,0.72)] to-[rgba(16,16,16,0.62)] hover:from-[rgba(32,32,32,0.80)] hover:to-[rgba(20,20,20,0.72)] border border-[rgba(255,255,255,0.02)] backdrop-blur-[4px] px-5 py-6 md:px-8 md:py-8 flex flex-col overflow-hidden transition-colors shadow-[inset_0_1px_0_rgba(255,255,255,0.08),inset_0_-1px_0_rgba(0,0,0,0.25),0_4px_20px_rgba(0,0,0,0.4)]"
               >
                 {/* Glass gradient border */}
                 <div
-                  className="absolute inset-0 rounded-[20px] pointer-events-none z-0"
+                  className="absolute inset-0 rounded-[32px] pointer-events-none z-0"
                   style={{
                     padding: 1,
                     background: "linear-gradient(to bottom, rgba(255,255,255,0.12), rgba(255,255,255,0.02) 50%, transparent)",
@@ -453,7 +452,7 @@ export function LandingHero() {
                 />
                 {/* Top shine */}
                 <div
-                  className="absolute inset-0 rounded-[20px] pointer-events-none z-0"
+                  className="absolute inset-0 rounded-[32px] pointer-events-none z-0"
                   style={{
                     background: "linear-gradient(to bottom, rgba(255,255,255,0.02), transparent 35%)",
                   }}
