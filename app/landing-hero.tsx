@@ -253,8 +253,7 @@ export function LandingHero() {
               href="/signup"
               className="bg-gradient-to-b from-[#d4ff4d] to-[#a8e600] text-[#0a0a0a] font-sans font-bold text-sm rounded-[40px] px-4 py-2.5 md:px-7 md:py-3 flex items-center justify-center shadow-[inset_0_1px_0_rgba(255,255,255,0.4),inset_0_-1px_0_rgba(0,0,0,0.15),0_1px_3px_rgba(0,0,0,0.4)] border border-[rgba(0,0,0,0.1)] hover:brightness-105 transition-all"
             >
-              <span className="hidden md:inline">Sign Up / Sign In</span>
-              <span className="md:hidden">Sign Up</span>
+              Sign Up
             </Link>
           </div>
         </div>
@@ -262,7 +261,7 @@ export function LandingHero() {
 
       {/* Hero */}
       <section className="relative z-10 max-w-4xl mx-auto px-4 md:px-6 pt-10 pb-10 md:pt-28 md:pb-20 text-center">
-        <h1 className="text-[28px] md:text-[60px] font-sans font-normal text-white leading-[1.15]">
+        <h1 className="text-[28px] md:text-[60px] font-display font-semibold text-white leading-[1.15]">
           Craft your{" "}
           <img src="/Skills.png" alt="Skills" className="inline-block h-[46px] md:h-[92px] align-middle relative -top-[3px] md:-top-[6px]" />{" "}for
           <br />
@@ -336,7 +335,7 @@ export function LandingHero() {
                 <img src={card.image} alt="" className="w-[120px] h-[120px] object-contain shrink-0 pointer-events-none" />
                 <div className="flex flex-col gap-[11px] mt-auto pt-4">
                   <h3
-                    className={`font-sans font-bold text-xl leading-[1.6] whitespace-pre-line ${
+                    className={`font-display font-semibold text-xl leading-[1.6] whitespace-pre-line ${
                       card.dark ? "text-[#0a0a0a]" : "text-white"
                     }`}
                   >
@@ -408,7 +407,7 @@ export function LandingHero() {
                   <img src={card.image} alt="" className="w-[160px] h-[160px] object-contain shrink-0 pointer-events-none" />
                   <div className="flex flex-col gap-[11px] mt-auto pt-4">
                     <h3
-                      className={`font-sans font-bold text-[28px] leading-[1.6] whitespace-pre-line ${
+                      className={`font-display font-semibold text-[28px] leading-[1.6] whitespace-pre-line ${
                         card.dark ? "text-[#0a0a0a]" : "text-white"
                       }`}
                     >
@@ -434,9 +433,9 @@ export function LandingHero() {
       {/* How it Works */}
       <section className="relative z-10 max-w-xl mx-auto px-6 pb-32">
         <div className="text-center mb-10">
-          <h2 className="text-[28px] md:text-[40px] font-sans font-normal text-white leading-[1.15]">
+          <h2 className="text-[28px] md:text-[40px] font-display font-semibold text-white leading-[1.15]">
             How it{" "}
-            <span className="font-asgardFat text-[#bfff00]">WORKS</span>
+            <span className="text-[#bfff00]">Works</span>
           </h2>
           <p className="mt-4 text-[rgba(255,255,255,0.6)] text-base font-sans">
             From idea to production-ready skill in four steps.
@@ -501,7 +500,7 @@ export function LandingHero() {
                   <span className="text-xs font-mono font-bold text-[#bfff00] opacity-60">
                     {step.number}
                   </span>
-                  <h3 className="text-2xl font-bold text-white">
+                  <h3 className="font-display text-2xl font-semibold text-white">
                     {step.title}
                   </h3>
                 </div>
