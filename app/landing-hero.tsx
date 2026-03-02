@@ -72,27 +72,18 @@ const cards = [
     title: "Community\nTemplates",
     description:
       "Publish your skills to the template library for anyone to discover. Fork what others have built, remix it, and make it your own.",
-    gradient:
-      "linear-gradient(135.21deg, rgba(255,255,255,0.5) 0%, rgba(191,255,0,0) 51.08%), linear-gradient(90deg, rgba(191,255,0,0.6) 0%, rgba(191,255,0,0.6) 100%)",
-    dark: false,
     image: "/card-share.png?v=2",
   },
   {
     title: "One-Line\nBuilder",
     description:
       "Describe what you want in one sentence. Claude generates a complete, structured skill file — then refine it with guided editing or raw markdown.",
-    gradient:
-      "linear-gradient(135.21deg, rgba(191,255,0,0.2) 0%, rgba(0,0,0,0) 51.08%), linear-gradient(90deg, rgba(25,25,25,0.8) 0%, rgba(25,25,25,0.8) 100%)",
-    dark: false,
     image: "/card-editor.png?v=2",
   },
   {
     title: "Side-by-Side\nPlayground",
     description:
       "Send the same prompt with and without your skill applied. Compare responses side by side and auto-score against expected behaviour.",
-    gradient:
-      "linear-gradient(135.21deg, rgba(191,255,0,0.8) 0%, rgba(255,255,255,0) 51.08%), linear-gradient(90deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.9) 100%)",
-    dark: true,
     image: "/card-testing.png?v=2",
   },
 ];
@@ -104,9 +95,9 @@ const stackedVariants = [
 ];
 
 const spreadVariants = [
-  { rotate: 0, x: -460 },
+  { rotate: 0, x: -440 },
   { rotate: 0, x: 0 },
-  { rotate: 0, x: 460 },
+  { rotate: 0, x: 440 },
 ];
 
 const springTransition = {
@@ -277,16 +268,16 @@ export function LandingHero() {
           Create, test, and share custom SKILL.md files with an AI-assisted
           editor and split-pane testing playground.
         </p>
-        <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-3 md:gap-5">
+        <div className="mt-10 flex flex-wrap items-center justify-center gap-3 md:gap-5">
           <Link
             href="/explore"
-            className="w-1/2 sm:w-auto bg-gradient-to-b from-[rgba(255,255,255,0.08)] to-[rgba(255,255,255,0.02)] backdrop-blur-[4px] border border-[rgba(255,255,255,0.06)] text-white font-sans font-bold text-sm rounded-[40px] px-6 py-3.5 md:px-10 md:py-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.08),inset_0_-1px_0_rgba(0,0,0,0.2),0_1px_3px_rgba(0,0,0,0.4)] hover:from-[rgba(255,255,255,0.12)] hover:to-[rgba(255,255,255,0.04)] transition-all text-center"
+            className="whitespace-nowrap w-1/2 sm:w-auto bg-gradient-to-b from-[rgba(255,255,255,0.08)] to-[rgba(255,255,255,0.02)] backdrop-blur-[4px] border border-[rgba(255,255,255,0.06)] text-white font-sans font-bold text-sm rounded-[40px] px-6 py-3.5 md:px-10 md:py-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.08),inset_0_-1px_0_rgba(0,0,0,0.2),0_1px_3px_rgba(0,0,0,0.4)] hover:from-[rgba(255,255,255,0.12)] hover:to-[rgba(255,255,255,0.04)] transition-all text-center"
           >
             Browse Templates
           </Link>
           <Link
             href="/try"
-            className="w-1/2 sm:w-auto bg-gradient-to-b from-[#d4ff4d] to-[#a8e600] text-[#0a0a0a] font-sans font-bold text-sm rounded-[40px] px-6 py-3.5 md:px-10 md:py-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.4),inset_0_-1px_0_rgba(0,0,0,0.15),0_1px_3px_rgba(0,0,0,0.4)] border border-[rgba(0,0,0,0.1)] hover:brightness-105 transition-all text-center"
+            className="whitespace-nowrap w-1/2 sm:w-auto bg-gradient-to-b from-[#d4ff4d] to-[#a8e600] text-[#0a0a0a] font-sans font-bold text-sm rounded-[40px] px-6 py-3.5 md:px-10 md:py-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.4),inset_0_-1px_0_rgba(0,0,0,0.15),0_1px_3px_rgba(0,0,0,0.4)] border border-[rgba(0,0,0,0.1)] hover:brightness-105 transition-all text-center"
           >
             Build Now
           </Link>
@@ -298,56 +289,41 @@ export function LandingHero() {
         {isMobile ? (
           /* Mobile: vertical stack, always show description — AI-Assisted Editor first */
           <div className="flex flex-col items-center gap-6 px-5">
-            {[cards[1], cards[0], cards[2]].map((card, i) => (
+            {[cards[1], cards[0], cards[2]].map((card) => (
               <div
                 key={card.title}
-                className="relative w-full rounded-[40px] px-6 py-8 flex flex-col overflow-hidden"
+                className="relative w-full rounded-[40px] px-6 py-8 flex flex-col overflow-hidden bg-gradient-to-b from-[rgba(28,28,28,0.72)] to-[rgba(16,16,16,0.62)] border border-[rgba(255,255,255,0.02)] shadow-[inset_0_1px_0_rgba(255,255,255,0.08),inset_0_-1px_0_rgba(0,0,0,0.25),0_4px_20px_rgba(0,0,0,0.4)]"
                 style={{
-                  background: card.gradient,
                   backdropFilter: "blur(20px)",
                   WebkitBackdropFilter: "blur(20px)",
-                  border: `1px solid rgba(255,255,255,${i === 0 ? 0.04 : 0.08})`,
                 }}
               >
-                {/* Gradient border overlay */}
-                {i === 0 && (
-                  <>
-                    <div
-                      className="absolute inset-0 rounded-[40px] pointer-events-none z-0"
-                      style={{
-                        padding: 1,
-                        background: "linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(255,255,255,0.06) 50%, transparent)",
-                        WebkitMask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-                        WebkitMaskComposite: "xor",
-                        mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-                        maskComposite: "exclude",
-                      }}
-                    />
-                    <div
-                      className="absolute inset-0 rounded-[40px] pointer-events-none z-0"
-                      style={{
-                        background: "linear-gradient(to bottom, rgba(255,255,255,0.05), transparent 40%)",
-                      }}
-                    />
-                  </>
-                )}
+                {/* Glass gradient border */}
+                <div
+                  className="absolute inset-0 rounded-[40px] pointer-events-none z-0"
+                  style={{
+                    padding: 1,
+                    background: "linear-gradient(to bottom, rgba(255,255,255,0.12), rgba(255,255,255,0.02) 50%, transparent)",
+                    WebkitMask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                    WebkitMaskComposite: "xor",
+                    mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                    maskComposite: "exclude",
+                  }}
+                />
+                {/* Top shine */}
+                <div
+                  className="absolute inset-0 rounded-[40px] pointer-events-none z-0"
+                  style={{
+                    background: "linear-gradient(to bottom, rgba(255,255,255,0.02), transparent 35%)",
+                  }}
+                />
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={card.image} alt="" className="w-[120px] h-[120px] object-contain shrink-0 pointer-events-none" />
                 <div className="flex flex-col gap-[11px] mt-auto pt-4">
-                  <h3
-                    className={`font-display font-semibold text-xl leading-[1.6] whitespace-pre-line ${
-                      card.dark ? "text-[#0a0a0a]" : "text-white"
-                    }`}
-                  >
+                  <h3 className="font-display font-semibold text-xl leading-[1.6] whitespace-pre-line text-white">
                     {card.title}
                   </h3>
-                  <p
-                    className={`text-[14px] leading-[1.6] font-sans ${
-                      card.dark
-                        ? "text-[rgba(10,10,10,0.6)]"
-                        : "text-[rgba(255,255,255,0.6)]"
-                    }`}
-                  >
+                  <p className="text-[14px] leading-[1.6] font-sans text-[rgba(255,255,255,0.6)]">
                     {card.description}
                   </p>
                 </div>
@@ -368,12 +344,10 @@ export function LandingHero() {
               return (
                 <motion.div
                   key={card.title}
-                  className="absolute w-[420px] h-[460px] rounded-[40px] px-8 py-10 flex flex-col overflow-hidden"
+                  className="absolute w-[420px] h-[460px] rounded-[40px] px-8 py-10 flex flex-col overflow-hidden bg-gradient-to-b from-[rgba(28,28,28,0.72)] to-[rgba(16,16,16,0.62)] border border-[rgba(255,255,255,0.02)] shadow-[inset_0_1px_0_rgba(255,255,255,0.08),inset_0_-1px_0_rgba(0,0,0,0.25),0_4px_20px_rgba(0,0,0,0.4)]"
                   style={{
-                    background: card.gradient,
                     backdropFilter: "blur(20px)",
                     WebkitBackdropFilter: "blur(20px)",
-                    border: `1px solid rgba(255,255,255,${i === 1 ? 0.04 : 0.08})`,
                     zIndex: stacked.zIndex,
                   }}
                   animate={{
@@ -382,44 +356,32 @@ export function LandingHero() {
                   }}
                   transition={springTransition}
                 >
-                  {i === 1 && (
-                    <>
-                      <div
-                        className="absolute inset-0 rounded-[40px] pointer-events-none z-0"
-                        style={{
-                          padding: 1,
-                          background: "linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(255,255,255,0.06) 50%, transparent)",
-                          WebkitMask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-                          WebkitMaskComposite: "xor",
-                          mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-                          maskComposite: "exclude",
-                        }}
-                      />
-                      <div
-                        className="absolute inset-0 rounded-[40px] pointer-events-none z-0"
-                        style={{
-                          background: "linear-gradient(to bottom, rgba(255,255,255,0.05), transparent 40%)",
-                        }}
-                      />
-                    </>
-                  )}
+                  {/* Glass gradient border */}
+                  <div
+                    className="absolute inset-0 rounded-[40px] pointer-events-none z-0"
+                    style={{
+                      padding: 1,
+                      background: "linear-gradient(to bottom, rgba(255,255,255,0.12), rgba(255,255,255,0.02) 50%, transparent)",
+                      WebkitMask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                      WebkitMaskComposite: "xor",
+                      mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                      maskComposite: "exclude",
+                    }}
+                  />
+                  {/* Top shine */}
+                  <div
+                    className="absolute inset-0 rounded-[40px] pointer-events-none z-0"
+                    style={{
+                      background: "linear-gradient(to bottom, rgba(255,255,255,0.02), transparent 35%)",
+                    }}
+                  />
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src={card.image} alt="" className="w-[160px] h-[160px] object-contain shrink-0 pointer-events-none" />
                   <div className="flex flex-col gap-[11px] mt-auto pt-4">
-                    <h3
-                      className={`font-display font-semibold text-[28px] leading-[1.6] whitespace-pre-line ${
-                        card.dark ? "text-[#0a0a0a]" : "text-white"
-                      }`}
-                    >
+                    <h3 className="font-display font-semibold text-[28px] leading-[1.6] whitespace-pre-line text-white">
                       {card.title}
                     </h3>
-                    <p
-                      className={`text-[16px] leading-[1.6] font-sans ${
-                        card.dark
-                          ? "text-[rgba(10,10,10,0.6)]"
-                          : "text-[rgba(255,255,255,0.6)]"
-                      }`}
-                    >
+                    <p className="text-[16px] leading-[1.6] font-sans text-[rgba(255,255,255,0.6)]">
                       {card.description}
                     </p>
                   </div>
