@@ -54,7 +54,7 @@ export default function TryLayout({
           </div>
         </nav>
 
-        <main className="flex-1 px-4 pt-8 pb-4 md:px-6 md:pt-12 md:pb-6">{children}</main>
+        <main className="flex-1 px-4 pt-6 pb-4 md:px-6 md:pt-12 md:pb-6">{children}</main>
       </div>
       <ToastProvider />
     </div>

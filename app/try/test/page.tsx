@@ -33,7 +33,7 @@ export default function TryTestPage() {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
         <div className="text-center max-w-md">
-          <h1 className="text-2xl font-bold mb-3">No skill found</h1>
+          <h1 className="font-display text-2xl font-semibold mb-3">No skill found</h1>
           <p className="text-[rgba(255,255,255,0.5)] mb-6">
             Create a skill first before testing it.
           </p>
@@ -65,7 +65,7 @@ export default function TryTestPage() {
             Back to Editor
           </Button>
         </Link>
-        <h1 className="text-2xl font-bold text-text-primary tracking-tight">
+        <h1 className="font-display text-2xl font-semibold text-text-primary tracking-tight">
           Test: {skillTitle}
         </h1>
         <p className="text-text-secondary text-sm mt-0.5">

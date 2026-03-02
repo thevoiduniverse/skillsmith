@@ -45,16 +45,15 @@ export function ExplorePageContent() {
                 href="/signup"
                 className="bg-gradient-to-b from-[#d4ff4d] to-[#a8e600] text-[#0a0a0a] font-sans font-bold text-sm rounded-[40px] px-4 py-2.5 md:px-7 md:py-3 flex items-center justify-center shadow-[inset_0_1px_0_rgba(255,255,255,0.4),inset_0_-1px_0_rgba(0,0,0,0.15),0_1px_3px_rgba(0,0,0,0.4)] border border-[rgba(0,0,0,0.1)] hover:brightness-105 transition-all"
               >
-                <span className="hidden md:inline">Sign Up / Sign In</span>
-                <span className="md:hidden">Sign Up</span>
+                Sign Up
               </Link>
             </div>
           </div>
         </nav>
 
-        <main className="relative z-10 max-w-6xl mx-auto px-6 pt-12 flex flex-col" style={{ height: "calc(100dvh - 5.5rem - env(safe-area-inset-bottom, 0px))" }}>
-          <div className="mb-10 text-center shrink-0">
-            <h1 className="text-xl md:text-5xl font-bold tracking-tight">
+        <main className="relative z-10 max-w-6xl mx-auto px-6 pt-6 md:pt-12 flex flex-col" style={{ height: "calc(100dvh - 7rem - env(safe-area-inset-bottom, 0px))" }}>
+          <div className="mb-4 md:mb-10 text-center shrink-0">
+            <h1 className="font-display text-xl md:text-5xl font-semibold tracking-tight">
               Templates
             </h1>
             <p className="text-[rgba(255,255,255,0.5)] mt-2 text-base">

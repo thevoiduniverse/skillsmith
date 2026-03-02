@@ -117,7 +117,7 @@ export function SkillCard({
               )}
             </div>
           )}
-          <h3 className="font-bold text-base text-white group-hover:text-white transition-colors line-clamp-1">
+          <h3 className="font-display font-semibold text-base text-white group-hover:text-white transition-colors line-clamp-1">
             {skill.title}
           </h3>
         </div>
@@ -205,7 +205,7 @@ export function SkillCard({
             className="bg-surface border border-border rounded-2xl p-6 max-w-sm w-full mx-4 shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
-            <h3 className="text-lg font-bold text-text-primary mb-2">Edit Tags</h3>
+            <h3 className="font-display text-lg font-semibold text-text-primary mb-2">Edit Tags</h3>
             <p className="text-sm text-text-secondary mb-6">
               {skill.tags.length >= MAX_TAGS
                 ? "Maximum 5 tags reached. Remove one to add more."

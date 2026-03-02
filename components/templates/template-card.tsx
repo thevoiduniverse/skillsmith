@@ -61,7 +61,7 @@ export function TemplateCard({ template, publicMode, compact, onUse }: TemplateC
           onClick={() => setShowPreview(true)}
         >
           <h3 className={cn(
-            "font-bold text-white line-clamp-1",
+            "font-display font-semibold text-white line-clamp-1",
             compact ? "text-sm mb-1" : "text-base mb-2"
           )}>
             {template.title}

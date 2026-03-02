@@ -333,7 +333,7 @@ export function GuidedEditor({
           <div className="w-14 h-14 rounded-full bg-[rgba(191,255,0,0.12)] flex items-center justify-center">
             <IconCircleCheckFilled size={32} className="text-[#bfff00]" />
           </div>
-          <h2 className="text-xl font-bold text-text-primary">
+          <h2 className="font-display text-xl font-semibold text-text-primary">
             Your skill is ready!
           </h2>
           <p className="text-sm text-text-secondary max-w-sm">

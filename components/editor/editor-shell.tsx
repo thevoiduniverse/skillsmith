@@ -491,7 +491,7 @@ export function EditorShell({ skillId, initialContent, initialTitle, initialVisi
             className="bg-surface border border-border rounded-2xl p-6 max-w-sm w-full mx-4 shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
-            <h3 className="text-lg font-bold text-text-primary mb-2">Discard this skill?</h3>
+            <h3 className="font-display text-lg font-semibold text-text-primary mb-2">Discard this skill?</h3>
             <p className="text-sm text-text-secondary mb-6">
               {tryMode
                 ? "Your local changes will be permanently lost. This action cannot be undone."

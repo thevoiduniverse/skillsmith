@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { JetBrains_Mono } from "next/font/google";
+import { JetBrains_Mono, Palanquin } from "next/font/google";
 import localFont from "next/font/local";
 import { PostHogProvider } from "@/components/providers/posthog-provider";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -11,21 +11,32 @@ const jetbrains = JetBrains_Mono({
   variable: "--font-jetbrains",
 });
 
-const asgardFat = localFont({
-  src: "./fonts/AsgardTrial-Fat.ttf",
-  variable: "--font-asgard-fat",
-  display: "swap",
+const palanquin = Palanquin({
+  subsets: ["latin"],
+  weight: ["100", "200", "300", "400", "500", "600", "700"],
+  variable: "--font-palanquin",
 });
 
-const birdsOfParadise = localFont({
-  src: "./fonts/BirdsOfParadise.ttf",
-  variable: "--font-birds-of-paradise",
-  display: "swap",
-});
-
-const brockmann = localFont({
-  src: "./fonts/brockmann-medium-webfont.woff2",
-  variable: "--font-brockmann",
+const concretteXL = localFont({
+  src: [
+    { path: "./fonts/ConcretteXL-TRIAL-Thin.ttf", weight: "100", style: "normal" },
+    { path: "./fonts/ConcretteXL-TRIAL-ThinItalic.ttf", weight: "100", style: "italic" },
+    { path: "./fonts/ConcretteXL-TRIAL-Light.ttf", weight: "300", style: "normal" },
+    { path: "./fonts/ConcretteXL-TRIAL-LightItalic.ttf", weight: "300", style: "italic" },
+    { path: "./fonts/ConcretteXL-TRIAL-Regular.ttf", weight: "400", style: "normal" },
+    { path: "./fonts/ConcretteXL-TRIAL-RegularItalic.ttf", weight: "400", style: "italic" },
+    { path: "./fonts/ConcretteXL-TRIAL-Medium.ttf", weight: "500", style: "normal" },
+    { path: "./fonts/ConcretteXL-TRIAL-MediumItalic.ttf", weight: "500", style: "italic" },
+    { path: "./fonts/ConcretteXL-TRIAL-SemiBold.ttf", weight: "600", style: "normal" },
+    { path: "./fonts/ConcretteXL-TRIAL-SemiBoldItalic.ttf", weight: "600", style: "italic" },
+    { path: "./fonts/ConcretteXL-TRIAL-Bold.ttf", weight: "700", style: "normal" },
+    { path: "./fonts/ConcretteXL-TRIAL-BoldItalic.ttf", weight: "700", style: "italic" },
+    { path: "./fonts/ConcretteXL-TRIAL-ExtraBold.ttf", weight: "800", style: "normal" },
+    { path: "./fonts/ConcretteXL-TRIAL-ExtraBoldItalic.ttf", weight: "800", style: "italic" },
+    { path: "./fonts/ConcretteXL-TRIAL-Heavy.ttf", weight: "900", style: "normal" },
+    { path: "./fonts/ConcretteXL-TRIAL-HeavyItalic.ttf", weight: "900", style: "italic" },
+  ],
+  variable: "--font-concrette",
   display: "swap",
 });
 
@@ -51,7 +62,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body
-        className={`${brockmann.className} ${brockmann.variable} ${jetbrains.variable} ${asgardFat.variable} ${birdsOfParadise.variable} bg-[#0a0a0a]`}
+        className={`${palanquin.className} ${palanquin.variable} ${concretteXL.variable} ${jetbrains.variable} bg-[#0a0a0a]`}
       >
         <PostHogProvider>{children}</PostHogProvider>
         <SpeedInsights />

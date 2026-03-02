@@ -17,7 +17,7 @@ export function ChatPane({ title, variant, prompt, response, loading }: ChatPane
   return (
     <Card className="flex flex-col h-full overflow-hidden">
       <div className="px-4 py-3 border-b border-border flex items-center justify-between">
-        <h3 className="text-sm font-semibold text-text-primary">{title}</h3>
+        <h3 className="font-display text-sm font-semibold text-text-primary">{title}</h3>
         <Badge variant={variant === "with-skill" ? "accent" : "default"}>
           {variant === "with-skill" ? "Skill ON" : "Baseline"}
         </Badge>

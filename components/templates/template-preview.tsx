@@ -52,7 +52,7 @@ export function TemplatePreview({
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-border">
           <div>
-            <h2 className="text-lg font-bold text-white">{template.title}</h2>
+            <h2 className="font-display text-lg font-semibold text-white">{template.title}</h2>
             {template.description && (
               <p className="text-sm text-[rgba(255,255,255,0.5)] mt-0.5">{template.description}</p>
             )}
@@ -66,19 +66,19 @@ export function TemplatePreview({
         <div className="flex-1 overflow-y-auto p-6 space-y-6">
           {parsed.instructions && (
             <div>
-              <h3 className="text-xs text-[rgba(255,255,255,0.4)] uppercase tracking-wider mb-2">Instructions</h3>
+              <h3 className="font-display text-xs text-[rgba(255,255,255,0.4)] uppercase tracking-wider mb-2">Instructions</h3>
               <p className="text-sm text-[rgba(255,255,255,0.8)] whitespace-pre-wrap">{parsed.instructions}</p>
             </div>
           )}
           {parsed.edgeCases && (
             <div>
-              <h3 className="text-xs text-[rgba(255,255,255,0.4)] uppercase tracking-wider mb-2">Edge Cases</h3>
+              <h3 className="font-display text-xs text-[rgba(255,255,255,0.4)] uppercase tracking-wider mb-2">Edge Cases</h3>
               <p className="text-sm text-[rgba(255,255,255,0.8)] whitespace-pre-wrap">{parsed.edgeCases}</p>
             </div>
           )}
           {parsed.examples.length > 0 && (
             <div>
-              <h3 className="text-xs text-[rgba(255,255,255,0.4)] uppercase tracking-wider mb-2">Examples ({parsed.examples.length})</h3>
+              <h3 className="font-display text-xs text-[rgba(255,255,255,0.4)] uppercase tracking-wider mb-2">Examples ({parsed.examples.length})</h3>
               <div className="space-y-3">
                 {parsed.examples.map((ex, i) => (
                   <div key={i} className="bg-[rgba(255,255,255,0.03)] rounded-xl p-3 space-y-2">

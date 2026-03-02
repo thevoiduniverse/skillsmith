@@ -21,10 +21,13 @@ const config: Config = {
         success: "#44FF88",
       },
       fontFamily: {
-        asgardFat: ["Asgard Fat", "var(--font-asgard-fat)", "sans-serif"],
-        birdsOfParadise: ["var(--font-birds-of-paradise)", "cursive"],
+        display: [
+          "var(--font-concrette)",
+          "system-ui",
+          "sans-serif",
+        ],
         sans: [
-          "var(--font-brockmann)",
+          "var(--font-palanquin)",
           "system-ui",
           "sans-serif",
         ],

@@ -62,7 +62,7 @@ export default function HowItWorksPage() {
   return (
     <div className="max-w-6xl mx-auto space-y-10">
       <div>
-        <h1 className="text-xl md:text-3xl font-bold text-white tracking-tight mb-2">
+        <h1 className="font-display text-xl md:text-3xl font-semibold text-white tracking-tight mb-2">
           How it Works
         </h1>
         <p className="text-[rgba(255,255,255,0.6)] text-base leading-relaxed max-w-lg">
@@ -87,7 +87,7 @@ export default function HowItWorksPage() {
                     size={16}
                     className="text-[rgba(255,255,255,0.6)]"
                   />
-                  <h2 className="text-base font-semibold text-white">
+                  <h2 className="font-display text-base font-semibold text-white">
                     {step.title}
                   </h2>
                 </div>
@@ -119,7 +119,7 @@ export default function HowItWorksPage() {
       {/* SKILL.md format */}
       <Card>
         <CardHeader>
-          <h2 className="text-base font-semibold text-white">
+          <h2 className="font-display text-base font-semibold text-white">
             What&apos;s in a Skill?
           </h2>
         </CardHeader>

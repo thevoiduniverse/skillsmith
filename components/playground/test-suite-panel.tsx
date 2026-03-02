@@ -99,7 +99,7 @@ export function TestSuitePanel({ skillId, skillContent }: TestSuitePanelProps) {
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <h3 className="text-sm font-semibold text-text-primary">
+          <h3 className="font-display text-sm font-semibold text-text-primary">
             Test Suite
           </h3>
           {avgScore !== null && (

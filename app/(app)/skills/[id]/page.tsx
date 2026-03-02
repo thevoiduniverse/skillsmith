@@ -34,7 +34,7 @@ export default async function SkillDetailPage({
       <TemplateViewTracker templateId={skill.id} />
       <div className="flex items-start justify-between mb-6">
         <div>
-          <h1 className="text-xl md:text-3xl font-bold text-white tracking-tight">
+          <h1 className="font-display text-xl md:text-3xl font-semibold text-white tracking-tight">
             {skill.title}
           </h1>
           {skill.description && (
@@ -76,7 +76,7 @@ export default async function SkillDetailPage({
       </Card>
 
       <div className="mt-6">
-        <h2 className="text-sm text-[rgba(255,255,255,0.4)] uppercase tracking-wider mb-3">
+        <h2 className="font-display text-sm text-[rgba(255,255,255,0.4)] uppercase tracking-wider mb-3">
           Add to your project
         </h2>
         <InstallSkill

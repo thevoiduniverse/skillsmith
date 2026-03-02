@@ -517,7 +517,7 @@ export default function NewSkillPage() {
               className="flex flex-col items-center justify-center h-full text-center"
             >
               <div className="brand-loader mb-6" />
-              <h2 className="text-xl font-medium text-white mb-2">
+              <h2 className="font-display text-xl font-semibold text-white mb-2">
                 {mode === "generating"
                   ? "Generating your skill..."
                   : "Creating your skill..."}
@@ -539,10 +539,10 @@ export default function NewSkillPage() {
   /* ─── Render ───────────────────────────────── */
 
   return (
-    <div className="max-w-2xl mx-auto px-4 py-8 md:px-0 md:py-12">
+    <div className="max-w-2xl mx-auto px-4 pb-8 md:px-0 md:pb-12">
       {/* Header */}
       <div className="text-center mb-6 md:mb-10">
-        <h1 className="text-xl md:text-3xl font-bold text-white tracking-tight">
+        <h1 className="font-display text-xl md:text-3xl font-semibold text-white tracking-tight">
           Create a New Skill
         </h1>
         <p className="text-[rgba(255,255,255,0.5)] text-base mt-2">

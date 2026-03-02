@@ -10,7 +10,7 @@ export function EmptyState() {
       <div className="w-16 h-16 rounded-2xl bg-accent/10 flex items-center justify-center mb-6">
         <IconSparklesFilled size={32} className="text-accent" />
       </div>
-      <h2 className="text-2xl font-bold text-text-primary mb-2">
+      <h2 className="font-display text-2xl font-semibold text-text-primary mb-2">
         No skills yet
       </h2>
       <p className="text-text-secondary max-w-md mb-8">

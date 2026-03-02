@@ -10,7 +10,7 @@ export function PreviewPanel({ markdown }: PreviewPanelProps) {
   return (
     <div className="bg-surface border border-border rounded-xl h-full flex flex-col">
       <div className="px-4 py-3 border-b border-border">
-        <h3 className="text-xs font-medium text-text-secondary uppercase tracking-wider">
+        <h3 className="font-display text-xs font-semibold text-text-secondary uppercase tracking-wider">
           SKILL.md Preview
         </h3>
       </div>

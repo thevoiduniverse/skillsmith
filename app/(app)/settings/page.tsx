@@ -128,7 +128,7 @@ export default function SettingsPage() {
 
   return (
     <div className="max-w-6xl mx-auto space-y-8">
-      <h1 className="text-xl md:text-3xl font-bold text-white tracking-tight">
+      <h1 className="font-display text-xl md:text-3xl font-semibold text-white tracking-tight">
         Settings
       </h1>
 
@@ -138,7 +138,7 @@ export default function SettingsPage() {
           <CardHeader>
             <div className="flex items-center gap-2">
               <IconUserFilled size={16} className="text-[rgba(255,255,255,0.6)]" />
-              <h2 className="text-sm font-semibold text-white">Profile</h2>
+              <h2 className="font-display text-sm font-semibold text-white">Profile</h2>
             </div>
           </CardHeader>
           <CardContent className="flex flex-col gap-4 flex-1">
@@ -177,7 +177,7 @@ export default function SettingsPage() {
           <CardHeader>
             <div className="flex items-center gap-2">
               <IconChartBar size={16} className="text-[rgba(255,255,255,0.6)]" />
-              <h2 className="text-sm font-semibold text-white">API Usage</h2>
+              <h2 className="font-display text-sm font-semibold text-white">API Usage</h2>
             </div>
           </CardHeader>
           <CardContent className="flex-1">

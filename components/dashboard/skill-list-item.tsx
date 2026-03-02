@@ -25,7 +25,7 @@ export function SkillListItem({ skill }: SkillListItemProps) {
     >
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2">
-          <h3 className="text-sm font-medium text-text-primary group-hover:text-white transition-colors truncate">
+          <h3 className="font-display text-sm font-semibold text-text-primary group-hover:text-white transition-colors truncate">
             {skill.title}
           </h3>
           {skill.fork_of && (

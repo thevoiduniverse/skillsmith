@@ -35,7 +35,7 @@ export default function TryEditPage() {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
         <div className="text-center max-w-md">
-          <h1 className="text-2xl font-bold mb-3">No skill found</h1>
+          <h1 className="font-display text-2xl font-semibold mb-3">No skill found</h1>
           <p className="text-[rgba(255,255,255,0.5)] mb-6">
             It looks like you haven&apos;t created a skill yet, or your browser data was cleared.
           </p>
