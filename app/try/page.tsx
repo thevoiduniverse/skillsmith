@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
+import { motion, LayoutGroup } from "framer-motion";
 import {
   IconSparklesFilled,
   IconArrowRight,
@@ -40,7 +40,7 @@ interface Template {
 /* ─── Constants ────────────────────────────────── */
 
 const CARD_HEIGHT_DESKTOP = 420;
-const TOTAL_STEPS = 3;
+const TOTAL_STEPS = 2;
 const TRY_STORAGE_KEY = "skillsmith-try-skill";
 
 const springTransition = {
@@ -149,7 +149,7 @@ export default function TryPage() {
 
   async function handleCreateWithAI() {
     if (!description.trim()) return;
-    setActiveStep(2);
+
     setMode("generating");
     setLoading(true);
 
@@ -186,7 +186,7 @@ export default function TryPage() {
   }
 
   function handleCreateBlank() {
-    setActiveStep(2);
+
     setMode("creating");
     setLoading(true);
 
@@ -204,7 +204,7 @@ export default function TryPage() {
   function handleUseTemplate(template: Template) {
     setLoading(true);
     setMode("creating");
-    setActiveStep(2);
+
 
     saveToLocal({
       title: template.title,
@@ -241,9 +241,9 @@ export default function TryPage() {
   function renderStep0() {
     return (
       <div className="flex flex-col h-full">
-        {/* Path selector tabs */}
+        {/* Segmented control */}
         <LayoutGroup>
-          <div className="flex justify-center gap-0.5 mb-6 md:gap-1 md:mb-8">
+          <div className="relative flex items-center bg-[rgba(0,0,0,0.3)] rounded-full p-1 mb-6 md:mb-8">
             {([
               { key: "ai" as const, label: "AI", labelFull: "Describe with AI", icon: IconSparklesFilled },
               { key: "template" as const, label: "Template", labelFull: "From Template", icon: IconBookmarkFilled },
@@ -253,19 +253,18 @@ export default function TryPage() {
                 key={key}
                 onClick={() => setCreationPath(key)}
                 className={cn(
-                  "relative flex items-center justify-center gap-1.5 px-3 py-2 text-[13px] md:px-4 md:py-2.5 md:text-sm font-medium rounded-full transition-colors whitespace-nowrap flex-1",
+                  "relative flex items-center justify-center gap-1.5 px-3 py-2 text-[13px] md:px-4 md:py-2.5 md:text-sm font-medium rounded-full transition-colors whitespace-nowrap flex-1 z-10",
                   creationPath === key
                     ? "text-[#bfff00]"
-                    : "text-[rgba(255,255,255,0.45)] hover:text-[rgba(255,255,255,0.7)]"
+                    : "text-[rgba(255,255,255,0.4)] hover:text-[rgba(255,255,255,0.6)]"
                 )}
               >
                 {creationPath === key && (
                   <motion.div
-                    layoutId="try-creation-path-tab"
-                    className="absolute inset-0 rounded-full border border-[rgba(255,255,255,0.06)]"
+                    layoutId="try-creation-path-seg"
+                    className="absolute inset-0 rounded-full bg-gradient-to-b from-[rgba(28,28,28,0.72)] to-[rgba(16,16,16,0.62)] border border-[rgba(255,255,255,0.02)]"
                     style={{
-                      background: "linear-gradient(to bottom, rgba(255,255,255,0.08), rgba(255,255,255,0.02))",
-                      boxShadow: "inset 0 1px 0 rgba(255,255,255,0.08), inset 0 -1px 0 rgba(0,0,0,0.2), 0 1px 3px rgba(0,0,0,0.3)",
+                      boxShadow: "inset 0 1px 0 rgba(255,255,255,0.08), inset 0 -1px 0 rgba(0,0,0,0.25), 0 4px 12px rgba(0,0,0,0.4)",
                     }}
                     transition={{ type: "spring", bounce: 0.15, duration: 0.5 }}
                   />
@@ -371,7 +370,7 @@ export default function TryPage() {
               <button
                 onClick={handleRandomiseName}
                 disabled={randomising}
-                className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1 text-xs font-medium text-[#bfff00] hover:text-[#d4ff4d] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-1 text-xs font-medium text-[#bfff00] hover:text-[#d4ff4d] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
               >
                 <IconDice3Filled size={14} />
                 <span className="hidden sm:inline"><TransitionText active={randomising} idle="Randomise" activeText="Generating..." /></span>
@@ -391,10 +390,10 @@ export default function TryPage() {
                     setCategory(category === cat ? null : cat)
                   }
                   className={cn(
-                    "px-3 py-1.5 text-xs font-medium rounded-full transition-colors",
+                    "px-3 py-1.5 text-xs font-medium rounded-full transition-all duration-200",
                     category === cat
-                      ? "bg-[#bfff00] text-[#0a0a0a]"
-                      : "bg-[rgba(255,255,255,0.05)] text-[rgba(255,255,255,0.6)] hover:text-white"
+                      ? "bg-gradient-to-b from-[#d4ff4d] to-[#a8e600] text-[#0a0a0a] shadow-[inset_0_1px_0_rgba(255,255,255,0.4),inset_0_-1px_0_rgba(0,0,0,0.15),0_1px_3px_rgba(0,0,0,0.4)] border border-[rgba(0,0,0,0.1)]"
+                      : "bg-gradient-to-b from-[rgba(255,255,255,0.08)] to-[rgba(255,255,255,0.03)] text-[rgba(255,255,255,0.5)] hover:text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.08),inset_0_-1px_0_rgba(0,0,0,0.2),0_1px_2px_rgba(0,0,0,0.3)] border border-[rgba(255,255,255,0.06)]"
                   )}
                 >
                   {cat}
@@ -409,137 +408,25 @@ export default function TryPage() {
             <IconChevronLeft size={16} />
             Back
           </Button>
-          <Button onClick={goNext} size="md">
-            Next
-            <IconChevronRight size={16} />
-          </Button>
+          {creationPath === "blank" ? (
+            <Button onClick={handleCreateBlank} disabled={loading} size="md">
+              <IconPlus size={16} />
+              Create Blank
+              <IconArrowRight size={16} />
+            </Button>
+          ) : (
+            <Button onClick={handleCreateWithAI} disabled={loading} size="md">
+              <IconSparklesFilled size={16} />
+              Generate
+              <IconArrowRight size={16} />
+            </Button>
+          )}
         </div>
       </div>
     );
   }
 
-  function renderStep2() {
-    return (
-      <div className="flex flex-col h-full">
-        <AnimatePresence mode="wait">
-          {mode === "idle" ? (
-            <motion.div
-              key="review"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2 }}
-              className="flex flex-col h-full"
-            >
-              <div className="flex-1 space-y-5">
-                {creationPath === "blank" ? (
-                  <>
-                    {/* Description input for blank flow */}
-                    <div className="space-y-3">
-                      <label className="block text-sm text-[rgba(255,255,255,0.6)]">
-                        Describe your skill <span className="text-[rgba(255,255,255,0.3)]">(optional)</span>
-                      </label>
-                      <Textarea
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
-                        placeholder="e.g., A code reviewer that focuses on security vulnerabilities..."
-                        rows={3}
-                        className="text-sm"
-                      />
-                    </div>
-
-                    {/* Primary: Generate with AI (when description present) or Create Blank */}
-                    {description.trim() ? (
-                      <Button
-                        onClick={handleCreateWithAI}
-                        disabled={loading}
-                        size="lg"
-                        className="w-full"
-                      >
-                        <IconSparklesFilled size={16} />
-                        Generate with AI
-                        <IconArrowRight size={16} />
-                      </Button>
-                    ) : (
-                      <Button
-                        onClick={handleCreateBlank}
-                        disabled={loading}
-                        size="lg"
-                        className="w-full"
-                      >
-                        <IconPlus size={16} />
-                        Create Blank Skill
-                        <IconArrowRight size={16} />
-                      </Button>
-                    )}
-                  </>
-                ) : (
-                  <>
-                    {/* Summary block for AI flow */}
-                    <div className="bg-[rgba(255,255,255,0.05)] rounded-2xl p-4 space-y-2">
-                      <p className="text-sm text-[rgba(255,255,255,0.6)] leading-relaxed line-clamp-3">
-                        {description}
-                      </p>
-                      <div className="flex items-center gap-2 pt-1">
-                        <span className="text-xs text-[rgba(255,255,255,0.4)]">
-                          {skillName.trim() || "AI will name this"}
-                        </span>
-                        {category && (
-                          <span className="bg-[#bfff00] text-[#0a0a0a] text-[10px] font-bold px-2 py-0.5 rounded-full">
-                            {category}
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                    <Button
-                      onClick={handleCreateWithAI}
-                      disabled={loading}
-                      size="lg"
-                      className="w-full"
-                    >
-                      <IconSparklesFilled size={16} />
-                      Generate with AI
-                      <IconArrowRight size={16} />
-                    </Button>
-                  </>
-                )}
-              </div>
-
-              <div className="mt-auto pt-4">
-                <Button variant="secondary" onClick={goBack} size="md">
-                  <IconChevronLeft size={16} />
-                  Back
-                </Button>
-              </div>
-            </motion.div>
-          ) : (
-            <motion.div
-              key="creating"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2 }}
-              className="flex flex-col items-center justify-center h-full text-center"
-            >
-              <div className="brand-loader mb-6" />
-              <h2 className="font-display text-xl font-semibold text-white mb-2">
-                {mode === "generating"
-                  ? "Generating your skill..."
-                  : "Creating your skill..."}
-              </h2>
-              <p className="text-[rgba(255,255,255,0.6)] text-sm">
-                {mode === "generating"
-                  ? "Claude is drafting instructions, edge cases, and examples based on your description."
-                  : "Setting up your blank skill workspace."}
-              </p>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
-    );
-  }
-
-  const stepRenderers = [renderStep0, renderStep1, renderStep2];
+  const stepRenderers = [renderStep0, renderStep1];
 
   /* ─── Render ───────────────────────────────── */
   /* Identical to app/(app)/skills/new/page.tsx return JSX */
