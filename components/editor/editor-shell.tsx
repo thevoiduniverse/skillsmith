@@ -12,7 +12,7 @@ import { Input } from "@/components/ui/input";
 import { GuidedEditor } from "./guided-mode/guided-editor";
 import { MonacoMarkdownEditor } from "./markdown-mode/monaco-editor";
 import { AiToolbar } from "./ai-toolbar";
-import Link from "next/link";
+
 import { track } from "@/lib/analytics";
 
 interface EditorShellProps {
@@ -278,22 +278,6 @@ export function EditorShell({ skillId, initialContent, initialTitle, initialVisi
 
   return (
     <div className="max-w-7xl mx-auto">
-      {/* Try mode banner */}
-      {tryMode && (
-        <div className="mb-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-[rgba(191,255,0,0.08)] border border-[rgba(191,255,0,0.2)] rounded-2xl px-5 py-3">
-          <p className="text-sm text-[rgba(255,255,255,0.7)]">
-            You&apos;re editing locally.{" "}
-            <span className="text-[#bfff00] font-medium">Sign up to save your work permanently.</span>
-          </p>
-          <Link
-            href="/signup"
-            className="shrink-0 inline-flex items-center justify-center font-bold rounded-[40px] text-xs px-4 py-2 bg-[#bfff00] text-[#0a0a0a] hover:brightness-110 transition-all"
-          >
-            Sign Up
-          </Link>
-        </div>
-      )}
-
       {/* Top bar */}
       <div className="flex flex-col gap-3 mb-4 md:flex-row md:items-center md:justify-between md:gap-4">
         <Input

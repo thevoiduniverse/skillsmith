@@ -1,11 +1,16 @@
+"use client";
+
+import { useState } from "react";
+import { motion } from "framer-motion";
 import {
   IconSparklesFilled,
   IconPencil,
   IconTestPipe,
   IconWorld,
   IconArrowRight,
+  IconChevronRight,
 } from "@tabler/icons-react";
-import { Card, CardHeader, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 
 const steps = [
   {
@@ -58,45 +63,125 @@ const steps = [
   },
 ];
 
+const CARD_HEIGHT = 340;
+
+function getStackStyles(cardIndex: number, activeStep: number) {
+  const offset = cardIndex - activeStep;
+  if (offset === 0) {
+    return { scale: 1, y: 0, opacity: 1, filter: "blur(0px) brightness(1)", zIndex: 30 };
+  }
+  if (offset === 1) {
+    return { scale: 0.95, y: 36, opacity: 1, filter: "blur(0px) brightness(0.85)", zIndex: 20 };
+  }
+  if (offset === 2) {
+    return { scale: 0.9, y: 64, opacity: 1, filter: "blur(0px) brightness(0.7)", zIndex: 10 };
+  }
+  if (offset === 3) {
+    return { scale: 0.85, y: 84, opacity: 1, filter: "blur(0px) brightness(0.55)", zIndex: 5 };
+  }
+  return { scale: 0.98, y: 12, opacity: 0, filter: "blur(12px) brightness(1)", zIndex: 40 };
+}
+
+const springTransition = {
+  type: "spring" as const,
+  stiffness: 300,
+  damping: 30,
+};
+
+const cardTransition = {
+  type: "spring" as const,
+  stiffness: 200,
+  damping: 25,
+  mass: 0.8,
+};
+
 export default function HowItWorksPage() {
+  const [activeStep, setActiveStep] = useState(0);
+
   return (
-    <div className="max-w-6xl mx-auto space-y-10">
-      <div>
-        <h1 className="font-display text-xl md:text-3xl font-semibold text-white tracking-tight mb-2">
-          How it Works
+    <div className="max-w-xl mx-auto">
+      <div className="text-center mb-6 md:mb-10">
+        <h1 className="font-display text-xl md:text-3xl font-bold text-white tracking-tight">
+          How it{" "}
+          <span className="text-[#bfff00]">Works</span>
         </h1>
-        <p className="text-[rgba(255,255,255,0.6)] text-base leading-relaxed max-w-lg">
-          SkillSmith helps you build, test, and share custom skills for Claude.
-          A skill is a structured set of instructions that makes Claude an expert
-          at a specific task.
+        <p className="text-[rgba(255,255,255,0.5)] mt-2 text-base">
+          From idea to production-ready skill in four steps.
         </p>
       </div>
 
-      {/* Steps */}
-      <div className="space-y-5">
-        {steps.map((step) => {
+      {/* Step indicator dots */}
+      <div className="flex items-center justify-center gap-1.5 mb-8">
+        {steps.map((_, i) => (
+          <motion.button
+            key={i}
+            onClick={() => setActiveStep(i)}
+            className="h-1 rounded-full cursor-pointer"
+            animate={{
+              width: i === activeStep ? 20 : 6,
+              backgroundColor:
+                i === activeStep ? "#bfff00" : "rgba(255,255,255,0.15)",
+            }}
+            transition={springTransition}
+          />
+        ))}
+      </div>
+
+      {/* Stacked cards */}
+      <div className="relative" style={{ height: CARD_HEIGHT + 90 }}>
+        {steps.map((step, i) => {
           const Icon = step.icon;
           return (
-            <Card key={step.number}>
-              <CardHeader>
-                <div className="flex items-center gap-3">
+            <motion.div
+              key={step.number}
+              className="absolute inset-x-0 top-0 origin-top rounded-[32px] overflow-hidden"
+              animate={getStackStyles(i, activeStep)}
+              transition={cardTransition}
+              style={{
+                height: CARD_HEIGHT,
+                pointerEvents: i === activeStep ? "auto" : "none",
+                backdropFilter: "blur(80px)",
+                WebkitBackdropFilter: "blur(80px)",
+              }}
+            >
+              <div
+                className="relative h-full rounded-[32px] bg-gradient-to-b from-[rgba(28,28,28,0.72)] to-[rgba(16,16,16,0.62)] hover:from-[rgba(32,32,32,0.80)] hover:to-[rgba(20,20,20,0.72)] border border-[rgba(255,255,255,0.02)] backdrop-blur-[4px] px-5 py-6 md:px-8 md:py-8 flex flex-col overflow-hidden transition-colors shadow-[inset_0_1px_0_rgba(255,255,255,0.08),inset_0_-1px_0_rgba(0,0,0,0.25),0_4px_20px_rgba(0,0,0,0.4)]"
+              >
+                {/* Glass gradient border */}
+                <div
+                  className="absolute inset-0 rounded-[32px] pointer-events-none z-0"
+                  style={{
+                    padding: 1,
+                    background: "linear-gradient(to bottom, rgba(255,255,255,0.12), rgba(255,255,255,0.02) 50%, transparent)",
+                    WebkitMask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                    WebkitMaskComposite: "xor",
+                    mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                    maskComposite: "exclude",
+                  }}
+                />
+                {/* Top shine */}
+                <div
+                  className="absolute inset-0 rounded-[32px] pointer-events-none z-0"
+                  style={{
+                    background: "linear-gradient(to bottom, rgba(255,255,255,0.02), transparent 35%)",
+                  }}
+                />
+
+                <div className="flex items-center gap-3 mb-4">
                   <span className="text-xs font-mono font-bold text-[#bfff00] opacity-60">
                     {step.number}
                   </span>
-                  <Icon
-                    size={16}
-                    className="text-[rgba(255,255,255,0.6)]"
-                  />
-                  <h2 className="font-display text-base font-semibold text-white">
+                  <Icon size={16} className="text-[rgba(255,255,255,0.6)]" />
+                  <h3 className="font-display text-xl font-semibold text-white">
                     {step.title}
-                  </h2>
+                  </h3>
                 </div>
-              </CardHeader>
-              <CardContent className="pb-10">
-                <p className="text-[rgba(255,255,255,0.6)] text-base leading-relaxed mb-4">
+
+                <p className="text-[rgba(255,255,255,0.6)] text-sm leading-relaxed mb-4">
                   {step.description}
                 </p>
-                <ul className="space-y-2">
+
+                <ul className="space-y-2 mb-auto">
                   {step.details.map((detail) => (
                     <li
                       key={detail}
@@ -110,58 +195,26 @@ export default function HowItWorksPage() {
                     </li>
                   ))}
                 </ul>
-              </CardContent>
-            </Card>
+
+                <div className="flex items-center justify-between mt-auto pt-4">
+                  <span className="text-xs text-[rgba(255,255,255,0.3)]">
+                    Step {i + 1} of {steps.length}
+                  </span>
+                  {i < steps.length - 1 && (
+                    <Button
+                      onClick={() => setActiveStep((s) => s + 1)}
+                      size="md"
+                    >
+                      Next
+                      <IconChevronRight size={16} />
+                    </Button>
+                  )}
+                </div>
+              </div>
+            </motion.div>
           );
         })}
       </div>
-
-      {/* SKILL.md format */}
-      <Card>
-        <CardHeader>
-          <h2 className="font-display text-base font-semibold text-white">
-            What&apos;s in a Skill?
-          </h2>
-        </CardHeader>
-        <CardContent className="pb-10">
-          <p className="text-[rgba(255,255,255,0.6)] text-base leading-relaxed mb-4">
-            Every skill is a SKILL.md file with a clear structure that Claude
-            understands:
-          </p>
-          <div className="bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.06)] rounded-xl p-4 font-mono text-sm space-y-2">
-            <p className="text-[#bfff00]">
-              # Name{" "}
-              <span className="text-[rgba(255,255,255,0.3)]">
-                — what the skill is called
-              </span>
-            </p>
-            <p className="text-[#bfff00]">
-              # Description{" "}
-              <span className="text-[rgba(255,255,255,0.3)]">
-                — what it does in one line
-              </span>
-            </p>
-            <p className="text-[#bfff00]">
-              # Instructions{" "}
-              <span className="text-[rgba(255,255,255,0.3)]">
-                — rules &amp; behavior for Claude
-              </span>
-            </p>
-            <p className="text-[#bfff00]">
-              # Edge Cases{" "}
-              <span className="text-[rgba(255,255,255,0.3)]">
-                — special scenarios to handle
-              </span>
-            </p>
-            <p className="text-[#bfff00]">
-              # Examples{" "}
-              <span className="text-[rgba(255,255,255,0.3)]">
-                — input/output demonstrations
-              </span>
-            </p>
-          </div>
-        </CardContent>
-      </Card>
     </div>
   );
 }

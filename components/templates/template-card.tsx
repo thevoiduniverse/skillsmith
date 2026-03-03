@@ -81,7 +81,7 @@ export function TemplateCard({ template, publicMode, compact, onUse }: TemplateC
           <div className="flex items-center gap-1.5 mb-4 flex-wrap">
             {template.category && (
               <span
-                className="inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium"
+                className="inline-flex items-center rounded-full px-2.5 text-xs font-medium leading-none pt-[4px] pb-[6px]"
                 style={{ backgroundColor: getTagColors(template.category).bg, color: getTagColors(template.category).text }}
               >
                 {template.category}
@@ -92,7 +92,7 @@ export function TemplateCard({ template, publicMode, compact, onUse }: TemplateC
               return (
                 <span
                   key={tag}
-                  className="inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium"
+                  className="inline-flex items-center rounded-full px-2.5 text-xs font-medium leading-none pt-[4px] pb-[6px]"
                   style={{ backgroundColor: colors.bg, color: colors.text }}
                 >
                   {tag}

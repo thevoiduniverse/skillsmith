@@ -16,7 +16,7 @@ export function ExplorePageContent() {
         className="fixed inset-0 z-0"
       />
       <div className="min-h-screen bg-transparent text-white relative overflow-x-clip z-10">
-        <nav className="sticky top-0 z-50 flex justify-center pt-[calc(env(safe-area-inset-top,0px)+24px)] px-6">
+        <nav className="flex justify-center pt-[calc(env(safe-area-inset-top,0px)+24px)] px-6">
           <div className="relative flex items-center justify-between w-full max-w-[1160px] bg-gradient-to-b from-[rgba(28,28,28,0.85)] to-[rgba(18,18,18,0.75)] backdrop-blur-2xl rounded-[40px] pl-4 pr-3 py-3 md:pl-10 md:pr-5 md:py-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.08),inset_0_-1px_0_rgba(0,0,0,0.2),0_4px_20px_rgba(0,0,0,0.4)]">
             {/* Gradient border overlay */}
             <div
@@ -53,7 +53,7 @@ export function ExplorePageContent() {
 
         <main className="relative z-10 max-w-6xl mx-auto px-6 pt-6 md:pt-12 flex flex-col" style={{ height: "calc(100dvh - 7rem - env(safe-area-inset-bottom, 0px))" }}>
           <div className="mb-4 md:mb-10 text-center shrink-0">
-            <h1 className="font-display text-xl md:text-5xl font-semibold tracking-tight">
+            <h1 className="font-display text-xl md:text-3xl font-bold tracking-tight">
               Templates
             </h1>
             <p className="text-[rgba(255,255,255,0.5)] mt-2 text-base">

@@ -245,6 +245,14 @@ export function LandingHero() {
             >
               Sign Up
             </Link>
+            {process.env.NODE_ENV === "development" && (
+              <Link
+                href="/dashboard"
+                className="text-[rgba(255,255,255,0.3)] text-xs font-mono hover:text-white transition-colors"
+              >
+                DEV
+              </Link>
+            )}
           </div>
         </div>
       </nav>

@@ -21,7 +21,7 @@ export default function LoginPage() {
 
   useEffect(() => {
     // Clear any stale session so OAuth starts fresh
-    supabase.auth.signOut({ scope: "local" }).then(() => setReady(true));
+    supabase.auth.signOut({ scope: "local" }).finally(() => setReady(true));
   }, []);
 
   async function handleGoogleLogin() {

@@ -6,12 +6,14 @@ export default async function DashboardPage() {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
-  const { data: skills } = await supabase
-    .from("skills")
-    .select("*")
-    .eq("author_id", user!.id)
-    .neq("content", "")
-    .order("updated_at", { ascending: false });
+  const { data: skills } = user
+    ? await supabase
+        .from("skills")
+        .select("*")
+        .eq("author_id", user.id)
+        .neq("content", "")
+        .order("updated_at", { ascending: false })
+    : { data: [] };
 
   return (
     <div className="max-w-6xl mx-auto">

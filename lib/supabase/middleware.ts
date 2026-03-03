@@ -50,7 +50,9 @@ export async function updateSession(request: NextRequest) {
   const isApiPath = request.nextUrl.pathname.startsWith("/api");
   const isStaticPath = request.nextUrl.pathname.startsWith("/_next");
 
-  if (!user && !isPublicPath && !isApiPath && !isStaticPath) {
+  const isDev = process.env.NODE_ENV === "development";
+
+  if (!user && !isPublicPath && !isApiPath && !isStaticPath && !isDev) {
     const url = request.nextUrl.clone();
     url.pathname = "/login";
     return NextResponse.redirect(url);

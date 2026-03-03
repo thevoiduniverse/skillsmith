@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter, usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { motion, LayoutGroup } from "framer-motion";
 import {
   IconLayoutGridFilled,
@@ -25,23 +25,21 @@ const navItems = [
 
 export function Sidebar() {
   const pathname = usePathname();
-  const router = useRouter();
   const supabase = createClient();
 
   async function handleSignOut() {
     track("logout");
     await supabase.auth.signOut();
-    router.push("/login");
-    router.refresh();
+    window.location.href = "/login";
   }
 
   return (
     <aside className="h-screen sticky top-0 w-64 flex flex-col px-5 py-4">
       {/* Floating glass card */}
-      <div className="relative flex flex-col gap-6 w-full rounded-[20px] bg-gradient-to-b from-[rgba(28,28,28,0.65)] to-[rgba(16,16,16,0.55)] border border-[rgba(255,255,255,0.02)] backdrop-blur-[4px] shadow-[inset_0_1px_0_rgba(255,255,255,0.08),inset_0_-1px_0_rgba(0,0,0,0.25),0_4px_20px_rgba(0,0,0,0.4)] py-6 px-5">
+      <div className="relative flex flex-col gap-6 w-full rounded-[32px] bg-gradient-to-b from-[rgba(28,28,28,0.65)] to-[rgba(16,16,16,0.55)] border border-[rgba(255,255,255,0.02)] backdrop-blur-[4px] shadow-[inset_0_1px_0_rgba(255,255,255,0.08),inset_0_-1px_0_rgba(0,0,0,0.25),0_4px_20px_rgba(0,0,0,0.4)] py-6 px-5">
         {/* Glass gradient border */}
         <div
-          className="absolute inset-0 rounded-[20px] pointer-events-none z-0"
+          className="absolute inset-0 rounded-[32px] pointer-events-none z-0"
           style={{
             padding: 1,
             background:
@@ -55,7 +53,7 @@ export function Sidebar() {
         />
         {/* Top shine */}
         <div
-          className="absolute inset-0 rounded-[20px] pointer-events-none z-0"
+          className="absolute inset-0 rounded-[32px] pointer-events-none z-0"
           style={{
             background: "linear-gradient(to bottom, rgba(255,255,255,0.02), transparent 35%)",
           }}
@@ -67,9 +65,9 @@ export function Sidebar() {
           <img src="/logo.png" alt="SkillSmith" className="h-[32px] w-auto" />
         </Link>
 
-        {/* Navigation */}
+        {/* Navigation — segmented control */}
         <LayoutGroup>
-          <nav className="flex flex-col gap-3">
+          <nav className="flex flex-col gap-1 bg-[rgba(0,0,0,0.3)] rounded-[24px] p-1.5 -mx-2">
             {navItems.map((item) => {
               const isActive =
                 pathname === item.href || pathname.startsWith(item.href + "/");
@@ -79,21 +77,19 @@ export function Sidebar() {
                   key={item.href}
                   href={item.href}
                   className={cn(
-                    "relative flex items-center gap-2.5 px-3.5 py-2.5 rounded-[40px] text-sm font-medium transition-colors",
+                    "relative flex items-center gap-2.5 px-3.5 py-2.5 rounded-[12px] text-sm font-medium transition-colors z-10",
                     isActive
                       ? "text-[#bfff00]"
-                      : "text-[rgba(255,255,255,0.6)] hover:text-[rgba(255,255,255,0.8)] hover:bg-[rgba(255,255,255,0.04)]"
+                      : "text-[rgba(255,255,255,0.4)] hover:text-[rgba(255,255,255,0.6)]"
                   )}
                 >
                   {isActive && (
                     <motion.div
-                      layoutId="sidebar-active-tab"
-                      className="absolute inset-0 rounded-[40px] border border-[rgba(255,255,255,0.06)]"
+                      layoutId="sidebar-active-seg"
+                      className="absolute inset-0 rounded-full bg-gradient-to-b from-[rgba(28,28,28,0.72)] to-[rgba(16,16,16,0.62)] border border-[rgba(255,255,255,0.02)]"
                       style={{
-                        background:
-                          "linear-gradient(to bottom, rgba(255,255,255,0.08), rgba(255,255,255,0.02))",
                         boxShadow:
-                          "inset 0 1px 0 rgba(255,255,255,0.08), inset 0 -1px 0 rgba(0,0,0,0.2), 0 1px 3px rgba(0,0,0,0.3)",
+                          "inset 0 1px 0 rgba(255,255,255,0.08), inset 0 -1px 0 rgba(0,0,0,0.25), 0 4px 12px rgba(0,0,0,0.4)",
                       }}
                       transition={{
                         type: "spring",

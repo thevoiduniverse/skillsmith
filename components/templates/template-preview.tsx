@@ -42,43 +42,74 @@ export function TemplatePreview({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-5"
       onClick={onClose}
     >
       <div
-        className="bg-surface border border-border rounded-2xl w-full max-w-2xl max-h-[80vh] overflow-hidden flex flex-col"
+        className="relative rounded-[32px] w-full max-w-2xl max-h-[80vh] overflow-hidden flex flex-col bg-gradient-to-b from-[rgba(30,30,30,0.78)] to-[rgba(18,18,18,0.68)] border border-[rgba(255,255,255,0.02)] backdrop-blur-[4px] shadow-[inset_0_1px_0_rgba(255,255,255,0.08),inset_0_-1px_0_rgba(0,0,0,0.25),0_4px_20px_rgba(0,0,0,0.4)]"
         onClick={(e) => e.stopPropagation()}
       >
+        {/* Glass gradient border */}
+        <div
+          className="absolute inset-0 rounded-[32px] pointer-events-none z-0"
+          style={{
+            padding: 1,
+            background: "linear-gradient(to bottom, rgba(255,255,255,0.12), rgba(255,255,255,0.02) 50%, transparent)",
+            WebkitMask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+            WebkitMaskComposite: "xor",
+            mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+            maskComposite: "exclude",
+          }}
+        />
+        {/* Top shine */}
+        <div
+          className="absolute inset-0 rounded-[32px] pointer-events-none z-0"
+          style={{
+            background: "linear-gradient(to bottom, rgba(255,255,255,0.02), transparent 35%)",
+          }}
+        />
+
+        {/* Close button */}
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 z-10 p-2 text-[rgba(255,255,255,0.5)] hover:text-white transition-colors"
+        >
+          <IconX size={18} />
+        </button>
+
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-border">
-          <div>
-            <h2 className="font-display text-lg font-semibold text-white">{template.title}</h2>
-            {template.description && (
-              <p className="text-sm text-[rgba(255,255,255,0.5)] mt-0.5">{template.description}</p>
-            )}
-          </div>
-          <button onClick={onClose} className="text-[rgba(255,255,255,0.4)] hover:text-white transition-colors">
-            <IconX size={20} />
-          </button>
+        <div className="p-6 pb-0 pr-14">
+          <h2 className="font-display text-lg font-semibold text-white">{template.title}</h2>
+          {template.description && (
+            <p className="text-sm text-[rgba(255,255,255,0.5)] mt-0.5">{template.description}</p>
+          )}
         </div>
+
+        <div className="mx-6 mt-6 border-t border-[rgba(255,255,255,0.06)]" />
 
         {/* Content */}
         <div className="flex-1 overflow-y-auto p-6 space-y-6">
           {parsed.instructions && (
             <div>
-              <h3 className="font-display text-xs text-[rgba(255,255,255,0.4)] uppercase tracking-wider mb-2">Instructions</h3>
+              <h3 className="font-sans text-xs text-[rgba(255,255,255,0.4)] uppercase tracking-wider mb-2">Instructions</h3>
               <p className="text-sm text-[rgba(255,255,255,0.8)] whitespace-pre-wrap">{parsed.instructions}</p>
             </div>
           )}
+          {parsed.instructions && parsed.edgeCases && (
+            <div className="border-t border-[rgba(255,255,255,0.06)]" />
+          )}
           {parsed.edgeCases && (
             <div>
-              <h3 className="font-display text-xs text-[rgba(255,255,255,0.4)] uppercase tracking-wider mb-2">Edge Cases</h3>
+              <h3 className="font-sans text-xs text-[rgba(255,255,255,0.4)] uppercase tracking-wider mb-2">Edge Cases</h3>
               <p className="text-sm text-[rgba(255,255,255,0.8)] whitespace-pre-wrap">{parsed.edgeCases}</p>
             </div>
           )}
+          {(parsed.instructions || parsed.edgeCases) && parsed.examples.length > 0 && (
+            <div className="border-t border-[rgba(255,255,255,0.06)]" />
+          )}
           {parsed.examples.length > 0 && (
             <div>
-              <h3 className="font-display text-xs text-[rgba(255,255,255,0.4)] uppercase tracking-wider mb-2">Examples ({parsed.examples.length})</h3>
+              <h3 className="font-sans text-xs text-[rgba(255,255,255,0.4)] uppercase tracking-wider mb-2">Examples ({parsed.examples.length})</h3>
               <div className="space-y-3">
                 {parsed.examples.map((ex, i) => (
                   <div key={i} className="bg-[rgba(255,255,255,0.03)] rounded-xl p-3 space-y-2">
@@ -97,12 +128,14 @@ export function TemplatePreview({
           )}
         </div>
 
+        <div className="mx-6 border-t border-[rgba(255,255,255,0.06)]" />
+
         {/* Footer */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-6 border-t border-border">
-          <div className="flex gap-1.5">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-5 px-6 pb-6 pt-4">
+          <div className="flex gap-1.5 justify-center sm:justify-start">
             {template.category && (
               <span
-                className="inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium"
+                className="inline-flex items-center rounded-full px-2.5 text-xs font-medium leading-none pt-[4px] pb-[6px]"
                 style={{ backgroundColor: getTagColors(template.category).bg, color: getTagColors(template.category).text }}
               >
                 {template.category}
@@ -113,7 +146,7 @@ export function TemplatePreview({
               return (
                 <span
                   key={tag}
-                  className="inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium"
+                  className="inline-flex items-center rounded-full px-2.5 text-xs font-medium leading-none pt-[4px] pb-[6px]"
                   style={{ backgroundColor: colors.bg, color: colors.text }}
                 >
                   {tag}

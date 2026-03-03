@@ -7,10 +7,7 @@ import { Button } from "@/components/ui/button";
 export function EmptyState() {
   return (
     <div className="flex flex-col items-center justify-center py-20 px-4 text-center">
-      <div className="w-16 h-16 rounded-2xl bg-accent/10 flex items-center justify-center mb-6">
-        <IconSparklesFilled size={32} className="text-accent" />
-      </div>
-      <h2 className="font-display text-2xl font-semibold text-text-primary mb-2">
+      <h2 className="font-display text-xl md:text-3xl font-bold text-white tracking-tight mb-2">
         No skills yet
       </h2>
       <p className="text-text-secondary max-w-md mb-8">

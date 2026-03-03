@@ -33,13 +33,13 @@ export function TemplateFilters({
 
   return (
     <div className="space-y-6">
-      <div className="relative">
+      <div className="relative max-w-[592px] mx-auto">
         <IconSearch size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-[rgba(255,255,255,0.6)] z-10" />
         <Input
           value={search}
           onChange={(e) => onSearchChange(e.target.value)}
           placeholder="Search templates..."
-          className="pl-10 backdrop-blur-xl"
+          className="pl-10 bg-[rgba(255,255,255,0.05)] backdrop-blur-xl"
         />
       </div>
 

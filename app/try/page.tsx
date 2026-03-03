@@ -404,7 +404,7 @@ export default function TryPage() {
         </div>
 
         <div className="flex items-center justify-between mt-auto pt-6">
-          <Button variant="secondary" onClick={goBack} size="md">
+          <Button variant="secondary" onClick={goBack} size="md" disabled={loading}>
             <IconChevronLeft size={16} />
             Back
           </Button>
@@ -422,6 +422,7 @@ export default function TryPage() {
             </Button>
           )}
         </div>
+
       </div>
     );
   }
@@ -435,7 +436,7 @@ export default function TryPage() {
     <>
       {/* Header */}
       <div className="mb-10 text-center">
-        <h1 className="font-display text-xl md:text-5xl font-semibold text-white tracking-tight">
+        <h1 className="font-display text-xl md:text-3xl font-bold text-white tracking-tight">
           Create a New Skill
         </h1>
         <p className="text-[rgba(255,255,255,0.5)] mt-2 text-base">
@@ -447,47 +448,63 @@ export default function TryPage() {
       {/* Step dots + Card stack */}
       <div className="max-w-2xl mx-auto">
         {/* Step indicator dots */}
-        <div
-          className="flex items-center justify-center gap-1 mb-8 transition-opacity duration-300"
-          style={{ opacity: mode !== "idle" ? 0.3 : 1 }}
-        >
-          {Array.from({ length: TOTAL_STEPS }).map((_, i) => (
-            <motion.div
-              key={i}
-              className="h-1 rounded-full"
-              animate={{
-                width: i === activeStep ? 16 : 5,
-                backgroundColor:
-                  i === activeStep
-                    ? "#bfff00"
-                    : "rgba(255,255,255,0.15)",
-              }}
-              transition={springTransition}
-            />
-          ))}
-        </div>
+        {mode === "idle" && (
+          <div className="flex items-center justify-center gap-1 mb-8">
+            {Array.from({ length: TOTAL_STEPS }).map((_, i) => (
+              <motion.div
+                key={i}
+                className="h-1 rounded-full"
+                animate={{
+                  width: i === activeStep ? 16 : 5,
+                  backgroundColor:
+                    i === activeStep
+                      ? "#bfff00"
+                      : "rgba(255,255,255,0.15)",
+                }}
+                transition={springTransition}
+              />
+            ))}
+          </div>
+        )}
 
         {/* Card stack */}
         <div className="relative" style={{ height: CARD_HEIGHT }}>
-          {Array.from({ length: TOTAL_STEPS }).map((_, i) => (
-            <motion.div
-              key={i}
-              className="absolute inset-x-0 top-0 origin-top rounded-[32px] overflow-hidden"
-              animate={getStackStyles(i, activeStep)}
-              transition={cardTransition}
-              style={{
-                height: CARD_HEIGHT,
-                pointerEvents: i === activeStep ? "auto" : "none",
-                backdropFilter: "blur(80px)",
-                WebkitBackdropFilter: "blur(80px)",
-              }}
-            >
-              <Card className="h-full p-5 md:p-8 flex flex-col overflow-hidden">
-                <div className="absolute inset-0 rounded-[32px] pointer-events-none z-0" style={{ background: "linear-gradient(to bottom, rgba(255,255,255,0.015), transparent 40%)" }} />
-                {stepRenderers[i]()}
-              </Card>
-            </motion.div>
-          ))}
+          {mode !== "idle" ? (
+            <Card className="h-full p-5 md:p-8 flex flex-col overflow-hidden rounded-[32px]">
+              <div className="absolute inset-0 rounded-[32px] pointer-events-none z-0" style={{ background: "linear-gradient(to bottom, rgba(255,255,255,0.015), transparent 40%)" }} />
+              <div className="flex flex-col items-center justify-center text-center h-full">
+                <div className="brand-loader mb-6" />
+                <h2 className="font-sans text-xl font-semibold text-white mb-2">
+                  {mode === "generating" ? "Generating your skill..." : "Creating your skill..."}
+                </h2>
+                <p className="text-[rgba(255,255,255,0.6)] text-sm max-w-xs">
+                  {mode === "generating"
+                    ? "AI is drafting instructions, edge cases, and examples."
+                    : "Setting up your blank skill workspace."}
+                </p>
+              </div>
+            </Card>
+          ) : (
+            Array.from({ length: TOTAL_STEPS }).map((_, i) => (
+              <motion.div
+                key={i}
+                className="absolute inset-x-0 top-0 origin-top rounded-[32px] overflow-hidden"
+                animate={getStackStyles(i, activeStep)}
+                transition={cardTransition}
+                style={{
+                  height: CARD_HEIGHT,
+                  pointerEvents: i === activeStep ? "auto" : "none",
+                  backdropFilter: "blur(80px)",
+                  WebkitBackdropFilter: "blur(80px)",
+                }}
+              >
+                <Card className="h-full p-5 md:p-8 flex flex-col overflow-hidden">
+                  <div className="absolute inset-0 rounded-[32px] pointer-events-none z-0" style={{ background: "linear-gradient(to bottom, rgba(255,255,255,0.015), transparent 40%)" }} />
+                  {stepRenderers[i]()}
+                </Card>
+              </motion.div>
+            ))
+          )}
         </div>
       </div>
     </>

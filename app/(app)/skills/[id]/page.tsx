@@ -34,7 +34,7 @@ export default async function SkillDetailPage({
       <TemplateViewTracker templateId={skill.id} />
       <div className="flex items-start justify-between mb-6">
         <div>
-          <h1 className="font-display text-xl md:text-3xl font-semibold text-white tracking-tight">
+          <h1 className="font-display text-xl md:text-3xl font-bold text-white tracking-tight">
             {skill.title}
           </h1>
           {skill.description && (
@@ -54,7 +54,7 @@ export default async function SkillDetailPage({
               return (
                 <span
                   key={tag}
-                  className="inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium"
+                  className="inline-flex items-center rounded-full px-2.5 text-xs font-medium leading-none pt-[4px] pb-[6px]"
                   style={{ backgroundColor: colors.bg, color: colors.text }}
                 >
                   {tag}
