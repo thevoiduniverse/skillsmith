@@ -213,6 +213,7 @@ export function LandingHero() {
       {/* Canvas sits outside the clipping container so it extends behind the iOS notch */}
       <DotCanvas
         accentColor={textColor}
+        glowColor={textColor}
         height={isMobile ? 900 : 1320}
         className="fixed inset-0 z-0"
       />
@@ -272,13 +273,13 @@ export function LandingHero() {
 
       {/* Hero */}
       <section className="relative z-10 max-w-4xl mx-auto px-4 md:px-6 pt-10 pb-10 md:pt-20 md:pb-20 text-center">
-        <h1 className="text-[28px] md:text-[60px] font-display font-semibold text-white leading-[1.15]">
+        <h1 className="text-[28px] md:text-[60px] font-display font-semibold text-white leading-[1.45]">
           Craft your{" "}
           <span
               className="inline-block align-middle relative -top-[6px] md:-top-[10px]"
               style={{
-                width: isMobile ? 120 : 240,
-                height: isMobile ? 34 : 68,
+                width: isMobile ? 115 : 230,
+                height: isMobile ? 32 : 65,
                 WebkitMaskImage: "url(/skills-shape.svg)",
                 maskImage: "url(/skills-shape.svg)",
                 WebkitMaskSize: "100% 100%",
@@ -288,8 +289,8 @@ export function LandingHero() {
               }}
             >
               <LiquidMetal
-                width={isMobile ? 120 : 240}
-                height={isMobile ? 34 : 68}
+                width={isMobile ? 115 : 230}
+                height={isMobile ? 32 : 65}
                 colorBack="#000000"
                 colorTint="#ffffff"
                 image="/skills-shape.svg"
@@ -368,8 +369,8 @@ export function LandingHero() {
                   }}
                 />
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={card.image} alt="" className="w-[120px] h-[120px] object-contain shrink-0 pointer-events-none" />
-                <div className="flex flex-col gap-[11px] mt-auto pt-4">
+                <img src={card.image} alt="" className="w-[120px] h-[120px] object-contain shrink-0 pointer-events-none mx-auto" />
+                <div className="flex flex-col gap-[11px] mt-auto pt-4 text-center items-center">
                   <h3 className="font-display font-semibold text-xl leading-[1.6] whitespace-pre-line text-white">
                     {card.title}
                   </h3>
@@ -426,8 +427,8 @@ export function LandingHero() {
                     }}
                   />
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={card.image} alt="" className="w-[160px] h-[160px] object-contain shrink-0 pointer-events-none" />
-                  <div className="flex flex-col gap-[11px] mt-auto pt-4">
+                  <img src={card.image} alt="" className="w-[160px] h-[160px] object-contain shrink-0 pointer-events-none mx-auto" />
+                  <div className="flex flex-col gap-[11px] mt-auto pt-4 text-center items-center">
                     <h3 className="font-display font-semibold text-[28px] leading-[1.6] whitespace-pre-line text-white">
                       {card.title}
                     </h3>

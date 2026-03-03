@@ -19,6 +19,7 @@
     letter-spacing: 0.01em;
   }
 
+
   /* Hide scrollbar but keep scroll functionality */
   * {
     scrollbar-width: none; /* Firefox */
