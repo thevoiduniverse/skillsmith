@@ -53,7 +53,7 @@ export function ExplorePageContent() {
 
         <main className="relative z-10 max-w-6xl mx-auto px-6 pt-6 md:pt-12 flex flex-col" style={{ height: "calc(100dvh - 7rem - env(safe-area-inset-bottom, 0px))" }}>
           <div className="mb-4 md:mb-10 text-center shrink-0">
-            <h1 className="font-display text-xl md:text-3xl font-bold tracking-tight">
+            <h1 className="font-display text-xl md:text-3xl font-bold">
               Templates
             </h1>
             <p className="text-[rgba(255,255,255,0.5)] mt-2 text-base">

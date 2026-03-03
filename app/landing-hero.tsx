@@ -411,20 +411,40 @@ export function LandingHero() {
           </p>
         </div>
 
-        {/* Step indicator dots */}
-        <div className="flex items-center justify-center gap-1.5 mb-8">
-          {HOW_STEPS.map((_, i) => (
-            <motion.button
-              key={i}
-              onClick={() => setHowStep(i)}
-              className="h-1 rounded-full cursor-pointer"
-              animate={{
-                width: i === howStep ? 20 : 6,
-                backgroundColor:
-                  i === howStep ? "#bfff00" : "rgba(255,255,255,0.15)",
-              }}
-              transition={springTransition}
-            />
+        {/* Step indicator */}
+        <div className="flex items-center justify-center gap-0 mb-8">
+          {HOW_STEPS.map((step, i) => (
+            <div key={i} className="flex items-center gap-0">
+              <button onClick={() => setHowStep(i)} className="flex items-center gap-2 cursor-pointer">
+                <motion.div
+                  className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold"
+                  style={{ paddingBottom: 2 }}
+                  animate={{
+                    backgroundColor: howStep >= i ? "#bfff00" : "rgba(255,255,255,0.08)",
+                    color: howStep >= i ? "#0a0a0a" : "rgba(255,255,255,0.3)",
+                  }}
+                  transition={springTransition}
+                >
+                  {i + 1}
+                </motion.div>
+                <motion.span
+                  className="text-xs font-medium hidden sm:block"
+                  animate={{ color: howStep === i ? "#bfff00" : "rgba(255,255,255,0.3)" }}
+                  transition={springTransition}
+                >
+                  {step.title.split(" ")[0]}
+                </motion.span>
+              </button>
+              {i < HOW_STEPS.length - 1 && (
+                <div className="w-12 h-px mx-3 bg-[rgba(255,255,255,0.1)] relative overflow-hidden rounded-full">
+                  <motion.div
+                    className="absolute inset-y-0 left-0 bg-[#bfff00] rounded-full"
+                    animate={{ width: howStep > i ? "100%" : "0%" }}
+                    transition={springTransition}
+                  />
+                </div>
+              )}
+            </div>
           ))}
         </div>
 

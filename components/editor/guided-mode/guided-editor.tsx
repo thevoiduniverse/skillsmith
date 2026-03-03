@@ -394,23 +394,41 @@ export function GuidedEditor({
 
   return (
     <div>
-      {/* Step indicator dots */}
-      <div className="flex items-center justify-center gap-1 mb-8">
+      {/* Step indicator */}
+      <div className="flex items-center justify-center gap-0 mb-8">
         {Array.from({ length: TOTAL_STEPS }).map((_, i) => (
-          <motion.div
-            key={i}
-            className="h-1 rounded-full"
-            animate={{
-              width: i === activeStep ? 16 : 5,
-              backgroundColor:
-                i === activeStep ? "#bfff00" : "rgba(255,255,255,0.15)",
-            }}
-            transition={springTransition}
-          />
+          <div key={i} className="flex items-center gap-0">
+            <div className="flex items-center gap-2">
+              <motion.div
+                className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold"
+                style={{ paddingBottom: 2 }}
+                animate={{
+                  backgroundColor: activeStep >= i ? "#bfff00" : "rgba(255,255,255,0.08)",
+                  color: activeStep >= i ? "#0a0a0a" : "rgba(255,255,255,0.3)",
+                }}
+                transition={springTransition}
+              >
+                {i + 1}
+              </motion.div>
+              <motion.span
+                className="text-xs font-medium hidden sm:block"
+                animate={{ color: activeStep === i ? "#bfff00" : "rgba(255,255,255,0.3)" }}
+                transition={springTransition}
+              >
+                {stepLabels[i]}
+              </motion.span>
+            </div>
+            {i < TOTAL_STEPS - 1 && (
+              <div className="w-8 h-px mx-2 bg-[rgba(255,255,255,0.1)] relative overflow-hidden rounded-full">
+                <motion.div
+                  className="absolute inset-y-0 left-0 bg-[#bfff00] rounded-full"
+                  animate={{ width: activeStep > i ? "100%" : "0%" }}
+                  transition={springTransition}
+                />
+              </div>
+            )}
+          </div>
         ))}
-        <span className="ml-3 text-xs text-[rgba(255,255,255,0.4)]">
-          {stepLabels[activeStep]}
-        </span>
       </div>
 
       {/* Card stack */}

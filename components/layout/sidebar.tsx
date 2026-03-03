@@ -7,7 +7,8 @@ import {
   IconLayoutGridFilled,
   IconPlus,
   IconBookmarkFilled,
-  IconSettingsFilled,
+  IconUserFilled,
+  IconChartBar,
   IconInfoCircleFilled,
   IconLogout,
 } from "@tabler/icons-react";
@@ -19,7 +20,8 @@ const navItems = [
   { href: "/dashboard", label: "Dashboard", icon: IconLayoutGridFilled },
   { href: "/skills/new", label: "New Skill", icon: IconPlus },
   { href: "/templates", label: "Templates", icon: IconBookmarkFilled },
-  { href: "/settings", label: "Settings", icon: IconSettingsFilled },
+  { href: "/settings", label: "Profile", icon: IconUserFilled },
+  { href: "/usage", label: "Usage", icon: IconChartBar },
   { href: "/how-it-works", label: "How it Works", icon: IconInfoCircleFilled },
 ];
 

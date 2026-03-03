@@ -436,7 +436,7 @@ export default function TryPage() {
     <>
       {/* Header */}
       <div className="mb-10 text-center">
-        <h1 className="font-display text-xl md:text-3xl font-bold text-white tracking-tight">
+        <h1 className="font-display text-xl md:text-3xl font-bold text-white">
           Create a New Skill
         </h1>
         <p className="text-[rgba(255,255,255,0.5)] mt-2 text-base">
@@ -454,6 +454,7 @@ export default function TryPage() {
             <div className="flex items-center gap-2">
               <motion.div
                 className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold"
+                style={{ paddingBottom: 2 }}
                 animate={{
                   backgroundColor: activeStep >= 0 ? "#bfff00" : "rgba(255,255,255,0.08)",
                   color: activeStep >= 0 ? "#0a0a0a" : "rgba(255,255,255,0.3)",
@@ -484,6 +485,7 @@ export default function TryPage() {
             <div className="flex items-center gap-2">
               <motion.div
                 className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold"
+                style={{ paddingBottom: 2 }}
                 animate={{
                   backgroundColor: activeStep >= 1 ? "#bfff00" : "rgba(255,255,255,0.08)",
                   color: activeStep >= 1 ? "#0a0a0a" : "rgba(255,255,255,0.3)",

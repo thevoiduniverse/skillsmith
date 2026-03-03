@@ -7,7 +7,8 @@ import {
   IconLayoutGridFilled,
   IconPlus,
   IconBookmarkFilled,
-  IconSettingsFilled,
+  IconUserFilled,
+  IconChartBar,
   IconInfoCircleFilled,
 } from "@tabler/icons-react";
 import { motion, LayoutGroup } from "framer-motion";
@@ -17,7 +18,8 @@ const navItems = [
   { href: "/dashboard", label: "Dashboard", icon: IconLayoutGridFilled },
   { href: "/skills/new", label: "New", icon: IconPlus },
   { href: "/templates", label: "Templates", icon: IconBookmarkFilled },
-  { href: "/settings", label: "Settings", icon: IconSettingsFilled },
+  { href: "/settings", label: "Profile", icon: IconUserFilled },
+  { href: "/usage", label: "Usage", icon: IconChartBar },
   { href: "/how-it-works", label: "Info", icon: IconInfoCircleFilled },
 ];
 

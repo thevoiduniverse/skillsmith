@@ -430,7 +430,7 @@ export default function NewSkillPage() {
     <div className="max-w-2xl mx-auto px-4 pb-8 md:px-0 md:pb-12 flex flex-col justify-center min-h-[calc(100vh-10rem)]">
       {/* Header */}
       <div className="text-center mb-6 md:mb-10">
-        <h1 className="font-display text-xl md:text-3xl font-bold text-white tracking-tight">
+        <h1 className="font-display text-xl md:text-3xl font-bold text-white">
           Create a New Skill
         </h1>
         <p className="text-[rgba(255,255,255,0.5)] text-base mt-2">
@@ -446,6 +446,7 @@ export default function NewSkillPage() {
           <div className="flex items-center gap-2">
             <motion.div
               className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold"
+                style={{ paddingBottom: 2 }}
               animate={{
                 backgroundColor: activeStep >= 0 ? "#bfff00" : "rgba(255,255,255,0.08)",
                 color: activeStep >= 0 ? "#0a0a0a" : "rgba(255,255,255,0.3)",
@@ -476,6 +477,7 @@ export default function NewSkillPage() {
           <div className="flex items-center gap-2">
             <motion.div
               className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold"
+                style={{ paddingBottom: 2 }}
               animate={{
                 backgroundColor: activeStep >= 1 ? "#bfff00" : "rgba(255,255,255,0.08)",
                 color: activeStep >= 1 ? "#0a0a0a" : "rgba(255,255,255,0.3)",

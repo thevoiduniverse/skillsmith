@@ -65,7 +65,7 @@ export default function TryTestPage() {
             Back to Editor
           </Button>
         </Link>
-        <h1 className="font-display text-2xl font-semibold text-text-primary tracking-tight">
+        <h1 className="font-display text-2xl font-semibold text-text-primary">
           Test: {skillTitle}
         </h1>
         <p className="text-text-secondary text-sm mt-0.5">

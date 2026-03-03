@@ -63,6 +63,24 @@ const steps = [
   },
 ];
 
+const usageSteps = [
+  {
+    title: "Copy Your Skill",
+    description:
+      "Hit the copy button on any skill to grab its full markdown prompt, ready to paste anywhere.",
+  },
+  {
+    title: "Add to Claude Projects",
+    description:
+      "Paste the skill into a Claude Project as a custom instruction. Every conversation in that project will use it automatically.",
+  },
+  {
+    title: "Use via the API",
+    description:
+      "Pass the skill as a system prompt in the Anthropic API or any tool that supports custom system instructions.",
+  },
+];
+
 const CARD_HEIGHT = 340;
 
 function getStackStyles(cardIndex: number, activeStep: number) {
@@ -99,9 +117,10 @@ export default function HowItWorksPage() {
   const [activeStep, setActiveStep] = useState(0);
 
   return (
-    <div className="max-w-xl mx-auto flex flex-col justify-center min-h-[calc(100vh-10rem)]">
-      <div className="text-center mb-6 md:mb-10">
-        <h1 className="font-display text-xl md:text-3xl font-bold text-white tracking-tight">
+    <div className="max-w-xl mx-auto flex flex-col justify-center min-h-[calc(100vh-10rem)] gap-3 pt-8">
+      <div>
+      <div className="text-center mb-6">
+        <h1 className="font-display text-xl md:text-3xl font-bold text-white">
           How it{" "}
           <span className="text-[#bfff00]">Works</span>
         </h1>
@@ -110,20 +129,40 @@ export default function HowItWorksPage() {
         </p>
       </div>
 
-      {/* Step indicator dots */}
-      <div className="flex items-center justify-center gap-1.5 mb-8">
-        {steps.map((_, i) => (
-          <motion.button
-            key={i}
-            onClick={() => setActiveStep(i)}
-            className="h-1 rounded-full cursor-pointer"
-            animate={{
-              width: i === activeStep ? 20 : 6,
-              backgroundColor:
-                i === activeStep ? "#bfff00" : "rgba(255,255,255,0.15)",
-            }}
-            transition={springTransition}
-          />
+      {/* Step indicator */}
+      <div className="flex items-center justify-center gap-0 mb-6">
+        {steps.map((step, i) => (
+          <div key={i} className="flex items-center gap-0">
+            <button onClick={() => setActiveStep(i)} className="flex items-center gap-2 cursor-pointer">
+              <motion.div
+                className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold"
+                style={{ paddingBottom: 2 }}
+                animate={{
+                  backgroundColor: activeStep >= i ? "#bfff00" : "rgba(255,255,255,0.08)",
+                  color: activeStep >= i ? "#0a0a0a" : "rgba(255,255,255,0.3)",
+                }}
+                transition={springTransition}
+              >
+                {i + 1}
+              </motion.div>
+              <motion.span
+                className="text-xs font-medium hidden sm:block"
+                animate={{ color: activeStep === i ? "#bfff00" : "rgba(255,255,255,0.3)" }}
+                transition={springTransition}
+              >
+                {step.title.split(" ")[0]}
+              </motion.span>
+            </button>
+            {i < steps.length - 1 && (
+              <div className="w-12 h-px mx-3 bg-[rgba(255,255,255,0.1)] relative overflow-hidden rounded-full">
+                <motion.div
+                  className="absolute inset-y-0 left-0 bg-[#bfff00] rounded-full"
+                  animate={{ width: activeStep > i ? "100%" : "0%" }}
+                  transition={springTransition}
+                />
+              </div>
+            )}
+          </div>
         ))}
       </div>
 
@@ -214,6 +253,65 @@ export default function HowItWorksPage() {
             </motion.div>
           );
         })}
+      </div>
+      </div>
+
+      {/* Using your skill */}
+      <div>
+        <div className="text-center mb-6 md:mb-10">
+          <h2 className="font-display text-xl md:text-3xl font-bold text-white">
+            Using Your{" "}
+            <span className="text-[#bfff00]">Skill</span>
+          </h2>
+          <p className="text-[rgba(255,255,255,0.5)] mt-2 text-base">
+            Once generated, here&apos;s how to put it to work.
+          </p>
+        </div>
+
+        <div className="flex flex-col gap-3">
+          {usageSteps.map((step, i) => (
+              <div
+                key={step.title}
+                className="relative rounded-[20px] overflow-hidden bg-gradient-to-b from-[rgba(28,28,28,0.72)] to-[rgba(16,16,16,0.62)] border border-[rgba(255,255,255,0.02)] backdrop-blur-[4px] shadow-[inset_0_1px_0_rgba(255,255,255,0.08),inset_0_-1px_0_rgba(0,0,0,0.25),0_4px_20px_rgba(0,0,0,0.4)] px-5 py-5 md:px-7 md:py-6"
+              >
+                {/* Glass gradient border */}
+                <div
+                  className="absolute inset-0 rounded-[20px] pointer-events-none z-0"
+                  style={{
+                    padding: 1,
+                    background: "linear-gradient(to bottom, rgba(255,255,255,0.12), rgba(255,255,255,0.02) 50%, transparent)",
+                    WebkitMask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                    WebkitMaskComposite: "xor",
+                    mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                    maskComposite: "exclude",
+                  }}
+                />
+                {/* Top shine */}
+                <div
+                  className="absolute inset-0 rounded-[20px] pointer-events-none z-0"
+                  style={{
+                    background: "linear-gradient(to bottom, rgba(255,255,255,0.02), transparent 35%)",
+                  }}
+                />
+
+                <div className="relative z-10">
+                  <div>
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="text-xs font-mono font-bold text-[#bfff00] opacity-60">
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
+                      <h3 className="font-display text-base font-semibold text-white">
+                        {step.title}
+                      </h3>
+                    </div>
+                    <p className="text-sm text-[rgba(255,255,255,0.5)] leading-relaxed">
+                      {step.description}
+                    </p>
+                  </div>
+                </div>
+              </div>
+          ))}
+        </div>
       </div>
     </div>
   );

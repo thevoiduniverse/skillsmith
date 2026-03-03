@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 export function DashboardHeader({ skillCount }: { skillCount: number }) {
   return (
     <div className="relative mb-8 text-center">
-      <h1 className="font-display text-xl md:text-3xl font-bold text-white tracking-tight">
+      <h1 className="font-display text-xl md:text-3xl font-bold text-white">
         Your Skills
       </h1>
       {skillCount > 0 && (
