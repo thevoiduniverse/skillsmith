@@ -76,8 +76,8 @@ export default async function SkillDetailPage({
       </Card>
 
       <div className="mt-6">
-        <h2 className="font-display text-sm text-[rgba(255,255,255,0.4)] uppercase tracking-wider mb-3">
-          Add to your project
+        <h2 className="font-sans text-sm font-semibold text-white mb-3">
+          Install this skill
         </h2>
         <InstallSkill
           skillId={skill.id}
