@@ -447,23 +447,59 @@ export default function TryPage() {
 
       {/* Step dots + Card stack */}
       <div className="max-w-2xl mx-auto">
-        {/* Step indicator dots */}
+        {/* Step indicator */}
         {mode === "idle" && (
-          <div className="flex items-center justify-center gap-1 mb-8">
-            {Array.from({ length: TOTAL_STEPS }).map((_, i) => (
+          <div className="flex items-center justify-center gap-0 mb-8">
+            {/* Step 1 */}
+            <div className="flex items-center gap-2">
               <motion.div
-                key={i}
-                className="h-1 rounded-full"
+                className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold"
                 animate={{
-                  width: i === activeStep ? 16 : 5,
-                  backgroundColor:
-                    i === activeStep
-                      ? "#bfff00"
-                      : "rgba(255,255,255,0.15)",
+                  backgroundColor: activeStep >= 0 ? "#bfff00" : "rgba(255,255,255,0.08)",
+                  color: activeStep >= 0 ? "#0a0a0a" : "rgba(255,255,255,0.3)",
                 }}
                 transition={springTransition}
+              >
+                1
+              </motion.div>
+              <motion.span
+                className="text-xs font-medium hidden sm:block"
+                animate={{ color: activeStep === 0 ? "#bfff00" : "rgba(255,255,255,0.3)" }}
+                transition={springTransition}
+              >
+                Describe
+              </motion.span>
+            </div>
+
+            {/* Connector */}
+            <div className="w-12 h-px mx-3 bg-[rgba(255,255,255,0.1)] relative overflow-hidden rounded-full">
+              <motion.div
+                className="absolute inset-y-0 left-0 bg-[#bfff00] rounded-full"
+                animate={{ width: activeStep >= 1 ? "100%" : "0%" }}
+                transition={springTransition}
               />
-            ))}
+            </div>
+
+            {/* Step 2 */}
+            <div className="flex items-center gap-2">
+              <motion.div
+                className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold"
+                animate={{
+                  backgroundColor: activeStep >= 1 ? "#bfff00" : "rgba(255,255,255,0.08)",
+                  color: activeStep >= 1 ? "#0a0a0a" : "rgba(255,255,255,0.3)",
+                }}
+                transition={springTransition}
+              >
+                2
+              </motion.div>
+              <motion.span
+                className="text-xs font-medium hidden sm:block"
+                animate={{ color: activeStep === 1 ? "#bfff00" : "rgba(255,255,255,0.3)" }}
+                transition={springTransition}
+              >
+                Name & Category
+              </motion.span>
+            </div>
           </div>
         )}
 

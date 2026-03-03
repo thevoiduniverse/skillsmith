@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { IconUserFilled, IconChartBar, IconLogout } from "@tabler/icons-react";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -118,25 +117,17 @@ export default function SettingsPage() {
     setTimeout(() => setSaved(false), 2000);
   }
 
-  async function handleSignOut() {
-    await supabase.auth.signOut();
-    window.location.href = "/login";
-  }
-
   return (
-    <div className="max-w-6xl mx-auto space-y-8">
-      <h1 className="font-display text-xl md:text-3xl font-bold text-white tracking-tight">
+    <div className="max-w-2xl mx-auto space-y-8 flex flex-col justify-center min-h-[calc(100vh-10rem)]">
+      <h1 className="font-display text-xl md:text-3xl font-bold text-white tracking-tight text-center">
         Settings
       </h1>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-stretch">
+      <div className="flex flex-col gap-4">
         {/* Profile */}
         <Card className="flex flex-col">
           <CardHeader>
-            <div className="flex items-center gap-2">
-              <IconUserFilled size={16} className="text-[rgba(255,255,255,0.6)]" />
-              <h2 className="font-sans text-sm font-semibold text-white">Profile</h2>
-            </div>
+            <h2 className="font-display text-xl font-semibold text-white">Profile</h2>
           </CardHeader>
           <CardContent className="flex flex-col gap-4 flex-1">
             <div>
@@ -172,10 +163,7 @@ export default function SettingsPage() {
         {/* API Usage */}
         <Card className="flex flex-col">
           <CardHeader>
-            <div className="flex items-center gap-2">
-              <IconChartBar size={16} className="text-[rgba(255,255,255,0.6)]" />
-              <h2 className="font-sans text-sm font-semibold text-white">API Usage</h2>
-            </div>
+            <h2 className="font-display text-xl font-semibold text-white">API Usage</h2>
           </CardHeader>
           <CardContent className="flex-1">
             {loading ? (
@@ -267,12 +255,6 @@ export default function SettingsPage() {
           </CardContent>
         </Card>
       </div>
-
-      {/* Sign Out */}
-      <Button variant="danger" onClick={handleSignOut}>
-        <IconLogout size={16} />
-        Sign Out
-      </Button>
     </div>
   );
 }

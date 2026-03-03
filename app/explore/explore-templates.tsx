@@ -84,7 +84,7 @@ export function ExploreTemplates() {
         <div ref={scrollRef} onScroll={handleScroll} className="h-full overflow-y-auto pt-2 pb-14">
           {loading ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {Array.from({ length: 6 }).map((_, i) => (
+              {Array.from({ length: 9 }).map((_, i) => (
                 <Card key={i} className="p-5 flex flex-col">
                   <Skeleton className="h-4 w-3/4 rounded mb-2" />
                   <Skeleton className="h-3 w-full rounded mb-1.5" />

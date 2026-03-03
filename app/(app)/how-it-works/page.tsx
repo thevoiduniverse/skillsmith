@@ -99,7 +99,7 @@ export default function HowItWorksPage() {
   const [activeStep, setActiveStep] = useState(0);
 
   return (
-    <div className="max-w-xl mx-auto">
+    <div className="max-w-xl mx-auto flex flex-col justify-center min-h-[calc(100vh-10rem)]">
       <div className="text-center mb-6 md:mb-10">
         <h1 className="font-display text-xl md:text-3xl font-bold text-white tracking-tight">
           How it{" "}

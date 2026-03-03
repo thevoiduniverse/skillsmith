@@ -30,11 +30,11 @@ export function Sidebar() {
   async function handleSignOut() {
     track("logout");
     await supabase.auth.signOut();
-    window.location.href = "/login";
+    window.location.href = "/";
   }
 
   return (
-    <aside className="h-screen sticky top-0 w-64 flex flex-col px-5 py-4">
+    <aside className="h-screen sticky top-0 w-64 flex flex-col justify-center px-5 py-4">
       {/* Floating glass card */}
       <div className="relative flex flex-col gap-6 w-full rounded-[32px] bg-gradient-to-b from-[rgba(28,28,28,0.65)] to-[rgba(16,16,16,0.55)] border border-[rgba(255,255,255,0.02)] backdrop-blur-[4px] shadow-[inset_0_1px_0_rgba(255,255,255,0.08),inset_0_-1px_0_rgba(0,0,0,0.25),0_4px_20px_rgba(0,0,0,0.4)] py-6 px-5">
         {/* Glass gradient border */}
