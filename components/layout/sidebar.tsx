@@ -67,7 +67,7 @@ export function Sidebar() {
 
         {/* Navigation — segmented control */}
         <LayoutGroup>
-          <nav className="flex flex-col gap-1 bg-[rgba(0,0,0,0.3)] rounded-[24px] p-1.5 -mx-2">
+          <nav className="flex flex-col gap-1 rounded-[24px] p-1.5 -mx-2">
             {navItems.map((item) => {
               const isActive =
                 pathname === item.href || pathname.startsWith(item.href + "/");
