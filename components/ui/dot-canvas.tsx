@@ -37,7 +37,6 @@ function hexToRgb(hex: string): [number, number, number] {
 
 interface DotCanvasProps {
   accentColor?: string;
-  glowColor?: string;
   className?: string;
   height?: string | number;
   showGlow?: boolean;
@@ -46,7 +45,6 @@ interface DotCanvasProps {
 
 export function DotCanvas({
   accentColor = "#BFFF00",
-  glowColor,
   className = "",
   height = "100%",
   showGlow = true,

@@ -213,7 +213,6 @@ export function LandingHero() {
       {/* Canvas sits outside the clipping container so it extends behind the iOS notch */}
       <DotCanvas
         accentColor={textColor}
-        glowColor={textColor}
         height={isMobile ? 900 : 1320}
         className="fixed inset-0 z-0"
       />
