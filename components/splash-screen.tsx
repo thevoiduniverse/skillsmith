@@ -13,7 +13,7 @@ export function SplashScreen({ onComplete }: { onComplete: () => void }) {
   const [logoVisible, setLogoVisible] = useState(false);
 
   useEffect(() => {
-    const enterTimer = setTimeout(() => setPhase("visible"), 100);
+    const enterTimer = requestAnimationFrame(() => setPhase("visible"));
     const logoTimer = setTimeout(() => setLogoVisible(true), LOGO_ENTER_DELAY);
     const fadeTimer = setTimeout(() => setPhase("fading"), SPLASH_DURATION);
     const doneTimer = setTimeout(() => {
@@ -22,7 +22,7 @@ export function SplashScreen({ onComplete }: { onComplete: () => void }) {
     }, SPLASH_DURATION + FADE_DURATION);
 
     return () => {
-      clearTimeout(enterTimer);
+      cancelAnimationFrame(enterTimer);
       clearTimeout(logoTimer);
       clearTimeout(fadeTimer);
       clearTimeout(doneTimer);
@@ -66,7 +66,7 @@ export function SplashScreen({ onComplete }: { onComplete: () => void }) {
         />
       </div>
 
-      {/* Logo layer - delayed blur in, uses screen blend */}
+      {/* Logo layer - delayed blur in with zoom, uses screen blend */}
       <div
         className="absolute inset-0 flex items-center justify-center transition-all"
         style={{

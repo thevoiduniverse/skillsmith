@@ -310,9 +310,15 @@ export function LandingHero() {
           <span className="inline-block" style={{ color: textColor }}>
             {displayText}
             <span
-              className="inline-block w-[3px] h-[28px] md:h-[50px] align-middle ml-1 rounded-sm"
-              style={{ opacity: showCursor ? 1 : 0, backgroundColor: textColor }}
-            />
+              className="inline-block align-middle ml-1"
+              style={{ opacity: showCursor ? 1 : 0, color: textColor }}
+            >
+              <svg className="w-[3px] h-[28px] md:w-[4px] md:h-[50px]" viewBox="0 0 4 50" fill="currentColor">
+                <rect x="0" y="0" width="4" height="2" rx="0.5" />
+                <rect x="1" y="2" width="2" height="46" />
+                <rect x="0" y="48" width="4" height="2" rx="0.5" />
+              </svg>
+            </span>
           </span>
         </h1>
         <p className="mt-6 text-base md:text-[20px] text-[rgba(255,255,255,0.6)] leading-[1.6] max-w-2xl mx-auto font-sans">
