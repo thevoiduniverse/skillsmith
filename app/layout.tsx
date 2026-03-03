@@ -3,6 +3,7 @@ import { JetBrains_Mono, Palanquin } from "next/font/google";
 import localFont from "next/font/local";
 import { PostHogProvider } from "@/components/providers/posthog-provider";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/next";
 import Script from "next/script";
 import "./globals.css";
 
@@ -65,6 +66,7 @@ export default function RootLayout({
         className={`${palanquin.className} ${palanquin.variable} ${concretteXL.variable} ${jetbrains.variable} bg-[#0a0a0a]`}
       >
         <PostHogProvider>{children}</PostHogProvider>
+        <Analytics />
         <SpeedInsights />
         <Script
           async

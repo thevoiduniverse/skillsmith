@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { IconChevronRight } from "@tabler/icons-react";
@@ -8,6 +8,8 @@ import { Button } from "@/components/ui/button";
 import { useIsMobile } from "@/lib/hooks/use-is-mobile";
 
 import { DotCanvas } from "@/components/ui/dot-canvas";
+import { SplashScreen } from "@/components/splash-screen";
+import { LiquidMetal } from "@paper-design/shaders-react";
 
 /* ─── How it Works steps ──────────────────────── */
 
@@ -154,12 +156,14 @@ const rotatingWords = [
 ];
 
 export function LandingHero() {
+  const [splashDone, setSplashDone] = useState(false);
   const [isSpread, setIsSpread] = useState(false);
   const [displayText, setDisplayText] = useState("");
   const [textColor, setTextColor] = useState(rotatingWords[0].color);
   const [showCursor, setShowCursor] = useState(true);
   const [howStep, setHowStep] = useState(0);
   const isMobile = useIsMobile();
+  const handleSplashComplete = useCallback(() => setSplashDone(true), []);
 
   useEffect(() => {
     let idx = 0;
@@ -205,6 +209,7 @@ export function LandingHero() {
 
   return (
     <>
+      {!splashDone && <SplashScreen onComplete={handleSplashComplete} />}
       {/* Canvas sits outside the clipping container so it extends behind the iOS notch */}
       <DotCanvas
         accentColor={textColor}
@@ -246,12 +251,20 @@ export function LandingHero() {
               Sign Up
             </Link>
             {process.env.NODE_ENV === "development" && (
-              <Link
-                href="/dashboard"
-                className="text-[rgba(255,255,255,0.3)] text-xs font-mono hover:text-white transition-colors"
-              >
-                DEV
-              </Link>
+              <>
+                <Link
+                  href="/dashboard"
+                  className="text-[rgba(255,255,255,0.3)] text-xs font-mono hover:text-white transition-colors"
+                >
+                  DEV
+                </Link>
+                <Link
+                  href="/loader"
+                  className="text-[rgba(255,255,255,0.3)] text-xs font-mono hover:text-white transition-colors"
+                >
+                  LOADER
+                </Link>
+              </>
             )}
           </div>
         </div>
@@ -261,7 +274,37 @@ export function LandingHero() {
       <section className="relative z-10 max-w-4xl mx-auto px-4 md:px-6 pt-10 pb-10 md:pt-20 md:pb-20 text-center">
         <h1 className="text-[28px] md:text-[60px] font-display font-semibold text-white leading-[1.15]">
           Craft your{" "}
-          <img src="/Skills.png" alt="Skills" className="inline-block h-[46px] md:h-[92px] align-middle relative -top-[3px] md:-top-[6px]" />{" "}for
+          <span
+              className="inline-block align-middle relative -top-[6px] md:-top-[10px]"
+              style={{
+                width: isMobile ? 120 : 240,
+                height: isMobile ? 34 : 68,
+                WebkitMaskImage: "url(/skills-shape.svg)",
+                maskImage: "url(/skills-shape.svg)",
+                WebkitMaskSize: "100% 100%",
+                maskSize: "100% 100%",
+                WebkitMaskRepeat: "no-repeat",
+                maskRepeat: "no-repeat",
+              }}
+            >
+              <LiquidMetal
+                width={isMobile ? 120 : 240}
+                height={isMobile ? 34 : 68}
+                colorBack="#000000"
+                colorTint="#ffffff"
+                image="/skills-shape.svg"
+                shape="none"
+                repetition={3}
+                softness={0.3}
+                shiftRed={0.2}
+                shiftBlue={0.2}
+                distortion={0.15}
+                contour={0.4}
+                angle={70}
+                speed={0.5}
+                scale={1}
+              />
+            </span>{" "}for
           <br />
           <span className="inline-block" style={{ color: textColor }}>
             {displayText}
