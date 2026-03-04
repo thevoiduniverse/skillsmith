@@ -7,9 +7,15 @@ import { IconChevronRight } from "@tabler/icons-react";
 import { Button } from "@/components/ui/button";
 import { useIsMobile } from "@/lib/hooks/use-is-mobile";
 
+import dynamic from "next/dynamic";
 import { DotCanvas } from "@/components/ui/dot-canvas";
 import { SplashScreen } from "@/components/splash-screen";
 import { LiquidMetal } from "@paper-design/shaders-react";
+
+const GlIllustration = dynamic(
+  () => import("@/components/ui/gl-illustration").then((m) => m.GlIllustration),
+  { ssr: false }
+);
 
 /* ─── How it Works steps ──────────────────────── */
 
@@ -74,18 +80,21 @@ const cards = [
     description:
       "Publish your skills to the template library for anyone to discover. Fork what others have built, remix it, and make it your own.",
     image: "/card-share.png?v=2",
+    glShape: "saturn",
   },
   {
     title: "One-Line\nBuilder",
     description:
       "Describe what you want in one sentence. Claude generates a complete, structured skill file — then refine it with guided editing or raw markdown.",
     image: "/card-editor.png?v=2",
+    gl: "{ }",
   },
   {
     title: "Side-by-Side\nPlayground",
     description:
       "Send the same prompt with and without your skill applied. Compare responses side by side and auto-score against expected behaviour.",
     image: "/card-testing.png?v=2",
+    glShape: "infinity",
   },
 ];
 
@@ -313,12 +322,12 @@ export function LandingHero() {
                 >
                   DEV
                 </Link>
-                <button
-                  onClick={() => setLogoAnimated((v) => !v)}
+                <Link
+                  href="/gl"
                   className="text-[rgba(255,255,255,0.3)] text-xs font-mono hover:text-white transition-colors"
                 >
-                  LOGO
-                </button>
+                  GL
+                </Link>
               </>
             )}
           </div>
@@ -403,7 +412,7 @@ export function LandingHero() {
             {[cards[1], cards[0], cards[2]].map((card) => (
               <div
                 key={card.title}
-                className="relative w-full rounded-[40px] px-6 py-8 flex flex-col overflow-hidden bg-gradient-to-b from-[rgba(28,28,28,0.72)] to-[rgba(16,16,16,0.62)] border border-[rgba(255,255,255,0.02)] shadow-[inset_0_1px_0_rgba(255,255,255,0.08),inset_0_-1px_0_rgba(0,0,0,0.25),0_4px_20px_rgba(0,0,0,0.4)]"
+                className="relative w-full rounded-[40px] px-6 py-8 flex flex-col overflow-visible bg-gradient-to-b from-[rgba(28,28,28,0.72)] to-[rgba(16,16,16,0.62)] border border-[rgba(255,255,255,0.02)] shadow-[inset_0_1px_0_rgba(255,255,255,0.08),inset_0_-1px_0_rgba(0,0,0,0.25),0_4px_20px_rgba(0,0,0,0.4)]"
                 style={{
                   backdropFilter: "blur(20px)",
                   WebkitBackdropFilter: "blur(20px)",
@@ -428,9 +437,15 @@ export function LandingHero() {
                     background: "linear-gradient(to bottom, rgba(255,255,255,0.02), transparent 35%)",
                   }}
                 />
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={card.image} alt="" className="w-[120px] h-[120px] object-contain shrink-0 pointer-events-none mx-auto" />
-                <div className="flex flex-col gap-[11px] mt-auto pt-4 text-center items-center">
+                {card.gl || card.glShape ? (
+                  <div className="relative w-[120px] h-[120px] shrink-0 mx-auto">
+                    <GlIllustration text={card.gl} shape={card.glShape} size={1.8} className="absolute -inset-[72px]" />
+                  </div>
+                ) : (
+                  /* eslint-disable-next-line @next/next/no-img-element */
+                  <img src={card.image} alt="" className="w-[120px] h-[120px] object-contain shrink-0 pointer-events-none mx-auto" />
+                )}
+                <div className={`flex flex-col gap-[11px] mt-auto text-center items-center ${card.gl || card.glShape ? "pt-8" : "pt-4"}`}>
                   <h3 className="font-display font-semibold text-xl leading-[1.6] whitespace-pre-line text-white">
                     {card.title}
                   </h3>
@@ -455,7 +470,7 @@ export function LandingHero() {
               return (
                 <motion.div
                   key={card.title}
-                  className="absolute w-[420px] h-[460px] rounded-[40px] px-8 py-10 flex flex-col overflow-hidden bg-gradient-to-b from-[rgba(28,28,28,0.72)] to-[rgba(16,16,16,0.62)] border border-[rgba(255,255,255,0.02)] shadow-[inset_0_1px_0_rgba(255,255,255,0.08),inset_0_-1px_0_rgba(0,0,0,0.25),0_4px_20px_rgba(0,0,0,0.4)]"
+                  className="absolute w-[420px] h-[460px] rounded-[40px] px-8 py-10 flex flex-col overflow-visible bg-gradient-to-b from-[rgba(28,28,28,0.72)] to-[rgba(16,16,16,0.62)] border border-[rgba(255,255,255,0.02)] shadow-[inset_0_1px_0_rgba(255,255,255,0.08),inset_0_-1px_0_rgba(0,0,0,0.25),0_4px_20px_rgba(0,0,0,0.4)]"
                   style={{
                     backdropFilter: "blur(20px)",
                     WebkitBackdropFilter: "blur(20px)",
@@ -486,8 +501,14 @@ export function LandingHero() {
                       background: "linear-gradient(to bottom, rgba(255,255,255,0.02), transparent 35%)",
                     }}
                   />
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={card.image} alt="" className="w-[160px] h-[160px] object-contain shrink-0 pointer-events-none mx-auto" />
+                  {card.gl || card.glShape ? (
+                    <div className="relative w-[160px] h-[160px] shrink-0 mx-auto">
+                      <GlIllustration text={card.gl} shape={card.glShape} size={2.5} className="absolute -inset-16" />
+                    </div>
+                  ) : (
+                    /* eslint-disable-next-line @next/next/no-img-element */
+                    <img src={card.image} alt="" className="w-[160px] h-[160px] object-contain shrink-0 pointer-events-none mx-auto" />
+                  )}
                   <div className="flex flex-col gap-[11px] mt-auto pt-4 text-center items-center">
                     <h3 className="font-display font-semibold text-[28px] leading-[1.6] whitespace-pre-line text-white">
                       {card.title}
