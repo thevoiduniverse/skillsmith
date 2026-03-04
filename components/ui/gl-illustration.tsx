@@ -39,10 +39,10 @@ function GlTextMesh({ text, size = 2.5 }: { text: string; size?: number }) {
   const meshRef = useRef<THREE.Mesh>(null);
 
   useFrame(() => {
-    if (meshRef.current && meshRef.current.geometry && !(meshRef.current as any).__normalsFixed) {
+    if (meshRef.current && meshRef.current.geometry && !(meshRef.current as unknown as { __normalsFixed?: boolean }).__normalsFixed) {
       meshRef.current.geometry.deleteAttribute("normal");
       meshRef.current.geometry.computeVertexNormals();
-      (meshRef.current as any).__normalsFixed = true;
+      (meshRef.current as unknown as { __normalsFixed?: boolean }).__normalsFixed = true;
     }
   });
 
