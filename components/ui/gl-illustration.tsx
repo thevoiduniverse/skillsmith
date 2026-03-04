@@ -1,9 +1,12 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState, useEffect, Suspense } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { Text3D, Center, Environment, OrbitControls } from "@react-three/drei";
+import { Text3D, Center, Environment, OrbitControls, Preload, useFont } from "@react-three/drei";
 import * as THREE from "three";
+
+// Preload shared resources so they're cached before first Canvas mounts
+useFont.preload("/fonts/helvetiker_bold.typeface.json");
 
 const glMaterial = {
   color: "#f0f0f4",
@@ -208,6 +211,29 @@ function Scene({ text, shape, size }: { text?: string; shape?: string; size?: nu
   );
 }
 
+function useInView(rootMargin = "200px") {
+  const ref = useRef<HTMLDivElement>(null);
+  const [inView, setInView] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setInView(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [rootMargin]);
+
+  return { ref, inView };
+}
+
 export function GlIllustration({
   text,
   shape,
@@ -219,16 +245,23 @@ export function GlIllustration({
   size?: number;
   className?: string;
 }) {
+  const { ref, inView } = useInView("400px");
+
   return (
-    <div className={className}>
-      <Canvas
-        camera={{ position: [0, 0, 12], fov: 40 }}
-        gl={{ antialias: true, alpha: true, toneMapping: THREE.NoToneMapping }}
-        resize={{ offsetSize: true }}
-        style={{ background: "transparent" }}
-      >
-        <Scene text={text} shape={shape} size={size} />
-      </Canvas>
+    <div ref={ref} className={className}>
+      {inView && (
+        <Canvas
+          camera={{ position: [0, 0, 12], fov: 40 }}
+          gl={{ antialias: true, alpha: true, toneMapping: THREE.NoToneMapping }}
+          resize={{ offsetSize: true }}
+          style={{ background: "transparent" }}
+        >
+          <Suspense fallback={null}>
+            <Scene text={text} shape={shape} size={size} />
+            <Preload all />
+          </Suspense>
+        </Canvas>
+      )}
     </div>
   );
 }
