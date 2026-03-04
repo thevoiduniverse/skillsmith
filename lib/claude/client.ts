@@ -5,11 +5,11 @@ let client: OpenAI | null = null;
 export function getAIClient(): OpenAI {
   if (!client) {
     client = new OpenAI({
-      baseURL: "https://models.inference.ai.azure.com",
-      apiKey: process.env.GITHUB_TOKEN!,
+      baseURL: "https://generativelanguage.googleapis.com/v1beta/openai/",
+      apiKey: process.env.GOOGLE_API_KEY!,
     });
   }
   return client;
 }
 
-export const AI_MODEL = process.env.AI_MODEL || "gpt-4.1";
+export const AI_MODEL = process.env.AI_MODEL || "gemini-2.5-flash";

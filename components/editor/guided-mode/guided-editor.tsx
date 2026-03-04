@@ -419,13 +419,23 @@ export function GuidedEditor({
               </motion.span>
             </div>
             {i < TOTAL_STEPS - 1 && (
-              <div className="w-8 h-px mx-2 bg-[rgba(255,255,255,0.1)] relative overflow-hidden rounded-full">
-                <motion.div
-                  className="absolute inset-y-0 left-0 bg-[#bfff00] rounded-full"
-                  animate={{ width: activeStep > i ? "100%" : "0%" }}
+              <svg width="36" height="16" viewBox="-2 -2 36 16" className="mx-2" fill="none">
+                <path
+                  d="M0 6 Q4 0,8 6 Q12 12,16 6 Q20 0,24 6 Q28 12,32 6"
+                  stroke="rgba(255,255,255,0.1)"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                />
+                <motion.path
+                  d="M0 6 Q4 0,8 6 Q12 12,16 6 Q20 0,24 6 Q28 12,32 6"
+                  stroke="#bfff00"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  initial={{ pathLength: 0, opacity: 0 }}
+                  animate={{ pathLength: activeStep > i ? 1 : 0, opacity: activeStep > i ? 1 : 0 }}
                   transition={springTransition}
                 />
-              </div>
+              </svg>
             )}
           </div>
         ))}

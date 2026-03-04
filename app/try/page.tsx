@@ -448,8 +448,7 @@ export default function TryPage() {
       {/* Step dots + Card stack */}
       <div className="max-w-2xl mx-auto">
         {/* Step indicator */}
-        {mode === "idle" && (
-          <div className="flex items-center justify-center gap-0 mb-8">
+          <div className={cn("flex items-center justify-center gap-0 mb-8 transition-opacity duration-300", mode !== "idle" ? "opacity-0 pointer-events-none" : "opacity-100")}>
             {/* Step 1 */}
             <div className="flex items-center gap-2">
               <motion.div
@@ -472,14 +471,24 @@ export default function TryPage() {
               </motion.span>
             </div>
 
-            {/* Connector */}
-            <div className="w-12 h-px mx-3 bg-[rgba(255,255,255,0.1)] relative overflow-hidden rounded-full">
-              <motion.div
-                className="absolute inset-y-0 left-0 bg-[#bfff00] rounded-full"
-                animate={{ width: activeStep >= 1 ? "100%" : "0%" }}
+            {/* Wavy connector */}
+            <svg width="52" height="16" viewBox="-2 -2 52 16" className="mx-3" fill="none">
+              <path
+                d="M0 6 Q6 0,12 6 Q18 12,24 6 Q30 0,36 6 Q42 12,48 6"
+                stroke="rgba(255,255,255,0.1)"
+                strokeWidth="2"
+                strokeLinecap="round"
+              />
+              <motion.path
+                d="M0 6 Q6 0,12 6 Q18 12,24 6 Q30 0,36 6 Q42 12,48 6"
+                stroke="#bfff00"
+                strokeWidth="2"
+                strokeLinecap="round"
+                initial={{ pathLength: 0, opacity: 0 }}
+                animate={{ pathLength: activeStep >= 1 ? 1 : 0, opacity: activeStep >= 1 ? 1 : 0 }}
                 transition={springTransition}
               />
-            </div>
+            </svg>
 
             {/* Step 2 */}
             <div className="flex items-center gap-2">
@@ -503,7 +512,6 @@ export default function TryPage() {
               </motion.span>
             </div>
           </div>
-        )}
 
         {/* Card stack */}
         <div className="relative" style={{ height: CARD_HEIGHT }}>
@@ -536,7 +544,7 @@ export default function TryPage() {
                   WebkitBackdropFilter: "blur(80px)",
                 }}
               >
-                <Card className="h-full p-5 md:p-8 flex flex-col overflow-hidden">
+                <Card className="h-full p-5 md:p-8 flex flex-col overflow-hidden rounded-[32px]">
                   <div className="absolute inset-0 rounded-[32px] pointer-events-none z-0" style={{ background: "linear-gradient(to bottom, rgba(255,255,255,0.015), transparent 40%)" }} />
                   {stepRenderers[i]()}
                 </Card>

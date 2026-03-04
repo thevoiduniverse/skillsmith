@@ -158,7 +158,7 @@ export default function NewSkillPage() {
           category: category || undefined,
         }),
       });
-      if (!draftRes.ok) throw new Error("Draft generation failed");
+      if (!draftRes.ok) throw new Error("Failed to generate skill. Please try again.");
       const draft = await draftRes.json();
 
       // Now create the skill WITH the content in a single request
@@ -172,13 +172,16 @@ export default function NewSkillPage() {
           content: draft.content || "",
         }),
       });
-      if (!createRes.ok) throw new Error("Skill creation failed");
+      if (!createRes.ok) {
+        if (createRes.status === 401) throw new Error("Please sign in to save skills.");
+        throw new Error("Failed to save skill. Please try again.");
+      }
       const skill = await createRes.json();
 
       track("skill_created", { method: "ai", category: category ?? undefined });
       router.push(`/skills/${skill.id}/edit`);
-    } catch {
-      toast.error("Failed to generate skill. Please try again.");
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Failed to generate skill. Please try again.");
       setMode("idle");
       setLoading(false);
     }
@@ -197,12 +200,15 @@ export default function NewSkillPage() {
           category: category || undefined,
         }),
       });
-      if (!res.ok) throw new Error();
+      if (!res.ok) {
+        if (res.status === 401) throw new Error("Please sign in to save skills.");
+        throw new Error("Failed to create skill. Please try again.");
+      }
       const skill = await res.json();
       track("skill_created", { method: "blank", category: category ?? undefined });
       router.push(`/skills/${skill.id}/edit`);
-    } catch {
-      toast.error("Failed to create skill. Please try again.");
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Failed to create skill. Please try again.");
       setMode("idle");
       setLoading(false);
     }
@@ -440,8 +446,7 @@ export default function NewSkillPage() {
       </div>
 
       {/* Step indicator */}
-      {mode === "idle" && (
-        <div className="flex items-center justify-center gap-0 mb-8">
+        <div className={cn("flex items-center justify-center gap-0 mb-8 transition-opacity duration-300", mode !== "idle" ? "opacity-0 pointer-events-none" : "opacity-100")}>
           {/* Step 1 */}
           <div className="flex items-center gap-2">
             <motion.div
@@ -464,14 +469,24 @@ export default function NewSkillPage() {
             </motion.span>
           </div>
 
-          {/* Connector */}
-          <div className="w-12 h-px mx-3 bg-[rgba(255,255,255,0.1)] relative overflow-hidden rounded-full">
-            <motion.div
-              className="absolute inset-y-0 left-0 bg-[#bfff00] rounded-full"
-              animate={{ width: activeStep >= 1 ? "100%" : "0%" }}
+          {/* Wavy connector */}
+          <svg width="52" height="16" viewBox="-2 -2 52 16" className="mx-3" fill="none">
+            <path
+              d="M0 6 Q6 0,12 6 Q18 12,24 6 Q30 0,36 6 Q42 12,48 6"
+              stroke="rgba(255,255,255,0.1)"
+              strokeWidth="2"
+              strokeLinecap="round"
+            />
+            <motion.path
+              d="M0 6 Q6 0,12 6 Q18 12,24 6 Q30 0,36 6 Q42 12,48 6"
+              stroke="#bfff00"
+              strokeWidth="2"
+              strokeLinecap="round"
+              initial={{ pathLength: 0, opacity: 0 }}
+              animate={{ pathLength: activeStep >= 1 ? 1 : 0, opacity: activeStep >= 1 ? 1 : 0 }}
               transition={springTransition}
             />
-          </div>
+          </svg>
 
           {/* Step 2 */}
           <div className="flex items-center gap-2">
@@ -495,7 +510,6 @@ export default function NewSkillPage() {
             </motion.span>
           </div>
         </div>
-      )}
 
       {/* Card stack */}
       <div className="relative" style={{ height: CARD_HEIGHT }}>
@@ -528,7 +542,7 @@ export default function NewSkillPage() {
                 WebkitBackdropFilter: "blur(80px)",
               }}
             >
-              <Card className="h-full p-5 md:p-8 flex flex-col overflow-hidden">
+              <Card className="h-full p-5 md:p-8 flex flex-col overflow-hidden rounded-[32px]">
                 <div className="absolute inset-0 rounded-[32px] pointer-events-none z-0" style={{ background: "linear-gradient(to bottom, rgba(255,255,255,0.015), transparent 40%)" }} />
                 {stepRenderers[i]()}
               </Card>

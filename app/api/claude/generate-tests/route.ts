@@ -5,7 +5,7 @@ import { GENERATE_TESTS_PROMPT } from "@/lib/claude/prompts";
 import { checkRateLimit, recordUsage } from "@/lib/claude/rate-limiter";
 import { headers } from "next/headers";
 
-const AI_FAST_MODEL = process.env.AI_FAST_MODEL || "gpt-4.1-mini";
+const AI_FAST_MODEL = process.env.AI_FAST_MODEL || "gemini-2.5-flash";
 
 /* ─── Simple in-memory rate limiter for anonymous users ─── */
 const anonBuckets = new Map<string, { count: number; resetAt: number }>();
