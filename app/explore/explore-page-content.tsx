@@ -31,12 +31,14 @@ export function ExplorePageContent() {
                 maskComposite: "exclude",
               }}
             />
-            <Link href="/" className="relative flex items-center -ml-2 md:-ml-3" style={{ height: isMobile ? 28 : 36 }}>
-              <div
-                className="absolute top-1/2 -translate-y-1/2"
-                style={{ left: isMobile ? -10 : -16 }}
-              >
-                <AnimatedLogo size={isMobile ? 56 : 72} />
+            <Link href="/" className="relative flex items-center -ml-2 md:-ml-3 h-[28px] md:h-[36px]">
+              <div className="absolute top-1/2 -translate-y-1/2 left-[2px] md:left-[-16px]">
+                <div className="block md:hidden">
+                  <AnimatedLogo size={56} />
+                </div>
+                <div className="hidden md:block">
+                  <AnimatedLogo size={72} />
+                </div>
               </div>
             </Link>
             <div className="flex items-center gap-3 md:gap-5">

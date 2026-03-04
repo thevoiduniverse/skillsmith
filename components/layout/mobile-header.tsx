@@ -68,7 +68,7 @@ export function MobileHeader() {
 
   return (
     <nav className="sticky top-0 z-50 flex justify-center pt-[calc(env(safe-area-inset-top,0px)+20px)] px-4 md:hidden">
-      <div className="relative flex items-center w-full bg-gradient-to-b from-[rgba(28,28,28,0.85)] to-[rgba(18,18,18,0.75)] backdrop-blur-2xl rounded-[40px] px-2 py-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.08),inset_0_-1px_0_rgba(0,0,0,0.2),0_4px_20px_rgba(0,0,0,0.4)] overflow-hidden">
+      <div className="relative flex items-center w-full bg-gradient-to-b from-[rgba(28,28,28,0.85)] to-[rgba(18,18,18,0.75)] backdrop-blur-2xl rounded-[40px] px-2 py-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.08),inset_0_-1px_0_rgba(0,0,0,0.2),0_4px_20px_rgba(0,0,0,0.4)] overflow-visible">
         {/* Gradient border overlay */}
         <div
           className="absolute inset-0 rounded-[40px] pointer-events-none"

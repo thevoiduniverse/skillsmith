@@ -251,6 +251,7 @@ export function LandingHero() {
               style={{
                 opacity: logoAnimated ? 0 : 1,
                 filter: logoAnimated ? "blur(12px)" : "blur(0px)",
+                marginLeft: isMobile ? 14 : 0,
               }}
             />
             {/* Animated S — fades in, positioned to align with the S in the full logo */}
@@ -259,7 +260,7 @@ export function LandingHero() {
               style={{
                 opacity: logoAnimated ? 1 : 0,
                 filter: logoAnimated ? "blur(0px)" : "blur(12px)",
-                left: isMobile ? -10 : -16,
+                left: isMobile ? 2 : -16,
                 width: isMobile ? 56 : 72,
                 height: isMobile ? 56 : 72,
                 WebkitMaskImage: "url(/logo-shape.svg)",

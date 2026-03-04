@@ -48,6 +48,8 @@ export function AnimatedLogo({ size = 52, className = "" }: AnimatedLogoProps) {
       {/* Shader canvas — masked to S shape */}
       <div
         style={{
+          position: "absolute",
+          inset: 0,
           width: size,
           height: size,
           WebkitMaskImage: "url(/logo-shape.svg)",
