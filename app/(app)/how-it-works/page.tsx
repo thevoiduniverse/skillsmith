@@ -278,7 +278,7 @@ export default function HowItWorksPage() {
           </p>
         </div>
 
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-3 pb-8 md:pb-12">
           {usageSteps.map((step, i) => (
               <div
                 key={step.title}

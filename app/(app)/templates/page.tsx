@@ -69,12 +69,13 @@ export default function TemplatesPage() {
     <div className="max-w-6xl mx-auto flex flex-col h-[calc(100dvh-6.5rem-env(safe-area-inset-bottom,0px))] md:h-[calc(100dvh-4.5rem)]">
       {/* Fixed header + filters */}
       <div className="shrink-0">
-        <div className="mb-10 text-center">
+        <div className="mb-4 md:mb-10 text-center">
           <h1 className="font-display text-xl md:text-3xl font-bold text-white">
             Template Library
           </h1>
           <p className="text-[rgba(255,255,255,0.5)] text-base mt-2">
-            Start from a proven skill template. Fork it and make it your own.
+            <span className="hidden md:inline">Start from a proven skill template. Fork it and make it your own.</span>
+            <span className="md:hidden">Fork and customize proven templates.</span>
           </p>
         </div>
 
@@ -89,7 +90,7 @@ export default function TemplatesPage() {
       </div>
 
       {/* Scrollable grid area */}
-      <div className="relative flex-1 min-h-0 mt-10">
+      <div className="relative flex-1 min-h-0 mt-4 md:mt-10">
         {/* Top gradient fade mask — only visible after scrolling */}
         <div
           className="absolute top-0 left-0 right-0 h-12 pointer-events-none z-10 transition-opacity duration-300"

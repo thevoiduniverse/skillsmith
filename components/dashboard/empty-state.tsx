@@ -11,19 +11,22 @@ export function EmptyState() {
         No skills yet
       </h2>
       <p className="text-text-secondary max-w-md mb-8">
-        Create your first skill to teach Claude new behaviors. Describe what you
-        want and our AI will generate a complete SKILL.md file for you.
+        <span className="hidden md:inline">Create your first skill to teach Claude new behaviors. Describe what you
+        want and our AI will generate a complete SKILL.md file for you.</span>
+        <span className="md:hidden">Create your first skill to teach Claude new behaviors.</span>
       </p>
-      <div className="flex items-center gap-3">
+      <div className="flex flex-col md:flex-row items-center gap-3">
         <Link href="/skills/new">
           <Button size="lg">
             <IconSparklesFilled size={16} />
-            Create Your First Skill
+            <span className="hidden md:inline">Create Your First Skill</span>
+            <span className="md:hidden">Create Skill</span>
           </Button>
         </Link>
         <Link href="/templates">
           <Button variant="secondary" size="lg">
-            Browse Templates
+            <span className="hidden md:inline">Browse Templates</span>
+            <span className="md:hidden">Templates</span>
           </Button>
         </Link>
       </div>
