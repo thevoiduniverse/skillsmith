@@ -13,6 +13,7 @@ import {
   IconX,
 } from "@tabler/icons-react";
 import { cn } from "@/lib/utils";
+import { AnimatedLogo } from "@/components/ui/animated-logo";
 
 const navItems = [
   { href: "/dashboard", label: "Dashboard", icon: IconLayoutGridFilled },
@@ -43,10 +44,14 @@ export function MobileNav() {
           />
           <div className="fixed inset-y-0 left-0 w-64 bg-background border-r border-border z-50 flex flex-col">
             <div className="h-14 flex items-center justify-between px-4 border-b border-border">
-              <div className="flex items-center gap-2">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/logo.png" alt="SkillSmith" className="h-[26px] w-auto" />
-              </div>
+              <Link href="/dashboard" className="relative flex items-center -ml-2" style={{ height: 26 }}>
+                <div
+                  className="absolute top-1/2 -translate-y-1/2"
+                  style={{ left: -10 }}
+                >
+                  <AnimatedLogo size={56} />
+                </div>
+              </Link>
               <button
                 onClick={() => setOpen(false)}
                 className="p-1 text-text-secondary hover:text-text-primary"

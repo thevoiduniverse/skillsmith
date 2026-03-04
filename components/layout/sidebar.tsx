@@ -15,6 +15,7 @@ import {
 import { createClient } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
 import { track } from "@/lib/analytics";
+import { AnimatedLogo } from "@/components/ui/animated-logo";
 
 const navItems = [
   { href: "/dashboard", label: "Dashboard", icon: IconLayoutGridFilled },
@@ -61,11 +62,17 @@ export function Sidebar() {
           }}
         />
 
-        {/* Logo — centered, matching landing/auth pages */}
-        <Link href="/dashboard" className="flex items-center justify-center">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/logo.png" alt="SkillSmith" className="h-[32px] w-auto" />
-        </Link>
+        {/* Logo — centered, matching landing page S position */}
+        <div className="flex justify-center">
+          <Link href="/dashboard" className="relative flex items-center -ml-2" style={{ height: 32 }}>
+            <div
+              className="absolute top-1/2 -translate-y-1/2"
+              style={{ left: -10 }}
+            >
+              <AnimatedLogo size={56} />
+            </div>
+          </Link>
+        </div>
 
         {/* Navigation — segmented control */}
         <LayoutGroup>

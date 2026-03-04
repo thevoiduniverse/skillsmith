@@ -162,8 +162,16 @@ export function LandingHero() {
   const [textColor, setTextColor] = useState(rotatingWords[0].color);
   const [showCursor, setShowCursor] = useState(true);
   const [howStep, setHowStep] = useState(0);
+  const [logoAnimated, setLogoAnimated] = useState(false);
   const isMobile = useIsMobile();
   const handleSplashComplete = useCallback(() => setSplashDone(true), []);
+
+  // After 4s from splash completion, transition the nav logo to the animated S
+  useEffect(() => {
+    if (!splashDone) return;
+    const timer = setTimeout(() => setLogoAnimated(true), 4000);
+    return () => clearTimeout(timer);
+  }, [splashDone]);
 
   useEffect(() => {
     let idx = 0;
@@ -233,9 +241,55 @@ export function LandingHero() {
               maskComposite: "exclude",
             }}
           />
-          <Link href="/">
+          <Link href="/" className="relative flex items-center -ml-2 md:-ml-3" style={{ height: isMobile ? 28 : 36 }}>
+            {/* Full logo — fades out */}
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/logo.png" alt="SkillSmith" className="h-[28px] md:h-[36px] w-auto" />
+            <img
+              src="/logo.png"
+              alt="SkillSmith"
+              className="h-[34px] md:h-[44px] w-auto transition-all duration-700 ease-out"
+              style={{
+                opacity: logoAnimated ? 0 : 1,
+                filter: logoAnimated ? "blur(12px)" : "blur(0px)",
+              }}
+            />
+            {/* Animated S — fades in, positioned to align with the S in the full logo */}
+            <div
+              className="absolute top-1/2 -translate-y-1/2 rounded-lg overflow-hidden transition-all duration-700 ease-out"
+              style={{
+                opacity: logoAnimated ? 1 : 0,
+                filter: logoAnimated ? "blur(0px)" : "blur(12px)",
+                left: isMobile ? -10 : -16,
+                width: isMobile ? 56 : 72,
+                height: isMobile ? 56 : 72,
+                WebkitMaskImage: "url(/logo-shape.svg)",
+                maskImage: "url(/logo-shape.svg)",
+                WebkitMaskSize: "70% 70%",
+                maskSize: "70% 70%",
+                WebkitMaskRepeat: "no-repeat",
+                maskRepeat: "no-repeat",
+                WebkitMaskPosition: "center",
+                maskPosition: "center",
+              }}
+            >
+              <LiquidMetal
+                width={isMobile ? 56 : 72}
+                height={isMobile ? 56 : 72}
+                colorBack="#3a5a00"
+                colorTint="#d4ff4d"
+                image="/logo-shape.svg"
+                shape="none"
+                repetition={2}
+                softness={0.15}
+                shiftRed={0.1}
+                shiftBlue={0.1}
+                distortion={0.1}
+                contour={0.6}
+                angle={70}
+                speed={1}
+                scale={0.8}
+              />
+            </div>
           </Link>
           <div className="flex items-center gap-3 md:gap-5">
             <Link
@@ -258,12 +312,12 @@ export function LandingHero() {
                 >
                   DEV
                 </Link>
-                <Link
-                  href="/loader"
+                <button
+                  onClick={() => setLogoAnimated((v) => !v)}
                   className="text-[rgba(255,255,255,0.3)] text-xs font-mono hover:text-white transition-colors"
                 >
-                  LOADER
-                </Link>
+                  LOGO
+                </button>
               </>
             )}
           </div>

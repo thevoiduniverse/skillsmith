@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { GlassCard } from "@/components/ui/glass-card";
+import { AnimatedLogo } from "@/components/ui/animated-logo";
 
 export default function LoginPage() {
   const [error, setError] = useState("");
@@ -44,8 +45,9 @@ export default function LoginPage() {
   return (
     <div className="w-full max-w-md">
       <GlassCard radius={32} className="p-6 md:p-8">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/logo.png" alt="SkillSmith" className="h-[42px] w-auto mx-auto mb-6" />
+        <div className="flex justify-center mb-6">
+          <AnimatedLogo size={144} />
+        </div>
         <h1 className="font-display text-2xl font-semibold text-white mb-2 text-center">
           Welcome back
         </h1>

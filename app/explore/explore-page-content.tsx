@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { DotCanvas } from "@/components/ui/dot-canvas";
+import { AnimatedLogo } from "@/components/ui/animated-logo";
 import { useIsMobile } from "@/lib/hooks/use-is-mobile";
 import { ExploreTemplates } from "./explore-templates";
 
@@ -30,9 +31,13 @@ export function ExplorePageContent() {
                 maskComposite: "exclude",
               }}
             />
-            <Link href="/">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/logo.png" alt="SkillSmith" className="h-[28px] md:h-[36px] w-auto" />
+            <Link href="/" className="relative flex items-center -ml-2 md:-ml-3" style={{ height: isMobile ? 28 : 36 }}>
+              <div
+                className="absolute top-1/2 -translate-y-1/2"
+                style={{ left: isMobile ? -10 : -16 }}
+              >
+                <AnimatedLogo size={isMobile ? 56 : 72} />
+              </div>
             </Link>
             <div className="flex items-center gap-3 md:gap-5">
               <Link
