@@ -68,12 +68,14 @@ export default function RootLayout({
         <PostHogProvider>{children}</PostHogProvider>
         <Analytics />
         <SpeedInsights />
-        <Script
-          async
-          src="https://analytics.umami.is/script.js"
-          data-website-id="38f21c1a-7561-48ee-8a45-c8d184ca2c96"
-          strategy="afterInteractive"
-        />
+        {process.env.NODE_ENV === "production" && (
+          <Script
+            async
+            src="https://analytics.umami.is/script.js"
+            data-website-id="38f21c1a-7561-48ee-8a45-c8d184ca2c96"
+            strategy="afterInteractive"
+          />
+        )}
       </body>
     </html>
   );

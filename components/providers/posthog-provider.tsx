@@ -8,7 +8,10 @@ import { track, identify, reset } from "@/lib/analytics";
 
 // Initialize at module level so it's ready before any component renders.
 // posthog.init is idempotent — safe to call once at import time.
+const isDev = process.env.NODE_ENV === "development";
+
 const posthogInitialized =
+  !isDev &&
   typeof window !== "undefined" &&
   (() => {
     const key = process.env.NEXT_PUBLIC_POSTHOG_KEY;

@@ -39,6 +39,7 @@ function AutoRotate({ children }: { children: React.ReactNode }) {
 }
 
 function GlTextMesh({ text, size = 2.5 }: { text: string; size?: number }) {
+  size = size * 0.8;
   const meshRef = useRef<THREE.Mesh>(null);
 
   useFrame(() => {
