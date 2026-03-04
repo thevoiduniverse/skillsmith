@@ -2,16 +2,15 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { IconDeviceFloppy, IconPlayerPlayFilled, IconDownload, IconChevronDown, IconTrashFilled, IconTerminal2, IconCheck, IconWorld, IconLockFilled } from "@tabler/icons-react";
+import { IconDeviceFloppy, IconPlayerPlayFilled, IconDownload, IconChevronDown, IconTrashFilled, IconTerminal2, IconCheck, IconWorld, IconLockFilled, IconSparklesFilled, IconWand, IconCode } from "@tabler/icons-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { useEditorSync } from "@/lib/hooks/use-editor-sync";
 import type { SkillStructure } from "@/lib/skill-parser/schema";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { GuidedEditor } from "./guided-mode/guided-editor";
 import { MonacoMarkdownEditor } from "./markdown-mode/monaco-editor";
-import { AiToolbar } from "./ai-toolbar";
+import { TransitionText } from "@/components/ui/transition-text";
 
 import { track } from "@/lib/analytics";
 
@@ -35,6 +34,7 @@ export function EditorShell({ skillId, initialContent, initialTitle, initialVisi
   const [visibility, setVisibility] = useState(initialVisibility || "private");
   const [showDiscardConfirm, setShowDiscardConfirm] = useState(false);
   const [guidedStep, setGuidedStep] = useState(0);
+  const [hasBeenDrafted, setHasBeenDrafted] = useState(!!initialContent.trim());
   const structureSnapshot = useRef<SkillStructure | null>(null);
 
   const {
@@ -139,6 +139,7 @@ export function EditorShell({ skillId, initialContent, initialTitle, initialVisi
       const data = await res.json();
       if (data.content) {
         updateMarkdown(data.content);
+        setHasBeenDrafted(true);
         if (data.parsed?.name && !title) {
           setTitle(data.parsed.name);
         }
@@ -277,158 +278,48 @@ export function EditorShell({ skillId, initialContent, initialTitle, initialVisi
   }
 
   return (
-    <div className="max-w-7xl mx-auto">
-      {/* Top bar */}
-      <div className="flex flex-col gap-3 mb-4 md:flex-row md:items-center md:justify-between md:gap-4">
-        <Input
+    <div className="max-w-7xl mx-auto pb-24">
+      {/* Centered hero title */}
+      <div className="mb-3 md:mb-4 text-center">
+        <input
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           placeholder="Untitled Skill"
-          className="text-lg font-bold bg-transparent border-none focus:ring-0 px-0 max-w-full md:max-w-md"
+          className="w-full text-center font-display text-xl md:text-3xl font-bold bg-transparent border-none outline-none text-white placeholder:text-[rgba(255,255,255,0.25)] focus:outline-none"
         />
-        <div className="flex items-center gap-2 flex-wrap">
-          <Button
-            variant="secondary"
-            size="sm"
-            onClick={async () => {
-              if (tryMode) {
-                saveToLocalStorage();
-                toast.success("Saved locally");
-              } else {
-                track("skill_saved");
-                await saveSkill();
-                router.push("/dashboard");
-              }
-            }}
-            disabled={saving}
-          >
-            <IconDeviceFloppy size={14} />
-            <span className="hidden sm:inline">{tryMode
-              ? "Save Locally"
-              : saving
-                ? "Saving..."
-                : isDirty
-                  ? "Save*"
-                  : "Save"}</span>
-          </Button>
-          <Button
-            size="sm"
-            onClick={() => {
-              track("skill_tested");
-              if (tryMode) {
-                saveToLocalStorage();
-                router.push("/try/test");
-              } else {
-                router.push(`/skills/${skillId}/test`);
-              }
-            }}
-          >
-            <IconPlayerPlayFilled size={14} />
-            <span className="hidden sm:inline">Test</span>
-          </Button>
-          <div className="relative">
-            <Button
-              variant="secondary"
-              size="sm"
-              onClick={() => setShowExport(!showExport)}
-            >
-              <IconDownload size={14} />
-              <IconChevronDown size={12} />
-            </Button>
-            {showExport && (
-              <div className="absolute right-0 top-full mt-1 bg-surface border border-border rounded-2xl shadow-xl z-20 py-1 min-w-[200px]">
-                <button
-                  className="w-full text-left px-3 py-2 text-sm text-text-primary hover:bg-surface-alt transition-colors flex items-center gap-2"
-                  onClick={handleExportMarkdown}
-                >
-                  <IconDownload size={14} />
-                  Download SKILL.md
-                </button>
-                {!tryMode && (
-                  <button
-                    className="w-full text-left px-3 py-2 text-sm text-text-primary hover:bg-surface-alt transition-colors flex items-center gap-2"
-                    onClick={handleCopyInstallCommand}
-                  >
-                    {copiedInstall ? <IconCheck size={14} className="text-accent" /> : <IconTerminal2 size={14} />}
-                    Copy install command
-                  </button>
-                )}
-              </div>
-            )}
-          </div>
-          {!tryMode && (
-            <div className="group flex items-center">
-              <div className="overflow-hidden w-0 group-hover:w-[72px] transition-all duration-200 ease-out">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => {
-                    if (hasAnyContent()) {
-                      setShowDiscardConfirm(true);
-                    } else {
-                      handleDiscard();
-                    }
-                  }}
-                  className="text-text-secondary hover:text-error whitespace-nowrap"
-                >
-                  <IconTrashFilled size={14} />
-                  <span className="hidden sm:inline">Delete</span>
-                </Button>
-              </div>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={handleToggleVisibility}
-                className="transition-transform duration-200 ease-out"
-              >
-                {visibility === "public" ? <IconWorld size={14} className="text-accent" /> : <IconLockFilled size={14} />}
-                <span className="hidden sm:inline">{visibility === "public" ? "Public" : "Private"}</span>
-              </Button>
-            </div>
-          )}
-          {tryMode && (
-            <Button
-              variant="ghost"
-              size="sm"
+      </div>
+
+      {/* Mode segmented control */}
+      <div className="flex justify-center pb-4">
+        <div className="relative flex items-center bg-[rgba(0,0,0,0.3)] rounded-full p-1">
+          {(["guided", "markdown"] as const).map((mode) => (
+            <button
+              key={mode}
               onClick={() => {
-                if (hasAnyContent()) {
-                  setShowDiscardConfirm(true);
-                } else {
-                  handleDiscard();
-                }
+                switchMode(mode);
+                track("editor_mode_switched", { mode });
               }}
-              className="text-text-secondary hover:text-error"
+              className={cn(
+                "relative flex items-center justify-center gap-1.5 px-4 py-1.5 text-xs font-bold rounded-full transition-colors z-10",
+                activeMode === mode
+                  ? "text-[#bfff00]"
+                  : "text-[rgba(255,255,255,0.4)] hover:text-[rgba(255,255,255,0.6)]"
+              )}
             >
-              <IconTrashFilled size={14} />
-              <span className="hidden sm:inline">Discard</span>
-            </Button>
-          )}
+              {activeMode === mode && (
+                <div
+                  className="absolute inset-0 rounded-full bg-gradient-to-b from-[rgba(28,28,28,0.72)] to-[rgba(16,16,16,0.62)] border border-[rgba(255,255,255,0.02)]"
+                  style={{
+                    boxShadow: "inset 0 1px 0 rgba(255,255,255,0.08), inset 0 -1px 0 rgba(0,0,0,0.25), 0 4px 12px rgba(0,0,0,0.4)",
+                  }}
+                />
+              )}
+              {mode === "markdown" && <IconCode size={13} className="relative z-10" />}
+              <span className="relative z-10">{mode === "guided" ? "Guided" : "Markdown"}</span>
+            </button>
+          ))}
         </div>
       </div>
-
-      {/* Mode tabs */}
-      <div className="flex items-center border-b border-border mb-4">
-        {(["guided", "markdown"] as const).map((mode) => (
-          <button
-            key={mode}
-            onClick={() => { switchMode(mode); track("editor_mode_switched", { mode }); }}
-            className={cn(
-              "px-4 py-2 text-sm font-medium transition-colors border-b-2 -mb-px",
-              activeMode === mode
-                ? "border-accent text-accent"
-                : "border-transparent text-text-secondary hover:text-text-primary"
-            )}
-          >
-            {mode === "guided" ? "Guided" : "Markdown"}
-          </button>
-        ))}
-      </div>
-
-      {/* AI Toolbar */}
-      <AiToolbar
-        onDraft={handleAiDraft}
-        loading={aiLoading}
-      />
 
       {/* Editor content */}
       {activeMode === "guided" ? (
@@ -460,10 +351,150 @@ export function EditorShell({ skillId, initialContent, initialTitle, initialVisi
           />
         </div>
       ) : (
-        <div>
+        <div className="max-w-[1160px] mx-auto">
           <MonacoMarkdownEditor value={markdown} onChange={updateMarkdown} />
         </div>
       )}
+
+      {/* Floating bottom action bar */}
+      <div className="fixed bottom-0 left-0 right-0 z-40">
+        <div className="mx-auto max-w-3xl px-4 pb-6">
+          <div className="relative bg-gradient-to-b from-[rgba(28,28,28,0.75)] to-[rgba(16,16,16,0.65)] backdrop-blur-xl border border-[rgba(255,255,255,0.06)] rounded-full shadow-[inset_0_1px_0_rgba(255,255,255,0.08),inset_0_-1px_0_rgba(0,0,0,0.25),0_8px_32px_rgba(0,0,0,0.5)] px-4 py-2.5">
+            {/* Glass gradient border */}
+            <div
+              className="absolute inset-0 pointer-events-none z-0 rounded-full"
+              style={{
+                padding: 1,
+                background:
+                  "linear-gradient(to bottom, rgba(255,255,255,0.1), rgba(255,255,255,0.02) 50%, transparent)",
+                WebkitMask:
+                  "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                WebkitMaskComposite: "xor",
+                mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                maskComposite: "exclude",
+              }}
+            />
+
+            <div className="relative z-10 flex items-center justify-between gap-2">
+              {/* Left: AI Draft / Regenerate */}
+              <Button
+                variant="secondary"
+                size="sm"
+                onClick={handleAiDraft}
+                disabled={aiLoading === "draft"}
+              >
+                {hasBeenDrafted ? <IconWand size={14} /> : <IconSparklesFilled size={14} />}
+                <TransitionText
+                  active={aiLoading === "draft"}
+                  idle={hasBeenDrafted ? "Regenerate" : "Draft with AI"}
+                  activeText="Drafting..."
+                />
+              </Button>
+
+              {/* Right: Discard, Visibility, Export, Save, Test */}
+              <div className="flex items-center gap-1.5">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => {
+                    if (hasAnyContent()) {
+                      setShowDiscardConfirm(true);
+                    } else {
+                      handleDiscard();
+                    }
+                  }}
+                  className="text-text-secondary hover:text-red-400"
+                >
+                  <IconTrashFilled size={14} />
+                </Button>
+
+                {!tryMode && (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={handleToggleVisibility}
+                  >
+                    {visibility === "public" ? <IconWorld size={14} className="text-[#bfff00]" /> : <IconLockFilled size={14} />}
+                    <span className="hidden sm:inline">{visibility === "public" ? "Public" : "Private"}</span>
+                  </Button>
+                )}
+
+                <div className="relative">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setShowExport(!showExport)}
+                  >
+                    <IconDownload size={14} />
+                    <IconChevronDown size={10} />
+                  </Button>
+                  {showExport && (
+                    <div className="absolute right-0 bottom-full mb-2 bg-[rgba(24,24,24,0.95)] backdrop-blur-xl border border-[rgba(255,255,255,0.08)] rounded-xl shadow-2xl z-20 py-1 min-w-[200px]">
+                      <button
+                        className="w-full text-left px-3 py-2 text-sm text-white/80 hover:bg-[rgba(255,255,255,0.06)] transition-colors flex items-center gap-2"
+                        onClick={handleExportMarkdown}
+                      >
+                        <IconDownload size={14} />
+                        Download SKILL.md
+                      </button>
+                      {!tryMode && (
+                        <button
+                          className="w-full text-left px-3 py-2 text-sm text-white/80 hover:bg-[rgba(255,255,255,0.06)] transition-colors flex items-center gap-2"
+                          onClick={handleCopyInstallCommand}
+                        >
+                          {copiedInstall ? <IconCheck size={14} className="text-[#bfff00]" /> : <IconTerminal2 size={14} />}
+                          Copy install command
+                        </button>
+                      )}
+                    </div>
+                  )}
+                </div>
+
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  onClick={async () => {
+                    if (tryMode) {
+                      saveToLocalStorage();
+                      toast.success("Saved locally");
+                    } else {
+                      track("skill_saved");
+                      await saveSkill();
+                      router.push("/dashboard");
+                    }
+                  }}
+                  disabled={saving}
+                >
+                  <IconDeviceFloppy size={14} />
+                  <span className="hidden sm:inline">{tryMode
+                    ? "Save Locally"
+                    : saving
+                      ? "Saving..."
+                      : isDirty
+                        ? "Save*"
+                        : "Save"}</span>
+                </Button>
+
+                <Button
+                  size="sm"
+                  onClick={() => {
+                    track("skill_tested");
+                    if (tryMode) {
+                      saveToLocalStorage();
+                      router.push("/try/test");
+                    } else {
+                      router.push(`/skills/${skillId}/test`);
+                    }
+                  }}
+                >
+                  <IconPlayerPlayFilled size={14} />
+                  <span className="hidden sm:inline">Test</span>
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
       {/* Discard confirmation modal */}
       {showDiscardConfirm && (

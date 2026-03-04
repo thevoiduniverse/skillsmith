@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { IconPlus, IconChevronLeft, IconChevronRight, IconSparklesFilled, IconCircleCheckFilled, IconPlayerPlayFilled, IconDice3Filled } from "@tabler/icons-react";
 import { type SkillStructure } from "@/lib/skill-parser/schema";
@@ -14,8 +15,12 @@ import { useIsMobile } from "@/lib/hooks/use-is-mobile";
 
 /* ─── Constants ────────────────────────────────── */
 
-const CARD_HEIGHT_DESKTOP = 480;
-const CARD_HEIGHT_MOBILE = 420;
+// Vertical space consumed by shell chrome:
+// Nav/header + layout padding + title + segmented control + step dots + bottom bar padding + card stack peek
+const CHROME_HEIGHT_DESKTOP = 440;
+const CHROME_HEIGHT_MOBILE = 400;
+const MIN_CARD_HEIGHT = 280;
+const MAX_CARD_HEIGHT = 520;
 const TOTAL_STEPS = 5;
 
 const springTransition = {
@@ -78,7 +83,20 @@ export function GuidedEditor({
   onDashboard,
 }: GuidedEditorProps) {
   const isMobile = useIsMobile();
-  const CARD_HEIGHT = isMobile ? CARD_HEIGHT_MOBILE : CARD_HEIGHT_DESKTOP;
+  const [cardHeight, setCardHeight] = useState(MAX_CARD_HEIGHT);
+
+  useEffect(() => {
+    const calc = () => {
+      const chrome = isMobile ? CHROME_HEIGHT_MOBILE : CHROME_HEIGHT_DESKTOP;
+      const available = Math.min(Math.max(window.innerHeight - chrome, MIN_CARD_HEIGHT), MAX_CARD_HEIGHT);
+      setCardHeight(available);
+    };
+    calc();
+    window.addEventListener("resize", calc);
+    return () => window.removeEventListener("resize", calc);
+  }, [isMobile]);
+
+  const CARD_HEIGHT = cardHeight;
 
   function goNext() {
     if (activeStep < TOTAL_STEPS - 1) onStepChange(activeStep + 1);
@@ -93,9 +111,9 @@ export function GuidedEditor({
   function renderStep0() {
     return (
       <div className="flex flex-col h-full">
-        <div className="flex-1 space-y-5">
-          <div className="space-y-2">
-            <Label>Skill Name</Label>
+        <div className="flex-1 flex flex-col gap-5 min-h-0">
+          <div className="space-y-3">
+            <Label className="font-semibold text-[rgba(255,255,255,0.7)]">Skill Name</Label>
             <div className="relative">
               <Input
                 value={structure.name}
@@ -103,13 +121,13 @@ export function GuidedEditor({
                   onUpdate((prev) => ({ ...prev, name: e.target.value }))
                 }
                 placeholder="e.g., Code Reviewer, Email Writer..."
-                className="pr-24 md:pr-32"
+                className="pr-28 md:pr-36"
               />
               {onAiSuggest && (
                 <button
                   onClick={() => onAiSuggest("name")}
                   disabled={aiLoadingSection === "name" || !structure.description.trim()}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1 text-xs font-medium text-[#bfff00] hover:text-[#d4ff4d] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                  className="absolute right-[2px] top-[2px] bottom-[2px] flex items-center gap-1.5 px-3 md:px-4 rounded-full text-xs font-bold text-[#bfff00] bg-gradient-to-b from-[rgba(28,28,28,0.72)] to-[rgba(16,16,16,0.62)] border border-[rgba(255,255,255,0.02)] shadow-[inset_0_1px_0_rgba(255,255,255,0.08),inset_0_-1px_0_rgba(0,0,0,0.25),0_4px_12px_rgba(0,0,0,0.4)] hover:from-[rgba(38,38,38,0.72)] hover:to-[rgba(24,24,24,0.62)] disabled:opacity-30 disabled:cursor-not-allowed transition-all"
                 >
                   <IconDice3Filled size={14} />
                   <span className="hidden sm:inline"><TransitionText active={aiLoadingSection === "name"} idle="Randomise" activeText="Generating..." /></span>
@@ -117,14 +135,10 @@ export function GuidedEditor({
               )}
             </div>
           </div>
-          <div className="space-y-2">
-            <div className="flex items-start justify-between">
-              <div>
-                <Label>Trigger Description</Label>
-                <p className="text-xs text-[rgba(255,255,255,0.4)] mt-0.5">
-                  When should this skill activate?
-                </p>
-              </div>
+          <div className="flex-1 flex flex-col space-y-3 min-h-0">
+            <div>
+              <Label className="font-semibold text-[rgba(255,255,255,0.7)] mb-0">Trigger Description</Label>
+              <p className="text-xs text-[rgba(255,255,255,0.3)] mt-0.5">When should this skill activate?</p>
             </div>
             <Textarea
               value={structure.description}
@@ -132,8 +146,7 @@ export function GuidedEditor({
                 onUpdate((prev) => ({ ...prev, description: e.target.value }))
               }
               placeholder="e.g., Use when the user asks for a code review on a pull request..."
-              rows={3}
-              className="text-sm"
+              className="text-sm flex-1"
             />
           </div>
         </div>
@@ -150,13 +163,11 @@ export function GuidedEditor({
   function renderStep1() {
     return (
       <div className="flex flex-col h-full">
-        <div className="flex-1 space-y-2">
-          <div className="flex items-start justify-between">
+        <div className="flex-1 flex flex-col space-y-4 min-h-0">
+          <div className="flex items-center justify-between">
             <div>
-              <Label>Instructions</Label>
-              <p className="text-xs text-[rgba(255,255,255,0.4)] mt-0.5">
-                What should Claude do when this skill is active?
-              </p>
+              <Label className="font-semibold text-[rgba(255,255,255,0.7)] mb-0">Instructions</Label>
+              <p className="text-xs text-[rgba(255,255,255,0.3)] mt-0.5">What should Claude do when this skill is active?</p>
             </div>
             {onAiSuggest && (
               <Button
@@ -177,8 +188,7 @@ export function GuidedEditor({
               onUpdate((prev) => ({ ...prev, instructions: e.target.value }))
             }
             placeholder="Describe the behavior, tone, format, and any rules Claude should follow..."
-            rows={8}
-            className="text-sm"
+            className="text-sm flex-1"
           />
         </div>
         <div className="flex items-center justify-between mt-auto pt-6">
@@ -198,10 +208,10 @@ export function GuidedEditor({
   function renderStep2() {
     return (
       <div className="flex flex-col h-full">
-        <div className="flex-1 space-y-2">
-          <div className="flex items-start justify-between">
+        <div className="flex-1 flex flex-col space-y-4 min-h-0">
+          <div className="flex items-center justify-between">
             <div>
-              <Label>Edge Cases</Label>
+              <Label className="font-semibold text-[rgba(255,255,255,0.7)] mb-0">Edge Cases</Label>
               <p className="text-xs text-[rgba(255,255,255,0.4)] mt-0.5">
                 What tricky situations should Claude handle? What should it avoid?
               </p>
@@ -225,8 +235,7 @@ export function GuidedEditor({
               onUpdate((prev) => ({ ...prev, edgeCases: e.target.value }))
             }
             placeholder="List edge cases, things to watch out for, or behaviors to avoid..."
-            rows={8}
-            className="text-sm"
+            className="text-sm flex-1"
           />
         </div>
         <div className="flex items-center justify-between mt-auto pt-6">
@@ -249,7 +258,7 @@ export function GuidedEditor({
         <div className="flex-1 overflow-y-auto space-y-3">
           <div className="flex items-center justify-between">
             <div>
-              <Label>Examples</Label>
+              <Label className="font-semibold text-[rgba(255,255,255,0.7)]">Examples</Label>
               <p className="text-xs text-[rgba(255,255,255,0.4)] mt-0.5">
                 Show Claude what good input/output looks like
               </p>

@@ -272,13 +272,13 @@ export function LandingHero() {
 
       {/* Hero */}
       <section className="relative z-10 max-w-4xl mx-auto px-4 md:px-6 pt-10 pb-10 md:pt-20 md:pb-20 text-center">
-        <h1 className="text-[28px] md:text-[60px] font-display font-semibold text-white leading-[1.45]">
+        <h1 className="text-[36px] md:text-[60px] font-display font-semibold text-white leading-[1.45]">
           Craft your{" "}
           <span
-              className="inline-block align-middle relative -top-[6px] md:-top-[10px]"
+              className="inline-block align-middle relative -top-[8px] md:-top-[10px]"
               style={{
-                width: isMobile ? 115 : 230,
-                height: isMobile ? 32 : 65,
+                width: isMobile ? 148 : 230,
+                height: isMobile ? 41 : 65,
                 WebkitMaskImage: "url(/skills-shape.svg)",
                 maskImage: "url(/skills-shape.svg)",
                 WebkitMaskSize: "100% 100%",
@@ -288,8 +288,8 @@ export function LandingHero() {
               }}
             >
               <LiquidMetal
-                width={isMobile ? 115 : 230}
-                height={isMobile ? 32 : 65}
+                width={isMobile ? 148 : 230}
+                height={isMobile ? 41 : 65}
                 colorBack="#000000"
                 colorTint="#ffffff"
                 image="/skills-shape.svg"

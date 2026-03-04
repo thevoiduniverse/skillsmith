@@ -1,7 +1,10 @@
 "use client";
 
-import { useRef, useCallback } from "react";
+import { useRef, useCallback, useState, useEffect } from "react";
 import Editor, { type OnMount } from "@monaco-editor/react";
+
+const CHROME_HEIGHT = 360; // nav + title + segmented control + bottom floating bar + 40px gap
+const MIN_HEIGHT = 250;
 
 interface MonacoEditorProps {
   value: string;
@@ -10,6 +13,14 @@ interface MonacoEditorProps {
 
 export function MonacoMarkdownEditor({ value, onChange }: MonacoEditorProps) {
   const editorRef = useRef<unknown>(null);
+  const [editorHeight, setEditorHeight] = useState(500);
+
+  useEffect(() => {
+    const calc = () => setEditorHeight(Math.max(window.innerHeight - CHROME_HEIGHT, MIN_HEIGHT));
+    calc();
+    window.addEventListener("resize", calc);
+    return () => window.removeEventListener("resize", calc);
+  }, []);
 
   const handleMount: OnMount = useCallback((editor, monaco) => {
     editorRef.current = editor;
@@ -41,7 +52,7 @@ export function MonacoMarkdownEditor({ value, onChange }: MonacoEditorProps) {
   return (
     <div className="rounded-2xl overflow-hidden border border-border">
       <Editor
-        height="500px"
+        height={`${editorHeight}px`}
         defaultLanguage="markdown"
         value={value}
         onChange={(val) => onChange(val || "")}

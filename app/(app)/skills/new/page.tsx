@@ -161,25 +161,37 @@ export default function NewSkillPage() {
       if (!draftRes.ok) throw new Error("Failed to generate skill. Please try again.");
       const draft = await draftRes.json();
 
-      // Now create the skill WITH the content in a single request
+      const title = draft.parsed?.name || skillName.trim() || description.slice(0, 60);
+
+      // Try to create the skill in the DB
       const createRes = await fetch("/api/skills", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          title: draft.parsed?.name || skillName.trim() || description.slice(0, 60),
+          title,
           description,
           category,
           content: draft.content || "",
         }),
       });
-      if (!createRes.ok) {
-        if (createRes.status === 401) throw new Error("Please sign in to save skills.");
+
+      if (createRes.ok) {
+        const skill = await createRes.json();
+        track("skill_created", { method: "ai", category: category ?? undefined });
+        router.push(`/skills/${skill.id}/edit`);
+      } else if (createRes.status === 401) {
+        // Not signed in — fall back to try mode via localStorage
+        localStorage.setItem("skillsmith-try-skill", JSON.stringify({
+          title,
+          content: draft.content || "",
+          category,
+          description,
+        }));
+        toast.success("Skill generated! Saving locally (sign in to save to your account).");
+        router.push("/try/edit");
+      } else {
         throw new Error("Failed to save skill. Please try again.");
       }
-      const skill = await createRes.json();
-
-      track("skill_created", { method: "ai", category: category ?? undefined });
-      router.push(`/skills/${skill.id}/edit`);
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Failed to generate skill. Please try again.");
       setMode("idle");
@@ -191,22 +203,32 @@ export default function NewSkillPage() {
 
     setMode("creating");
     setLoading(true);
+    const title = skillName.trim() || "Untitled Skill";
     try {
       const res = await fetch("/api/skills", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          title: skillName.trim() || "Untitled Skill",
+          title,
           category: category || undefined,
         }),
       });
-      if (!res.ok) {
-        if (res.status === 401) throw new Error("Please sign in to save skills.");
+      if (res.ok) {
+        const skill = await res.json();
+        track("skill_created", { method: "blank", category: category ?? undefined });
+        router.push(`/skills/${skill.id}/edit`);
+      } else if (res.status === 401) {
+        // Not signed in — fall back to try mode
+        localStorage.setItem("skillsmith-try-skill", JSON.stringify({
+          title,
+          content: "",
+          category,
+          description: "",
+        }));
+        router.push("/try/edit");
+      } else {
         throw new Error("Failed to create skill. Please try again.");
       }
-      const skill = await res.json();
-      track("skill_created", { method: "blank", category: category ?? undefined });
-      router.push(`/skills/${skill.id}/edit`);
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Failed to create skill. Please try again.");
       setMode("idle");
@@ -279,7 +301,7 @@ export default function NewSkillPage() {
         {/* Dynamic content based on path */}
         <div className="flex-1 min-h-0 flex flex-col">
           {creationPath === "ai" && (
-            <div className="space-y-3">
+            <div className="flex-1 flex flex-col space-y-3 min-h-0">
               <label className="block text-sm text-[rgba(255,255,255,0.6)]">
                 What should this skill do?
               </label>
@@ -287,8 +309,7 @@ export default function NewSkillPage() {
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 placeholder="e.g., Review code and provide feedback focusing on security vulnerabilities, performance issues, and best practices."
-                rows={4}
-                className="text-base"
+                className="text-base flex-1"
               />
             </div>
           )}
@@ -364,12 +385,12 @@ export default function NewSkillPage() {
                 value={skillName}
                 onChange={(e) => setSkillName(e.target.value)}
                 placeholder="Leave blank to let AI name it"
-                className="pr-24 md:pr-32"
+                className="pr-28 md:pr-36"
               />
               <button
                 onClick={handleRandomiseName}
                 disabled={randomising}
-                className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-1 text-xs font-medium text-[#bfff00] hover:text-[#d4ff4d] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                className="absolute right-[2px] top-[2px] bottom-[2px] flex items-center gap-1.5 px-3 md:px-4 rounded-full text-xs font-bold text-[#bfff00] bg-gradient-to-b from-[rgba(28,28,28,0.72)] to-[rgba(16,16,16,0.62)] border border-[rgba(255,255,255,0.02)] shadow-[inset_0_1px_0_rgba(255,255,255,0.08),inset_0_-1px_0_rgba(0,0,0,0.25),0_4px_12px_rgba(0,0,0,0.4)] hover:from-[rgba(38,38,38,0.72)] hover:to-[rgba(24,24,24,0.62)] disabled:opacity-30 disabled:cursor-not-allowed transition-all"
               >
                 <IconDice3Filled size={14} />
                 <span className="hidden sm:inline"><TransitionText active={randomising} idle="Randomise" activeText="Generating..." /></span>
