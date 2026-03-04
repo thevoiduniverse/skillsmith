@@ -504,7 +504,7 @@ export function LandingHero() {
       </section>
 
       {/* How it Works */}
-      <section className="relative z-10 max-w-xl mx-auto px-6 pb-32">
+      <section className="relative z-10 max-w-xl mx-auto px-6 pb-16">
         <div className="text-center mb-10">
           <h2 className="text-[28px] md:text-[40px] font-display font-semibold text-white leading-[1.15]">
             How it{" "}
@@ -639,11 +639,10 @@ export function LandingHero() {
       </section>
 
       {/* Footer */}
-      <footer className="relative z-10 border-t border-[#2a2a2a] py-8 text-center">
+      <footer className="relative z-10 border-t border-[rgba(255,255,255,0.06)] mx-5 py-8 text-center">
         <p className="text-[rgba(255,255,255,0.6)] text-sm font-sans">
-          Built for{" "}
-          <span className="font-bold text-[#cb8058]">Claude</span> by makers
-          who care about the craft
+          Made for builders who ship with{" "}
+          <span className="font-bold text-[#cb8058]">Claude</span>
         </p>
       </footer>
     </div>
