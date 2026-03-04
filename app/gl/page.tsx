@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 const tabs = [
   { label: "Braces", key: "braces", text: "{ }" },
   { label: "Saturn", key: "saturn", shape: "saturn" },
-  { label: "Infinity", key: "infinity", shape: "infinity" },
+  { label: "Prism", key: "prism", shape: "prism" },
 ];
 
 export default function GLPage() {

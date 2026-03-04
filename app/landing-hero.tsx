@@ -94,7 +94,7 @@ const cards = [
     description:
       "Send the same prompt with and without your skill applied. Compare responses side by side and auto-score against expected behaviour.",
     image: "/card-testing.png?v=2",
-    glShape: "infinity",
+    glShape: "prism",
   },
 ];
 
